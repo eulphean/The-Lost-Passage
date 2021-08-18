@@ -1,8 +1,8 @@
 {
-  "name": "HPACAR",
+  "name": "Virtual-Companion",
   "version": "0.1.0",
   "private": false,
-  "homepage": "https://liarbirds.art",
+  "homepage": "https://amaykataria.com/virtualCompanion/",
   "dependencies": {
     "gh-pages": "^2.1.1",
     "math-ds": "^1.2.1",

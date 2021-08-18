@@ -1,4 +1,3 @@
-// browser-sync start --server -f -w (Run this command in the folder)
 let font; 
 let mic;
 let fft; // Use fft to analyze the incoming sound. 
@@ -33,6 +32,8 @@ let imageFactory = [];
 
 let spectrum; 
 
+// Runs before setup.
+// Loads all the assetrs (images, sound) asynchronously. 
 function preload() {
   font = loadFont('solid.otf');
 
@@ -72,7 +73,6 @@ function draw() {
 
   if (canAnalyze) {
     spectrum = fft.analyze(); 
-    
   }
   
   if (cur_sound_idx >= 0) {
@@ -81,7 +81,7 @@ function draw() {
   } else {
     if (canAnalyze) {
       // Draw energy 
-      let e = fft.getEnergy('mid') + fft.getEnergy('treble');
+      let e = fft.getEnergy('bass') + fft.getEnergy('treble');
       circle(width/2, height/2, e);
     }
   }
@@ -110,12 +110,12 @@ function mousePressed() {
   // Audio setup after mouse press. 
   mic = new p5.AudioIn();
   fft = new p5.FFT();
-  env = new p5.Envelope(0.1, 0.5, 0.1, 0.5, 0.5, 1.0); // Default audio envelope.
+  env = new p5.Envelope(0.1, 0.5, 0.1, 0.5, 0.5, 1.0); // Default ADSR envelope. 
   mic.start();
   fft.setInput(mic);
   canAnalyze = true;
 
-  // Print sources. 
+  // Print sources.
   mic.getSources().then(devices => {
     // Enumerate devices to see what input devices are present. 
     devices.forEach(d => {
@@ -153,7 +153,7 @@ function triggerAttack() {
 
   let soundObject = soundFactory[cur_sound_idx]; 
   fft.setInput(soundObject); // Update fft input. 
-  soundObject.stop(); 
+  soundObject.stop(); // Precautionary. 
   env.triggerAttack(soundObject);
   soundObject.loop();
 }
@@ -167,6 +167,7 @@ function keyReleased() {
   setTimeout(release, parseInt(releaseTime) * 1000); 
 }
 
+// Callback to reset parameters when the sound is completelly off. 
 function release() {
   let soundObject = soundFactory[cur_sound_idx];
   soundObject.stop(); 
