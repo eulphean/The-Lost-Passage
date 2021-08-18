@@ -1,3 +1,4 @@
+// browser-sync start --server -f -w (Run this command in the folder)
 let font; 
 let mic;
 let fft; // Use fft to analyze the incoming sound. 
