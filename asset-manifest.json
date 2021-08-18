@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/static/css/main.562eed68.chunk.css",
-    "main.js": "/static/js/main.c7539315.chunk.js",
-    "main.js.map": "/static/js/main.c7539315.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.8b5d6628.js",
-    "runtime-main.js.map": "/static/js/runtime-main.8b5d6628.js.map",
-    "static/js/2.38d0c373.chunk.js": "/static/js/2.38d0c373.chunk.js",
-    "static/js/2.38d0c373.chunk.js.map": "/static/js/2.38d0c373.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.96fd7ee00288460d05b12d8a95673804.js": "/precache-manifest.96fd7ee00288460d05b12d8a95673804.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/main.562eed68.chunk.css.map": "/static/css/main.562eed68.chunk.css.map",
-    "static/js/2.38d0c373.chunk.js.LICENSE.txt": "/static/js/2.38d0c373.chunk.js.LICENSE.txt",
-    "static/media/stylesheet.css": "/static/media/slice-webfont.60013d1c.woff",
-    "static/media/jellyman.glb": "/static/media/jellyman.5ff4e054.glb"
+    "main.css": "/virtualCompanion/static/css/main.a7ce91f7.chunk.css",
+    "main.js": "/virtualCompanion/static/js/main.2054e0f3.chunk.js",
+    "main.js.map": "/virtualCompanion/static/js/main.2054e0f3.chunk.js.map",
+    "runtime-main.js": "/virtualCompanion/static/js/runtime-main.465efb42.js",
+    "runtime-main.js.map": "/virtualCompanion/static/js/runtime-main.465efb42.js.map",
+    "static/js/2.b1565a33.chunk.js": "/virtualCompanion/static/js/2.b1565a33.chunk.js",
+    "static/js/2.b1565a33.chunk.js.map": "/virtualCompanion/static/js/2.b1565a33.chunk.js.map",
+    "index.html": "/virtualCompanion/index.html",
+    "precache-manifest.917f30b6eb754a931637f38f19068c7f.js": "/virtualCompanion/precache-manifest.917f30b6eb754a931637f38f19068c7f.js",
+    "service-worker.js": "/virtualCompanion/service-worker.js",
+    "static/css/main.a7ce91f7.chunk.css.map": "/virtualCompanion/static/css/main.a7ce91f7.chunk.css.map",
+    "static/js/2.b1565a33.chunk.js.LICENSE.txt": "/virtualCompanion/static/js/2.b1565a33.chunk.js.LICENSE.txt",
+    "static/media/stylesheet.css": "/virtualCompanion/static/media/slice-webfont.60013d1c.woff",
+    "static/media/jellyman.glb": "/virtualCompanion/static/media/jellyman.5ff4e054.glb"
   },
   "entrypoints": [
-    "static/js/runtime-main.8b5d6628.js",
-    "static/js/2.38d0c373.chunk.js",
-    "static/css/main.562eed68.chunk.css",
-    "static/js/main.c7539315.chunk.js"
+    "static/js/runtime-main.465efb42.js",
+    "static/js/2.b1565a33.chunk.js",
+    "static/css/main.a7ce91f7.chunk.css",
+    "static/js/main.2054e0f3.chunk.js"
   ]
 }
