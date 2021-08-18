@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/static/css/main.562eed68.chunk.css",
+    "main.js": "/static/js/main.c7539315.chunk.js",
+    "main.js.map": "/static/js/main.c7539315.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.8b5d6628.js",
+    "runtime-main.js.map": "/static/js/runtime-main.8b5d6628.js.map",
+    "static/js/2.38d0c373.chunk.js": "/static/js/2.38d0c373.chunk.js",
+    "static/js/2.38d0c373.chunk.js.map": "/static/js/2.38d0c373.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.878583e6b83c77255626bb8cb719bc4d.js": "/precache-manifest.878583e6b83c77255626bb8cb719bc4d.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.562eed68.chunk.css.map": "/static/css/main.562eed68.chunk.css.map",
+    "static/js/2.38d0c373.chunk.js.LICENSE.txt": "/static/js/2.38d0c373.chunk.js.LICENSE.txt",
+    "static/media/stylesheet.css": "/static/media/slice-webfont.60013d1c.woff",
+    "static/media/jellyman.glb": "/static/media/jellyman.5ff4e054.glb"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.8b5d6628.js",
+    "static/js/2.38d0c373.chunk.js",
+    "static/css/main.562eed68.chunk.css",
+    "static/js/main.c7539315.chunk.js"
+  ]
+}
