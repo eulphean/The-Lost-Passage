@@ -1,7 +1,6 @@
 import * as THREE from 'three'
-// import Target from './Target'
 import * as Utility from './Utility'
-import { RosePattern, roseConstructor} from './PatternManager'
+import {EllipsePattern, ellipseConstructor} from './PatternManager'
 
 const FLOCKING_WEIGHTS = {
     SEPERATION: 5.0,
@@ -10,91 +9,70 @@ const FLOCKING_WEIGHTS = {
 }
 
 export default class Agent {
-    constructor(scene, i, startY, phase) {
-        this.idx = i; 
-        // Construct all important variables. 
-        this.position = new THREE.Vector3(0, 0, 0); // Get initial velocity
-        this.velocity = new THREE.Vector3(0.1, 0.3, 0); 
+    constructor() {
+        // this.idx = i; 
+        // // Construct all important variables. 
+        this.position = new THREE.Vector3(0, 2, 0); 
+        this.velocity = new THREE.Vector3(0.1, 0.1, 0.1); 
         this.acceleration = new THREE.Vector3(0, 0, 0); 
-        this.fSteer = new THREE.Vector3(0, 0, 0); 
-        this.sumVec = new THREE.Vector3(0, 0, 0);
-        this.diffVec = new THREE.Vector3(0, 0, 0); 
         this.rotationA = new THREE.Quaternion(); 
         this.rotationB = new THREE.Quaternion(); 
+        this.fSteer = new THREE.Vector3(0, 0, 0); 
+        
+        // Helper vectors. 
+        this.sumVec = new THREE.Vector3(0, 0, 0);
+        this.diffVec = new THREE.Vector3(0, 0, 0); 
 
-        this.initialPatternPosition = new THREE.Vector3(0, startY, 0); 
-
-        this.target = new THREE.Vector3(0, 0, 0); 
-  
         // Force and speeds. 
-        this.maxForce = 1.5; 
-        this.maxSpeed = 1.5; 
+        this.maxForce = 0.1; 
+        this.maxSpeed = 0.1; 
         this.maxSlowDownSpeed = 0; 
 
         // Tolerances
         this.slowDownTolerance = 0.2 * 0.2; 
         this.arriveTolerance = 0.01 * 0.01; 
+        this.smoothFactor = 0.001; // Velocity smoothing.
 
-        // Velocity smooth
-        this.smoothFactor = 0.001; 
+        // Target value that changes based on the pattern position. 
+        this.target = new THREE.Vector3(0, 0, 0); 
 
-        // Initial position and target.
-        this.initPosition(startY); 
-
-        // Create a polar pattern. 
-        this.setupPattern(phase);
+        // The way this agent will move around the world. 
+        this.setupPattern(); 
     }
 
-    initPosition(startY) {
-        this.position.x = -50;
-        this.position.z = 100; 
-        this.position.y = startY;
+    updateAgent() {
+        // this.applyBehavior(); 
+        // this.updatePosition();
+        this.updatePattern(); 
     }
 
-    setupPattern(phase) {
-        // Setup pattern variables. 
-        let pos = this.initialPatternPosition.clone(); // Target position
-        let d = this.idx % 2 === 0 ? true : false; // Direction
-        let isSin = d; 
-        let rad = 50; // Radius
-        let moveFactor = THREE.Math.degToRad(0.1); // How fast to move
-        let petals = 5; 
-        let amp = 20; 
-        let patternObj = roseConstructor(pos, rad, phase, petals, amp, isSin, d, moveFactor); 
-        this.rosePattern = new RosePattern(patternObj); 
-    }
-
-    updateAgent(nAgents) {
-        // Behaviors. 
-        this.applyBehaviors(nAgents);
-        this.updatePosition();
-    }
-
-    applyBehaviors(nAgents) {
+    applyBehavior() {
         this.seek();
         this.applyForce(); 
-
-        this.flock(nAgents); 
     }
 
-    flock(nAgents) {
-        if (nAgents.length > 0) {
-            // Seperation
-            this.seperation(nAgents);
-            this.applyForce();
+    updatePosition() {
+        // // What's my target velocity? 
+        this.sumVec.addVectors(this.velocity, this.acceleration); 
+        
+        // What's my intermediate velocity? 
+        // Lerp the velocity rather than just updating straight up.
+        //this.velocity = this.velocity.lerp(this.sumVec, this.smoothFactor); 
+        this.velocity.clampLength(-9999, this.maxSpeed); 
 
-            // Cohesion
-            this.cohesion(nAgents);
-            this.applyForce();
+        this.position.add(this.velocity); 
 
-            // Alignment
-            this.align(nAgents); 
-            this.applyForce(); 
-        }
+        // Reset acceleration. 
+        this.acceleration.multiplyScalar(0);
+    }
+
+    applyForce() {
+        this.acceleration.add(this.fSteer); 
     }
 
     seek() {
         this.fSteer.subVectors(this.target, this.position); 
+       
         let d = this.fSteer.lengthSq();
         this.fSteer.normalize();
 
@@ -108,86 +86,27 @@ export default class Agent {
         }
 
         this.fSteer.sub(this.velocity); 
+
         //this.fSteer = MathUtility.clamp(this.fSteer, this.maxForce); 
         this.fSteer.clampLength(-99999, this.maxForce); 
+
+        console.log(this.fSteer);
     }
 
-    applyForce() {
-        this.acceleration.add(this.fSteer); 
+    setupPattern() {
+        let pos = new THREE.Vector3(0, 2, 0); // Target position
+        let radX = 5; 
+        let radZ = 5;
+        let amp = 1; 
+        let dir = true; 
+        let moveFactor = THREE.Math.degToRad(0.1); 
+        let patternObj = ellipseConstructor(pos, radX, radZ, amp, dir, moveFactor); 
+        this.ellipsePattern = new EllipsePattern(patternObj); 
     }
 
-    updatePosition() {
-        // // What's my target velocity? 
-        this.sumVec.addVectors(this.velocity, this.acceleration); 
-        
-        // What's my intermediate velocity? 
-        // Lerp the velocity rather than just updating straight up.
-        this.velocity = this.velocity.lerp(this.sumVec, this.smoothFactor); 
-        //this.velocity = MathUtility.clamp(this.velocity, this.maxSpeed); 
-        this.velocity.clampLength(-9999, this.maxSpeed); 
-
-        this.position.add(this.velocity); 
-
-        // Reset acceleration. 
-        this.acceleration.multiplyScalar(0);
-    }
-
-    // Receives neighboring agents using Octree calculations. 
-    seperation(nAgents) {
-        this.fSteer.set(0, 0, 0); 
-        this.sumVec.set(0, 0, 0); 
-
-        if (nAgents.length > 0) {
-            nAgents.forEach(a => {
-                this.diffVec.subVectors(this.position, a.position); 
-                this.diffVec.normalize(); 
-                this.diffVec.divideScalar(this.diffVec.length());  // Weight the vector properly based on the distance from the target. 
-                this.sumVec.add(this.diffVec); 
-            });
-            
-            // Calculate desired force using the average desired velocity 
-            this.sumVec.divideScalar(nAgents.length); 
-            if (this.sumVec.lengthSq() > 0) {
-                this.sumVec.normalize(); 
-                this.sumVec.clampLength(-99999, this.maxSpeed);
-                this.fSteer.subVectors(this.sumVec, this.velocity);
-                this.fSteer.clampLength(-99999, this.maxForce); 
-                this.fSteer.multiplyScalar(FLOCKING_WEIGHTS.SEPERATION); // Apply seperation weight. 
-            }
-        }
-    }
-    
-    // Receives neighboring agents using Octree calculations. 
-    cohesion(nAgents) {
-        this.target.set(0, 0, 0); 
-        this.fSteer.set(0, 0, 0); 
-
-        if (nAgents.length > 0) {
-            nAgents.forEach(a => {
-                this.target.add(a.position); 
-            }); 
-
-            this.target.divideScalar(nAgents.length); 
-            this.seek(); // Seek the new target
-            this.fSteer.multiplyScalar(FLOCKING_WEIGHTS.COHESION); 
-        }
-    }
-    
-    // Receives neighboring agents using Octree calculations. 
-    align(nAgents) {
-        this.fSteer.set(0, 0, 0); 
-
-        if (nAgents.length > 0) {
-            nAgents.forEach(a => {
-                this.fSteer.add(a.velocity); 
-            }); 
-        
-            this.fSteer.divideScalar(nAgents.length); 
-            this.fSteer.normalize(); 
-            this.fSteer.multiplyScalar(this.maxSpeed); 
-            this.fSteer.sub(this.velocity); 
-            this.fSteer.clampLength(-99999, this.maxForce); 
-            this.fSteer.multiplyScalar(FLOCKING_WEIGHTS.ALIGNMENT); // Apply alignment weight. 
-        }
+    updatePattern() {
+        this.ellipsePattern.update(); 
+        let patternPos = this.ellipsePattern.getTargetPos();
+        this.target.copy(patternPos);
     }
 }
