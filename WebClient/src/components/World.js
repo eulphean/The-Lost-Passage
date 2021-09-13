@@ -14,12 +14,16 @@ import Stats from 'stats.js'
 import * as dat from 'dat.gui'
 import Pigeon from './Pigeon.js'
 import Target from './Target.js'
+import {EllipsePattern, ellipseConstructor} from './PatternManager'
+import { OctreeManager } from './OctreeManager.js'
 
 const OrbitControls = oc(THREE); 
+
 export const WORLD_STATE = {
   PATTERN: 0,
   FLOCK: 1
 }; 
+const NUM_PIGEONS = 50; 
 
 const styles = {
   container: {
@@ -56,21 +60,31 @@ class World extends React.Component {
     this.setupRenderer(); 
     this.setupOrbitControls(); 
 
-    // Create the pigeon. 
-    this.pigeon = new Pigeon(this.scene);
-
     // Create the target object. 
     this.target = new Target(this.scene);
 
     // Other helpers. 
     this.stats = new Stats(); 
     this.clock = new THREE.Clock(); 
+
+    this.setupPattern();
+    this.octreeManager = new OctreeManager();
+    
+    this.pigeons = []; 
   }
 
   componentDidMount() {
     // Mount the canvas at the current div. 
     this.ref.current.appendChild(this.renderer.domElement); 
     this.ref.current.appendChild(this.stats.dom);
+
+    // Pigeon Geometry. 
+    for (let i = 0; i < NUM_PIGEONS; i++) {
+      // Create these pigeons at random locations from each other
+      // But within some radius. 
+      let p = new Pigeon(this.scene); 
+      this.pigeons.push(p);
+    }
 
     this.initThreeRender(); 
   }
@@ -83,10 +97,25 @@ class World extends React.Component {
 
     // Update agent and its position. 
     var delta = this.clock.getDelta(); 
-    this.pigeon.update(delta);
 
-    let targetPos = this.pigeon.target; 
-    this.target.setVector(targetPos);
+    // Pattern's position. 
+    this.ellipsePattern.update();
+    let patternPos = this.ellipsePattern.getTargetPos();
+
+    // Update octree. Note: On every update, we instantiate a new octree
+    // and populate it with the new pigeon position. So everytime, 
+    // the neighbors get updated. 
+    this.octreeManager.update(patternPos, this.pigeons); 
+
+    let nAgents = []; // Neighboring agents. 
+    this.pigeons.forEach(p => {
+      p.setTarget(patternPos); 
+      nAgents = this.octreeManager.getNeighbours(p.position); 
+      p.update(delta, nAgents); 
+    });
+
+    // Set the target object's position. 
+    this.target.setVector(patternPos);
   }
 
   // Render three.js world. 
@@ -184,6 +213,24 @@ class World extends React.Component {
 
   getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
+  }
+
+  
+  setupPattern() {
+    let pos = new THREE.Vector3(0, 6, 0); // Target position
+    let radX = 10; 
+    let radZ = 10;
+    let amp = 0; 
+    let dir = true; 
+    let moveFactor = THREE.Math.degToRad(0.3); 
+    let patternObj = ellipseConstructor(pos, radX, radZ, amp, dir, moveFactor); 
+    this.ellipsePattern = new EllipsePattern(patternObj); 
+  }
+
+  updatePattern() {
+      this.ellipsePattern.update(); 
+      // let patternPos = this.ellipsePattern.getTargetPos();
+      // this.target.copy(patternPos);
   }
 }
 

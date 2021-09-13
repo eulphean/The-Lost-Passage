@@ -51,13 +51,13 @@ export default class Pigeon extends Agent {
         }); 
     }
 
-    update(delta) {
+    update(delta, nAgents) {
         // Animation update. 
         if (this.animationMixer) {
             this.animationMixer.update(delta);
 
             // Behaviors. 
-            this.updateAgent();  
+            this.updateAgent(nAgents);  
 
             // Sync rotation and position. 
             this.syncPosition();
