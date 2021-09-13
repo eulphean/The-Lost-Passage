@@ -7,11 +7,11 @@ const map_range = (value, low1, high1, low2, high2) => {
 }
 
 const azimuth = (v) => {
-    return Math.atan2(v.y, v.x);
+    return Math.atan2(v.x, v.z);
 }
 
 const inclination = (v) => {
-    return Math.acos(v.z / v.length());
+    return Math.acos(v.y / v.length());
 }
 
 const axisRotation = (axis_x, axis_y, axis_z, angle_radians, q) => {

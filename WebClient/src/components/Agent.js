@@ -17,15 +17,16 @@ export default class Agent {
         this.acceleration = new THREE.Vector3(0, 0, 0); 
         this.rotationA = new THREE.Quaternion(); 
         this.rotationB = new THREE.Quaternion(); 
-        this.fSteer = new THREE.Vector3(0, 0, 0); 
+        this.fSteer = new THREE.Vector3(0, 0, 0);
+        this.vDesired = new THREE.Vector3(0, 0, 0); 
         
         // Helper vectors. 
         this.sumVec = new THREE.Vector3(0, 0, 0);
         this.diffVec = new THREE.Vector3(0, 0, 0); 
 
         // Force and speeds. 
-        this.maxForce = 0.1; 
-        this.maxSpeed = 0.1; 
+        this.maxForce = 0.01; 
+        this.maxSpeed = 0.025; 
         this.maxSlowDownSpeed = 0; 
 
         // Tolerances
@@ -36,61 +37,80 @@ export default class Agent {
         // Target value that changes based on the pattern position. 
         this.target = new THREE.Vector3(0, 0, 0); 
 
+        // NOTE: This target position should be injected into the agent. 
+        // It should not be responsible to construct it. 
+        // WORLD should be holding a pointer to the pattern maker. 
         // The way this agent will move around the world. 
         this.setupPattern(); 
     }
 
     updateAgent() {
-        // this.applyBehavior(); 
-        // this.updatePosition();
+        this.seekTarget(); 
+        this.updatePosition();
         this.updatePattern(); 
     }
 
-    applyBehavior() {
-        this.seek();
-        this.applyForce(); 
+    seekTarget() {
+        this.seek(); // Calculate the force required to seek the target position. 
+        this.applyForce(); // Apply the force. 
     }
 
     updatePosition() {
         // // What's my target velocity? 
-        this.sumVec.addVectors(this.velocity, this.acceleration); 
+        //this.sumVec.addVectors(this.velocity, this.acceleration); 
         
         // What's my intermediate velocity? 
         // Lerp the velocity rather than just updating straight up.
         //this.velocity = this.velocity.lerp(this.sumVec, this.smoothFactor); 
-        this.velocity.clampLength(-9999, this.maxSpeed); 
+        //this.velocity.clampLength(-9999, this.maxSpeed); 
 
-        this.position.add(this.velocity); 
+        //this.position.add(this.velocity); 
 
         // Reset acceleration. 
-        this.acceleration.multiplyScalar(0);
+        //this.acceleration.multiplyScalar(0);
+
+        // Update parameters. 
+        this.velocity.add(this.acceleration);
+        this.velocity.clampLength(-9999, this.maxSpeed); 
+        this.position.add(this.velocity); 
+        this.acceleration.multiplyScalar(0); 
     }
 
     applyForce() {
+        // Add steering force to acceleration to change the position of the agent. 
         this.acceleration.add(this.fSteer); 
     }
 
     seek() {
-        this.fSteer.subVectors(this.target, this.position); 
-       
-        let d = this.fSteer.lengthSq();
-        this.fSteer.normalize();
+        // Calculate desired velocity. 
+        this.vDesired.subVectors(this.target, this.position); 
+        this.vDesired.normalize();
+        this.vDesired.multiplyScalar(this.maxSpeed); 
 
-        if (d < this.slowDownTolerance && d > this.arriveTolerance) {
-            // Start slowing down. 
-            let newMaxSpeed = Utility.map_range(d, this.slowDownTolerance, this.arriveTolerance, this.maxSpeed, this.maxSlowDownSpeed); 
-            this.fSteer.multiplyScalar(newMaxSpeed); 
-        } else {
-            // We are still trying to get to the target. 
-            this.fSteer.multiplyScalar(this.maxSpeed); 
-        }
-
-        this.fSteer.sub(this.velocity); 
-
-        //this.fSteer = MathUtility.clamp(this.fSteer, this.maxForce); 
+        // Calculate steering force.
+        this.fSteer.subVectors(this.vDesired, this.velocity); 
         this.fSteer.clampLength(-99999, this.maxForce); 
 
-        console.log(this.fSteer);
+        console.log('Steering Force: ' + this.fSteer);
+       
+        //let d = this.fSteer.lengthSq();
+
+
+        // if (d < this.slowDownTolerance && d > this.arriveTolerance) {
+        //     // Start slowing down. 
+        //     let newMaxSpeed = Utility.map_range(d, this.slowDownTolerance, this.arriveTolerance, this.maxSpeed, this.maxSlowDownSpeed); 
+        //     this.fSteer.multiplyScalar(newMaxSpeed); 
+        // } else {
+        //     // We are still trying to get to the target. 
+        //     this.fSteer.multiplyScalar(this.maxSpeed); 
+        // }
+
+
+        // Why??
+        // this.fSteer.sub(this.velocity); 
+
+        //this.fSteer = MathUtility.clamp(this.fSteer, this.maxForce); 
+        // this.fSteer.clampLength(-99999, this.maxForce); 
     }
 
     setupPattern() {
@@ -99,7 +119,7 @@ export default class Agent {
         let radZ = 5;
         let amp = 1; 
         let dir = true; 
-        let moveFactor = THREE.Math.degToRad(0.1); 
+        let moveFactor = THREE.Math.degToRad(0.3); 
         let patternObj = ellipseConstructor(pos, radX, radZ, amp, dir, moveFactor); 
         this.ellipsePattern = new EllipsePattern(patternObj); 
     }

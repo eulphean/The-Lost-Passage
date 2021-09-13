@@ -159,7 +159,7 @@ class World extends React.Component {
     plane.rotation.x = Math.PI/2;
     this.scene.add(plane);
 
-    // this.scene.add(new THREE.AxesHelper(30));
+    this.scene.add(new THREE.AxesHelper(30));
     // Definitely need the grid helper. 
     this.grid = new THREE.GridHelper(30, 10);
     this.scene.add(this.grid);

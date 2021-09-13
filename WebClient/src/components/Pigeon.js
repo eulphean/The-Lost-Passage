@@ -25,25 +25,27 @@ export default class Pigeon extends Agent {
             this.pigeon = gltf.scene; 
             
             // Agent is the parent object under which pigeon sits. 
-            this.agent = new THREE.Group();
-            this.agent.add(this.pigeon); 
-            this.agent.frustumCulled = false;
-            this.agent.castShadow = true;
-            this.agent.receiveShadow = true; 
+            this.parent = new THREE.Group();
+            this.parent.add(this.pigeon); 
+            this.parent.frustumCulled = false;
+            this.parent.castShadow = true;
+            this.parent.receiveShadow = true; 
 
             // Store all the parameters that we'll be changing for this agent. 
-            this.agentPosition = this.agent.position; 
-            this.agentRotation = this.agent.rotation; 
-            this.agentScale = this.agent.scale; 
+            this.agentPosition = this.parent.position; 
+            this.agentRotation = this.parent.rotation; 
+            this.agentScale = this.parent.scale
             this.agentAnimations = gltf.animations; 
 
+            this.agentScale.set(0.25, 0.25, 0.25);
+
             // Setup animation. 
-            this.animationMixer = new THREE.AnimationMixer(this.agent); 
+            this.animationMixer = new THREE.AnimationMixer(this.parent); 
             var action = this.animationMixer.clipAction(this.agentAnimations[0]);
             action.play(); 
 
             // Add it to the scene. 
-            scene.add(this.agent); 
+            scene.add(this.parent); 
         }, undefined, function ( error ) {
             console.error(error);
         }); 
@@ -59,27 +61,27 @@ export default class Pigeon extends Agent {
 
             // Sync rotation and position. 
             this.syncPosition();
-            //this.syncRotation(); 
+            this.syncRotation(); 
         }
     }
 
     syncPosition() {
         // Sync position of the agent with 
         // the actual agent scene. 
-        this.agent.position.copy(this.position);
+        this.parent.position.copy(this.position);
     }
 
     syncRotation() {
-        // Agent rotation.
+        // // Agent rotation.
         let azimuth, inclination; 
         azimuth = Utility.azimuth(this.velocity); 
         inclination = Utility.inclination(this.velocity);
 
-        Utility.axisRotation(0, 0, 1, azimuth - Math.PI/2, this.rotationA); 
-        Utility.axisRotation(1, 0, 0, Math.PI/2 - inclination, this.rotationB); 
+        Utility.axisRotation(0, 1, 0, azimuth, this.rotationA); // Azimuth rotate around Z-axis
+        Utility.axisRotation(0, 0, 1, inclination - Math.PI/2, this.rotationB); // Inclination rotate X-axis
                     
         this.rotationA.multiply(this.rotationB);
-        this.agent.setRotationFromQuaternion(this.rotationA);
+        this.parent.setRotationFromQuaternion(this.rotationA);
     }
 }
 
