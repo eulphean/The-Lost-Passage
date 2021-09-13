@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "fd4949a1ada39218347706c49f2dac50",
+    "revision": "5d63e993a24b51ae8487b61cf5ce4de6",
     "url": "/virtualCompanion/index.html"
   },
   {
-    "revision": "d86842dcec3af8475861",
+    "revision": "3b025b1ec42be711f0ce",
     "url": "/virtualCompanion/static/css/main.a7ce91f7.chunk.css"
   },
   {
-    "revision": "9604dc3fcae343410a4c",
-    "url": "/virtualCompanion/static/js/2.5fa31dc5.chunk.js"
+    "revision": "f1a1c8a50f9d5a4420e8",
+    "url": "/virtualCompanion/static/js/2.e50f47ee.chunk.js"
   },
   {
-    "revision": "1a1a42c150bd05496b97b265c552c789",
-    "url": "/virtualCompanion/static/js/2.5fa31dc5.chunk.js.LICENSE.txt"
+    "revision": "8541246851936953440acab9b5101784",
+    "url": "/virtualCompanion/static/js/2.e50f47ee.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "d86842dcec3af8475861",
-    "url": "/virtualCompanion/static/js/main.3cc67752.chunk.js"
+    "revision": "3b025b1ec42be711f0ce",
+    "url": "/virtualCompanion/static/js/main.2e32e6c8.chunk.js"
   },
   {
     "revision": "9adcd84bdda17853f84a",
