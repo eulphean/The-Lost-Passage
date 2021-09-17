@@ -42,6 +42,10 @@ export default class Terrain {
             console.error(error);
         }); 
     }
+
+    getMesh() {
+        return this.parent;
+    }
 }
 
 

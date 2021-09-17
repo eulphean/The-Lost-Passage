@@ -19,6 +19,8 @@ import {EllipsePattern, ellipseConstructor} from './PatternManager'
 import { OctreeManager } from './OctreeManager.js'
 
 const OrbitControls = oc(THREE); 
+const Raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2(); 
 
 export const WORLD_STATE = {
   PATTERN: 0,
@@ -72,7 +74,6 @@ class World extends React.Component {
     this.octreeManager = new OctreeManager();
     
     this.pigeons = []; 
-    this.terrain = ''; 
   }
 
   componentDidMount() {
@@ -89,12 +90,15 @@ class World extends React.Component {
     }
 
     this.initThreeRender(); 
+
+    window.addEventListener( 'mousemove', this.onMouseMove.bind(this), false );
+    window.addEventListener('click', this.onClick.bind(this), true)
   }
 
   // Called every animation frame. 
   update() {
     // Update everything in here. 
-    this.grid.visible = guiParams.showGrid;
+    //this.grid.visible = guiParams.showGrid;
     this.target.setVisibility(guiParams.showTarget);
 
     // Update agent and its position. 
@@ -118,6 +122,8 @@ class World extends React.Component {
 
     // Set the target object's position. 
     this.target.setVector(patternPos);
+
+    // console.log(this.camera.position);
   }
 
   // Render three.js world. 
@@ -169,32 +175,11 @@ class World extends React.Component {
   }
 
   setupProps() {
-    // let defaultHeight = 0.25; 
-    // Things on the ground
-    // for (let i = 0; i < 100; i++) {
-    //   const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-    //   const material = new THREE.MeshBasicMaterial( {color: 0x612C2C} );
-    //   const box = new THREE.Mesh(geometry, material);      
-    //   let r1 = this.getRandomArbitrary(-1, 1) * 8; 
-    //   let r2 = this.getRandomArbitrary(-1, 1) * 8; 
-    //   box.position.x = r1;
-    //   box.position.z = r2; 
-    //   box.position.y = defaultHeight;
-    //   this.scene.add(box);
-    // }
-
-    // Ground
-    // const geometry = new THREE.PlaneGeometry(20, 20);
-    // const material = new THREE.MeshBasicMaterial( {color: 0x52D764, side: THREE.DoubleSide} );
-    // const plane = new THREE.Mesh(geometry, material); 
-    // plane.rotation.x = Math.PI/2;
-    // this.scene.add(plane);
     this.terrain = new Terrain(this.scene); 
-
-    this.scene.add(new THREE.AxesHelper(30));
+    //this.scene.add(new THREE.AxesHelper(30));
     // Definitely need the grid helper. 
-    this.grid = new THREE.GridHelper(30, 10);
-    this.scene.add(this.grid);
+    //this.grid = new THREE.GridHelper(30, 10);
+    // this.scene.add(this.grid);
   }
 
   setupLighting() {
@@ -233,6 +218,26 @@ class World extends React.Component {
       this.ellipsePattern.update(); 
       // let patternPos = this.ellipsePattern.getTargetPos();
       // this.target.copy(patternPos);
+  }
+  
+  onMouseMove(event) {
+    //mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+    //mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+    console.log(mouse.x + ', ' + mouse.y);
+  }
+
+  onClick(event) {
+    mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+    Raycaster.setFromCamera(mouse, this.camera);
+
+    // calculate objects intersecting the picking ray
+    const intersects = Raycaster.intersectObject(this.terrain.getMesh(), true);
+    for (let i = 0; i < intersects.length; i ++) {
+      intersects[ i ].object.material.color.set( 0xff0000 );
+    }
+    console.log('Mouse Clicked');
   }
 }
 
