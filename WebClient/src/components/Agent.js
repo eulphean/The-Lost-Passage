@@ -3,7 +3,7 @@ import * as Utility from './Utility'
 import {EllipsePattern, ellipseConstructor} from './PatternManager'
 
 const FLOCKING_WEIGHTS = {
-    SEPERATION: 0.8,
+    SEPERATION: 1.2,
     COHESION: 0.5,
     ALIGNMENT: 0.2
 }

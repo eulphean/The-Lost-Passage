@@ -14,6 +14,7 @@ import Stats from 'stats.js'
 import * as dat from 'dat.gui'
 import Pigeon from './Pigeon.js'
 import Target from './Target.js'
+import Terrain from './Terrain.js'
 import {EllipsePattern, ellipseConstructor} from './PatternManager'
 import { OctreeManager } from './OctreeManager.js'
 
@@ -71,6 +72,7 @@ class World extends React.Component {
     this.octreeManager = new OctreeManager();
     
     this.pigeons = []; 
+    this.terrain = ''; 
   }
 
   componentDidMount() {
@@ -167,26 +169,27 @@ class World extends React.Component {
   }
 
   setupProps() {
-    let defaultHeight = 0.25; 
+    // let defaultHeight = 0.25; 
     // Things on the ground
-    for (let i = 0; i < 100; i++) {
-      const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-      const material = new THREE.MeshBasicMaterial( {color: 0x612C2C} );
-      const box = new THREE.Mesh(geometry, material);      
-      let r1 = this.getRandomArbitrary(-1, 1) * 8; 
-      let r2 = this.getRandomArbitrary(-1, 1) * 8; 
-      box.position.x = r1;
-      box.position.z = r2; 
-      box.position.y = defaultHeight;
-      this.scene.add(box);
-    }
+    // for (let i = 0; i < 100; i++) {
+    //   const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+    //   const material = new THREE.MeshBasicMaterial( {color: 0x612C2C} );
+    //   const box = new THREE.Mesh(geometry, material);      
+    //   let r1 = this.getRandomArbitrary(-1, 1) * 8; 
+    //   let r2 = this.getRandomArbitrary(-1, 1) * 8; 
+    //   box.position.x = r1;
+    //   box.position.z = r2; 
+    //   box.position.y = defaultHeight;
+    //   this.scene.add(box);
+    // }
 
     // Ground
-    const geometry = new THREE.PlaneGeometry(20, 20);
-    const material = new THREE.MeshBasicMaterial( {color: 0x52D764, side: THREE.DoubleSide} );
-    const plane = new THREE.Mesh(geometry, material); 
-    plane.rotation.x = Math.PI/2;
-    this.scene.add(plane);
+    // const geometry = new THREE.PlaneGeometry(20, 20);
+    // const material = new THREE.MeshBasicMaterial( {color: 0x52D764, side: THREE.DoubleSide} );
+    // const plane = new THREE.Mesh(geometry, material); 
+    // plane.rotation.x = Math.PI/2;
+    // this.scene.add(plane);
+    this.terrain = new Terrain(this.scene); 
 
     this.scene.add(new THREE.AxesHelper(30));
     // Definitely need the grid helper. 
@@ -197,11 +200,11 @@ class World extends React.Component {
   setupLighting() {
     // -------- Lighting ----------------
     var ambientLight = new THREE.AmbientLight(0xD7D3D3);
-    ambientLight.intensity = 1.5;
+    ambientLight.intensity = 0.5;
     var directionalLight = new THREE.DirectionalLight(0xffffff);
-    directionalLight.intensity = 3.0;
-    directionalLight.position.set(0, 50, 50).normalize();
-    this.scene.add(ambientLight);
+    directionalLight.intensity = 1.0;
+    directionalLight.position.set(0, 100, 0).normalize();
+    //this.scene.add(ambientLight);
     this.scene.add(directionalLight);	
   }
 
@@ -215,7 +218,6 @@ class World extends React.Component {
     return Math.random() * (max - min) + min;
   }
 
-  
   setupPattern() {
     let pos = new THREE.Vector3(0, 6, 0); // Target position
     let radX = 10; 

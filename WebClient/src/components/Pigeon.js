@@ -37,7 +37,7 @@ export default class Pigeon extends Agent {
             this.agentScale = this.parent.scale
             this.agentAnimations = gltf.animations; 
 
-            this.agentScale.set(0.25, 0.25, 0.25);
+            this.agentScale.set(0.50, 0.50, 0.50);
 
             // Setup animation. 
             this.animationMixer = new THREE.AnimationMixer(this.parent); 
