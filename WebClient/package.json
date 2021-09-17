@@ -4,6 +4,7 @@
   "private": false,
   "homepage": "https://amaykataria.com/virtualCompanion/",
   "dependencies": {
+    "dat.gui": "^0.7.7",
     "gh-pages": "^2.1.1",
     "math-ds": "^1.2.1",
     "radium": "^0.26.0",
