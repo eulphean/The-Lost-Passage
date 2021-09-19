@@ -1,6 +1,5 @@
 import * as THREE from 'three'
 import * as Utility from './Utility'
-import {EllipsePattern, ellipseConstructor} from './PatternManager'
 
 const FLOCKING_WEIGHTS = {
     SEPERATION: 1.2,

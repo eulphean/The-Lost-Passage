@@ -39,10 +39,18 @@ const styles = {
 };
 
 // Gui Parameters. 
-const guiParams = {
+const worldParams = {
   showGrid: true,
   showTarget: true
 };
+
+let ellipseParams = {
+  height: 6,
+  radiusX: 10,
+  radiusZ:  10,
+  amplitude: 0,
+  speed: 0.3
+}
 
 class World extends React.Component {
   constructor(props) {
@@ -99,7 +107,7 @@ class World extends React.Component {
   update() {
     // Update everything in here. 
     //this.grid.visible = guiParams.showGrid;
-    this.target.setVisibility(guiParams.showTarget);
+    this.target.setVisibility(worldParams.showTarget);
 
     // Update agent and its position. 
     var delta = this.clock.getDelta(); 
@@ -150,14 +158,14 @@ class World extends React.Component {
     this.renderer = new THREE.WebGLRenderer({
       antialias: true
     }); 
-    this.renderer.setClearColor(0x118a1f, 1);    // Set renderer properties
+    this.renderer.setClearColor(0x0b5213, 1);    // Set renderer properties
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.outputEncoding = THREE.sRGBEncoding; 
   }
 
   setupOrbitControls() {
-    this.controls = new OrbitControls(this.camera); 
+    this.controls = new OrbitControls(this.camera, this.render.domElement); 
     this.controls.enablePan = true;
     // controls.autoRotate = true; 
     // controls.autoRotateSpeed = 0.1;
@@ -193,10 +201,33 @@ class World extends React.Component {
     this.scene.add(directionalLight);	
   }
 
+  // TODO: Tie the gui params to the actual parameters.
   setupGui() {
     this.gui = new dat.GUI();
-    this.gui.add(guiParams, 'showGrid' ).name('Show Grid');
-    this.gui.add(guiParams, 'showTarget').name('Show Target');
+    let worldFolder = this.gui.addFolder('World Params');
+    worldFolder.add(worldParams, 'showGrid' ).name('Show Grid');
+    worldFolder.add(worldParams, 'showTarget').name('Show Target');
+
+    let ellipseFolder = this.gui.addFolder('Ellipse Params'); 
+    
+    // Height
+    ellipseFolder.add(ellipseParams, 'height').name('Height')
+    .min(5).max(15).step(0.5)
+    .onFinishChange(this.onFinishEllipseParams.bind(this));
+
+    // RadiusX
+    ellipseFolder.add(ellipseParams, 'radiusX').name('RadX')
+    .min(5).max(20).step(0.5)
+    .onFinishChange(this.onFinishEllipseParams.bind(this));
+
+    // RadiusZ
+    ellipseFolder.add(ellipseParams, 'radiusZ').name('RadZ')
+    .min(5).max(20).step(0.5)
+    .onFinishChange(this.onFinishEllipseParams.bind(this)); 
+  }
+
+  onFinishEllipseParams(v) {
+    // Create a data package and send 
   }
 
   getRandomArbitrary(min, max) {
@@ -214,11 +245,6 @@ class World extends React.Component {
     this.ellipsePattern = new EllipsePattern(patternObj); 
   }
 
-  updatePattern() {
-      this.ellipsePattern.update(); 
-      // let patternPos = this.ellipsePattern.getTargetPos();
-      // this.target.copy(patternPos);
-  }
   
   onMouseMove(event) {
     //mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
@@ -235,7 +261,7 @@ class World extends React.Component {
     // calculate objects intersecting the picking ray
     const intersects = Raycaster.intersectObject(this.terrain.getMesh(), true);
     for (let i = 0; i < intersects.length; i ++) {
-      intersects[ i ].object.material.color.set( 0xff0000 );
+      //intersects[ i ].object.material.color.set( 0xff0000 );
     }
     console.log('Mouse Clicked');
   }
