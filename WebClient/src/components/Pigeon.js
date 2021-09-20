@@ -8,7 +8,7 @@
 
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import Agent from './Agent.js'
+import Agent, { agentParams } from './Agent.js'
 import model from '../models/Bird_simple.glb'; 
 import * as Utility from './Utility';
 
@@ -51,10 +51,13 @@ export default class Pigeon extends Agent {
         }); 
     }
 
-    update(delta, nAgents) {
+    update(delta, nAgents, agentParams) {
         // Animation update. 
         if (this.animationMixer) {
             this.animationMixer.update(delta);
+
+            // Apply new behavioural params that are updated in the UI
+            this.setAgentParam(agentParams)
 
             // Behaviors. 
             this.updateAgent(nAgents);  

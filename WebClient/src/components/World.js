@@ -13,6 +13,7 @@ import oc from 'three-orbit-controls'
 import Stats from 'stats.js'
 import * as dat from 'dat.gui'
 import Pigeon from './Pigeon.js'
+import { agentParams } from './Agent.js'
 import Target from './Target.js'
 import Terrain from './Terrain.js'
 import {EllipsePattern, ellipseConstructor} from './PatternManager'
@@ -125,7 +126,7 @@ class World extends React.Component {
     this.pigeons.forEach(p => {
       p.setTarget(patternPos); 
       nAgents = this.octreeManager.getNeighbours(p.position); 
-      p.update(delta, nAgents); 
+      p.update(delta, nAgents, agentParams);
     });
 
     // Set the target object's position. 
@@ -207,6 +208,12 @@ class World extends React.Component {
     let worldFolder = this.gui.addFolder('World Params');
     worldFolder.add(worldParams, 'showGrid' ).name('Show Grid');
     worldFolder.add(worldParams, 'showTarget').name('Show Target');
+    
+    // Expose some agent params to the UI 
+    let agentFolder = this.gui.addFolder('Agent Params');
+    agentFolder.add(agentParams, 'maxForce').name('Max Force').min(0.005).max(0.1).step(0.005);
+    agentFolder.add(agentParams, 'maxSpeed').name('Max Speed').min(0.005).max(1).step(0.005);
+    agentFolder.add(agentParams, 'smoothFactor').name('Smooth Factor').min(0.005).max(0.1).step(0.005);
 
     let ellipseFolder = this.gui.addFolder('Ellipse Params'); 
     

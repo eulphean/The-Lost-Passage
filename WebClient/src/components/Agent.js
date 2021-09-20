@@ -7,6 +7,12 @@ const FLOCKING_WEIGHTS = {
     ALIGNMENT: 0.2
 }
 
+export let agentParams = {
+    maxForce: 0.01,
+    maxSpeed: 0.02,
+    smoothFactor: 0.01
+}
+
 export default class Agent {
     constructor() {
         // this.idx = i; 
@@ -155,6 +161,12 @@ export default class Agent {
 
     setTarget(targetPos) {
         this.target.copy(targetPos);
+    }
+    
+    setAgentParam(agentParams) {
+        this.maxForce = agentParams.maxForce;
+        this.maxSpeed = agentParams.maxSpeed;
+        this.smoothFactor = agentParams.smoothFactor;
     }
     
     getRandomArbitrary(min, max) {
