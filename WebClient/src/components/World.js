@@ -124,7 +124,11 @@ class World extends React.Component {
 
     let nAgents = []; // Neighboring agents. 
     this.pigeons.forEach(p => {
+
+      // Update the target's position 
       p.setTarget(patternPos); 
+
+      // Find and update the location of neighboring agents
       nAgents = this.octreeManager.getNeighbours(p.position); 
       p.update(delta, nAgents, agentParams);
     });
