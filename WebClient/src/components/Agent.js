@@ -1,16 +1,13 @@
 import * as THREE from 'three'
+import threeOrbitControls from 'three-orbit-controls';
 import * as Utility from './Utility'
 
-const FLOCKING_WEIGHTS = {
-    SEPERATION: 1.2,
-    COHESION: 0.5,
-    ALIGNMENT: 0.2
-}
-
-export let agentParams = {
-    maxForce: 0.01,
-    maxSpeed: 0.02,
-    smoothFactor: 0.01
+export let AgentParams = {
+    MaxForce: 0.01,
+    SmoothFactor: 0.01,
+    SeperationForce: 1.2,
+    CohesionForce: 0.5,
+    AlignmentForce: 0.2
 }
 
 export default class Agent {
@@ -30,14 +27,12 @@ export default class Agent {
         this.diffVec = new THREE.Vector3(0, 0, 0); 
 
         // Force and speeds. 
-        this.maxForce = 0.01; 
-        this.maxSpeed = this.getRandomArbitrary(0.015, 0.025); 
+        this.maxSpeed = this.getRandomArbitrary(0.015, 0.050); 
         this.maxSlowDownSpeed = 0; 
 
         // Tolerances
         this.slowDownTolerance = 0.2 * 0.2; 
         this.arriveTolerance = 0.01 * 0.01; 
-        this.smoothFactor = 0.01; // Velocity smoothing.
 
         // Target value that changes based on the pattern position. 
         this.target = new THREE.Vector3(0, 0, 0); 
@@ -73,7 +68,7 @@ export default class Agent {
         
         // What's my intermediate velocity? 
         // Lerp the velocity rather than just updating straight up.
-        this.velocity = this.velocity.lerp(this.sumVec, this.smoothFactor); 
+        this.velocity = this.velocity.lerp(this.sumVec, AgentParams.SmoothFactor); 
         this.velocity.clampLength(-9999, this.maxSpeed); 
 
         this.position.add(this.velocity); 
@@ -100,7 +95,7 @@ export default class Agent {
 
         // Calculate steering force.
         this.fSteer.subVectors(this.vDesired, this.velocity); 
-        this.fSteer.clampLength(-99999, this.maxForce); 
+        this.fSteer.clampLength(-99999, AgentParams.MaxForce); 
     }
 
     seperation(nAgents) {
@@ -121,8 +116,8 @@ export default class Agent {
                 this.sumVec.normalize(); 
                 this.sumVec.clampLength(-99999, this.maxSpeed);
                 this.fSteer.subVectors(this.sumVec, this.velocity);
-                this.fSteer.clampLength(-99999, this.maxForce); 
-                this.fSteer.multiplyScalar(FLOCKING_WEIGHTS.SEPERATION); // Apply seperation weight. 
+                this.fSteer.clampLength(-99999, AgentParams.MaxForce); 
+                this.fSteer.multiplyScalar(AgentParams.SeperationForce); // Apply seperation weight. 
             }
         }
     }
@@ -138,7 +133,7 @@ export default class Agent {
 
             this.target.divideScalar(nAgents.length); 
             this.seek(); // Seek the new target
-            this.fSteer.multiplyScalar(FLOCKING_WEIGHTS.COHESION); 
+            this.fSteer.multiplyScalar(AgentParams.CohesionForce); 
         }
     }
 
@@ -154,19 +149,13 @@ export default class Agent {
             this.fSteer.normalize(); 
             this.fSteer.multiplyScalar(this.maxSpeed); 
             this.fSteer.sub(this.velocity); 
-            this.fSteer.clampLength(-99999, this.maxForce); 
-            this.fSteer.multiplyScalar(FLOCKING_WEIGHTS.ALIGNMENT); // Apply alignment weight. 
+            this.fSteer.clampLength(-99999, AgentParams.MaxForce); 
+            this.fSteer.multiplyScalar(AgentParams.AlignmentForce); // Apply alignment weight. 
         }
     }
 
     setTarget(targetPos) {
         this.target.copy(targetPos);
-    }
-    
-    setAgentParam(agentParams) {
-        this.maxForce = agentParams.maxForce;
-        this.maxSpeed = agentParams.maxSpeed;
-        this.smoothFactor = agentParams.smoothFactor;
     }
     
     getRandomArbitrary(min, max) {

@@ -51,13 +51,10 @@ export default class Pigeon extends Agent {
         }); 
     }
 
-    update(delta, nAgents, agentParams) {
+    update(delta, nAgents) {
         // Animation update. 
         if (this.animationMixer) {
             this.animationMixer.update(delta);
-
-            // Apply new behavioural params that are updated in the UI
-            this.setAgentParam(agentParams)
 
             // Behaviors. 
             this.updateAgent(nAgents);  

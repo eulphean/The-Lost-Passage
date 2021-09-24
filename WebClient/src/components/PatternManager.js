@@ -1,4 +1,23 @@
+/*
+  Name: PatternManager.js
+  Author: Amay Kataria
+  Date: 09/21/2021
+  Description: A class that holds two different patterns for birds. These are configured using 
+  two param objects that are exposed in the GUI. 
+*/
+
 import * as THREE from 'three'
+
+export let EllipseParams = {
+    originPosX: 0,
+    originPosY: 6, 
+    originPosZ: 0,
+    radiusX: 10,
+    radiusZ:  10,
+    amplitude: 0,
+    speed: 0.3, 
+    isClockwise: true
+}  
 
 class Pattern {
     constructor(patternObj) {
@@ -62,7 +81,9 @@ export class EllipsePattern extends Pattern {
         this.maxTheta = 2*Math.PI; 
     }
 
-    update() {
+    update(ellipseParams) {
+        this.setGuiParams(ellipseParams); 
+
         // Ellipse: Cartesian coordinates. 
         let xPos = this.cartesianX(this.radX); // Defines polar curve. 
         let zPos = this.cartesianZ(this.radZ); // Define polar curve. 
@@ -71,6 +92,15 @@ export class EllipsePattern extends Pattern {
 
         this.updateTheta(this.maxTheta); 
     }
+
+    setGuiParams(ellipseParams) {
+        this.originPos.set(ellipseParams.originPosX, ellipseParams.originPosY, ellipseParams.originPosZ);
+        this.radX = ellipseParams.radiusX;
+        this.radZ = ellipseParams.radiusZ;
+        this.amp = ellipseParams.amplitude; 
+        this.moveFactor = THREE.Math.degToRad(ellipseParams.speed); 
+        this.isClockwise = ellipseParams.isClockwise; 
+    }   
 }
 
 export const roseConstructor = (originPos, radius, phase, numPetals, amplitude, isSinusoidal, isClockwise, moveFactor) => {

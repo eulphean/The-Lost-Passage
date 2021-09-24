@@ -8,6 +8,7 @@
 import React from 'react'
 import Radium from 'radium'
 import World from './World.js'
+import ServerGui from './ServerGui.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class App extends React.Component {
 
     this.totalRef = React.createRef(); 
     this.worldRef = React.createRef(); 
+    this.gui = new ServerGui();
   }
 
   render() {

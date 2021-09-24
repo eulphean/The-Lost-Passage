@@ -4,7 +4,6 @@
   "private": false,
   "homepage": "https://amaykataria.com/virtualCompanion/",
   "dependencies": {
-    "dat.gui": "^0.7.7",
     "gh-pages": "^2.1.1",
     "math-ds": "^1.2.1",
     "radium": "^0.26.0",
@@ -14,7 +13,10 @@
     "sparse-octree": "^6.1.0",
     "stats.js": "^0.17.0",
     "three": "^0.122.0",
-    "three-orbit-controls": "^82.1.0"
+    "three-orbit-controls": "^82.1.0",
+    "tweakpane": "^3.0.5",
+    "socket.io-client": "^4.0.0",
+    "lodash": "^4.17.21"
   },
   "scripts": {
     "start": "react-scripts start --no-cache",
