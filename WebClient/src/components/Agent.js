@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import threeOrbitControls from 'three-orbit-controls';
 import * as Utility from './Utility'
 
 export let AgentParams = {

@@ -8,7 +8,7 @@
 
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import Agent, { agentParams } from './Agent.js'
+import Agent from './Agent.js'
 import model from '../models/Bird_simple.glb'; 
 import * as Utility from './Utility';
 
