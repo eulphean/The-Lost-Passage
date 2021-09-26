@@ -42,3 +42,13 @@
     font-style: normal;
 
 }
+
+
+@font-face {
+    font-family: 'warsaw_gothic';
+    src: url('warsawgothic-webfont.woff2') format('woff2'),
+         url('warsawgothic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}

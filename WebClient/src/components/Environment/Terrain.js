@@ -8,8 +8,8 @@
 
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import terrain from '../models/world.glb'; 
-import * as Utility from './Utility';
+import terrain from '../../models/world.glb'; 
+
 
 const loader = new GLTFLoader(); 
 

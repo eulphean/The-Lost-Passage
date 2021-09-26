@@ -1,7 +1,9 @@
 const color = {
-    dark: '#000000',
+    white: '#ffffff',
+    darkWithAlpha: 'rgb(0, 0, 0, 0.4)',
     button: 'rgb(255, 255, 255, 0.4)',
-    link: '#D34C00'
+    link: '#D34C00',
+    panel: '#E7EFE0'
 };
 
 const fontSize = {
@@ -63,7 +65,8 @@ const fontFamily = {
     opensanslight: 'open_sanslight',
     opensansregular: 'open_sansregular',
     demode: 'demoderegular',
-    slice: 'sliceregular'
+    slice: 'sliceregular',
+    warsaw: 'warsaw_gothic'
 };
 
 

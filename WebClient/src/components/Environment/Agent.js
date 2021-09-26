@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import * as Utility from './Utility'
+import * as Utility from '../Utilities/Utility'
 
 export let AgentParams = {
     MaxForce: 0.01,

@@ -81,8 +81,8 @@ export class EllipsePattern extends Pattern {
         this.maxTheta = 2*Math.PI; 
     }
 
-    update(ellipseParams) {
-        this.setGuiParams(ellipseParams); 
+    update() {
+        //this.setGuiParams(ellipseParams); 
 
         // Ellipse: Cartesian coordinates. 
         let xPos = this.cartesianX(this.radX); // Defines polar curve. 

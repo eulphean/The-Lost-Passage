@@ -8,14 +8,15 @@
 */
 
 import { Pane } from 'tweakpane';
+import * as EssentialsPlugin from '@tweakpane/plugin-essentials';
 import _ from 'lodash';
 
 import Websocket from './Websocket';
 
-import { WorldParams } from './World.js';
-import { EllipseParams } from './PatternManager.js';
-import { AgentParams } from './Agent.js';
-import { OrbitParams } from './CameraControl.js'
+import { TargetParams } from '../Managers/PigeonManager';
+// import { EllipseParams } from './PatternManager.js';
+import { AgentParams } from '../Environment/Agent.js';
+import { OrbitParams } from '../Managers/CameraControl.js'
 
 // Local params for the GUI. 
 // Presets is a dynamically populated prop (critical)
@@ -26,8 +27,9 @@ let GuiParams = {
 const PRESETS_IDX = 1; 
 
 class ServerGui {
-    constructor() {
-        this.gui = new Pane({title: 'Pigeon GUI'});
+    constructor(containerComponent) {
+        this.gui = new Pane({title: 'Pigeon GUI', container: containerComponent, expanded: false});
+        this.gui.registerPlugin(EssentialsPlugin);
 
         // Preset name
         this.gui.addInput(GuiParams, 'Preset');
@@ -35,6 +37,13 @@ class ServerGui {
         // Presets.
         this.presetOptions = []; // Backup object of all the preset options. // Saves the truth. 
         this.buildPresets(); 
+
+        // FPS
+        this.fpsGraph = this.gui.addBlade({
+            view: 'fpsgraph',
+            label: 'FPS',
+            lineCount: 2,
+        });
 
         // Orbit controls. 
         let f0 = this.gui.addFolder({ title: 'Orbit Controls', expanded: true });
@@ -45,9 +54,8 @@ class ServerGui {
         f0.addInput(OrbitParams, 'EnableKeys', {label: 'Enable Keys'});
 
         // World Parameters
-        let f1 = this.gui.addFolder({ title: 'World Params', expanded: true });
-        f1.addInput(WorldParams, 'ShowGrid', {label: 'Show Grid'});
-        f1.addInput(WorldParams, 'ShowTarget', {label: 'Show Target'});
+        let f1 = this.gui.addFolder({ title: 'Target Params', expanded: true });
+        f1.addInput(TargetParams, 'ShowTarget', {label: 'Show Target'});
 
         let f2 = this.gui.addFolder({ title: 'Agent Params', expanded: true});
         f2.addInput(AgentParams, 'MaxForce', {label: 'Max Force', min: 0.005, max: 2, step: 0.005});
@@ -59,6 +67,7 @@ class ServerGui {
         // Save Preset button
         this.gui.addButton({title: 'Save Preset'}).on('click', this.onSavePreset.bind(this));       
         this.gui.addButton({title: 'Delete Preset'}).on('click', this.onDeletePreset.bind(this));
+        this.gui.addButton({title: 'Show Panel'}).on('click', this.onShowPanel.bind(this)); 
 
         // Read presets from the database. 
         Websocket.readAllPresets(this.onReceivePresets.bind(this)); 
@@ -169,6 +178,14 @@ class ServerGui {
         }); 
         this.presetList.on('change', this.onPresetSelected.bind(this));
     }
+
+    subscribeShowPanel(callback) {
+        this.onShowPanel = callback; 
+    }
+
+    onShowPanel() {
+        this.onShowPanel(); 
+    }   
 } 
 
 // Keep a singleton instance of this - through App.js
