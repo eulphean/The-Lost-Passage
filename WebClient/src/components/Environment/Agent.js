@@ -26,7 +26,7 @@ export default class Agent {
         this.diffVec = new THREE.Vector3(0, 0, 0); 
 
         // Force and speeds. 
-        this.maxSpeed = this.getRandomArbitrary(0.015, 0.050); 
+        this.maxSpeed = Utility.getRandomNum(0.015, 0.050); 
         this.maxSlowDownSpeed = 0; 
 
         // Tolerances
@@ -38,8 +38,8 @@ export default class Agent {
     }
 
     updateAgent(nAgents) {
-        this.seekTarget(); 
-        this.flock(nAgents); 
+        this.seekTarget(); // Forces
+        this.flock(nAgents); // Forces
         this.updatePosition();
     }
 
@@ -155,9 +155,5 @@ export default class Agent {
 
     setTarget(targetPos) {
         this.target.copy(targetPos);
-    }
-    
-    getRandomArbitrary(min, max) {
-       return Math.random() * (max - min) + min;
     }
 }

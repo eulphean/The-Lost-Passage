@@ -54,6 +54,9 @@ class World extends React.Component {
     // Pigeons
     this.pigeonManager = new PigeonManager(); 
 
+    // Instantiate terrain geometry.
+    this.terrain = new Terrain(this.scene); 
+
     // Three.js Renderer
     this.rendererManager = new RendererManager(); 
   }
@@ -66,9 +69,7 @@ class World extends React.Component {
     // Get the handle to the FPS graph component. 
     this.fpsGraph = this.guiRef.current.getFpsGraph(); 
 
-    // Instantiate terrain geometry.
-    this.terrain = new Terrain(this.scene); 
-
+    // This is the initial render. 
     // Initialize the recursive rendering call. 
     this.initializeRender(); 
   }
@@ -91,11 +92,12 @@ class World extends React.Component {
     );
   }
 
+  // CORE Three.js recursive render loop. 
   initializeRender() {
-    // Render recursive loop. 
     this.fpsGraph.begin();
       this.pigeonManager.update(); 
       this.cameraControl.update();
+      // This renders each frame. 
       this.rendererManager.render(this.scene, this.cameraControl.getCamera());      
     this.fpsGraph.end();
 

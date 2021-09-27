@@ -1,4 +1,4 @@
-/*
+    /*
   Name: PigeonManager.js
   Author: Amay Kataria
   Date: 09/26/2021
@@ -61,15 +61,15 @@ class PigeonManager {
             this.ellipsePattern.update();
             let patternPos = this.ellipsePattern.getTargetPos();
 
-            // Delta change in time to advance the animation. 
-            let delta = this.clock.getDelta(); 
-
             // Update octree. Note: On every update, we instantiate a new octree
             // and populate it with the new pigeon position. So everytime, 
             // the neighbors get updated. 
             this.octreeManager.update(patternPos, this.pigeons); 
 
             let nAgents = []; // Neighboring agents. 
+
+            // Delta change in time to advance the animation of the wings. 
+            let delta = this.clock.getDelta(); 
             this.pigeons.forEach(p => {
                 // Update the target's position 
                 p.setTarget(patternPos); 
@@ -82,6 +82,8 @@ class PigeonManager {
             this.target.setVector(patternPos);
             this.target.setVisibility(TargetParams.ShowTarget);
         }
+
+        // Else don't do anything. 
     }
 } 
 

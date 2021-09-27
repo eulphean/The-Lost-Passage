@@ -1,5 +1,5 @@
 const getRandomNum = (max = 0, min = 0) => {
-    return Math.floor(Math.random() * (max + 1 - min)) + min;
+    return Math.random() * (max - min) + min;
 }
 
 const map_range = (value, low1, high1, low2, high2) => {

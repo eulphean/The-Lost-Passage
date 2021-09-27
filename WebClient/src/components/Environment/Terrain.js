@@ -34,7 +34,7 @@ export default class Terrain {
             this.terrainRotation = this.parent.rotation; 
             this.terrainScale = this.parent.scale
 
-            this.terrainScale.set(50, 50, 50);
+            this.terrainScale.set(100, 100, 100);
 
             // Add it to the scene. 
             scene.add(this.parent); 

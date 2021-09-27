@@ -57,17 +57,20 @@ const styles = {
     }
 };
 
-const Load_Time = 3000; // 2 seconds for now. 
+const Load_Time = 3000; // 3 seconds for now. 
 
 class EnterPanel extends React.Component {
   constructor(props) {
     super(props);
+    // Initial render of the component. 
+    // NOTE: Whenever a component's state is updated, render is called. 
     this.state={
         isHidden: false,
         isLoading: false
     };
   }
 
+  // Overriding React function. 
   render() {
     let containerStyle = this.state.isHidden ? [styles.container, styles.hide] : styles.container;
     let content = this.state.isLoading ? this.getLoader() : this.getTitle(); 
@@ -100,7 +103,6 @@ class EnterPanel extends React.Component {
     // clicked on enter. 
     this.props.onEnterWorld(); 
 
-    
     // Schedule a cleanup here. 
     setTimeout(this.hasFinishedLoading.bind(this), Load_Time); 
   }

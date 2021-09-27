@@ -42,6 +42,7 @@ export default class Pigeon extends Agent {
             // Setup animation. 
             this.animationMixer = new THREE.AnimationMixer(this.parent); 
             var action = this.animationMixer.clipAction(this.agentAnimations[0]);
+            this.randSeed = Utility.getRandomNum(0.3, 0.8); 
             action.play(); 
 
             // Add it to the scene. 
@@ -54,7 +55,7 @@ export default class Pigeon extends Agent {
     update(delta, nAgents) {
         // Animation update. 
         if (this.animationMixer) {
-            this.animationMixer.update(delta);
+            this.animationMixer.update(delta * this.randSeed);
 
             // Behaviors. 
             this.updateAgent(nAgents);  
