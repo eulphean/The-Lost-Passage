@@ -68,6 +68,7 @@ class World extends React.Component {
 
     // Get the handle to the FPS graph component. 
     this.fpsGraph = this.guiRef.current.getFpsGraph(); 
+    this.guiRef.current.subscribeForPatternChange(this.onPatternChanged.bind(this));
 
     // This is the initial render. 
     // Initialize the recursive rendering call. 
@@ -107,19 +108,23 @@ class World extends React.Component {
 
   onEnterWorld() {
     // Instantiate pigeon geometry. 
-    this.pigeonManager.setup(this.scene); 
+    let currentPatternType = this.guiRef.current.getCurPatternType(); 
+    this.pigeonManager.setup(this.scene, currentPatternType); 
   }
 
   onLoadComplete() {
-    // Kick off a camera animation to go somewhere 
-    // into the agent. 
-    // Animate the Title in. 
+    // Kick off a camera animation to go somewhere into the agent. 
+    // Animate the Title-In. 
     this.titleRef.current.updateTitle(); 
   }
   
   onShowInfoPanel() {
     this.panelRef.current.updatePanel(); 
     this.titleRef.current.updateTitle(); 
+  }
+
+  onPatternChanged(newPatternType) {
+    this.pigeonManager.setNewPatternType(newPatternType);
   }
 }
 

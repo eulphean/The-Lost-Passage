@@ -46,6 +46,14 @@ class GuiPanel extends React.Component {
   onShowPanel() {
     this.props.onShowInfoPanel(); 
   }
+
+  subscribeForPatternChange(callback) {
+    this.gui.subscribeForPatternChange(callback);
+  }
+
+  getCurPatternType() {
+    return this.gui.currentPatternType; 
+  }
 }
 
 export default Radium(GuiPanel);

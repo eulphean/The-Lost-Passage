@@ -8,16 +8,35 @@
 
 import * as THREE from 'three'
 
+// Pattern exports for the GUI
+export let PatternParams = {
+    PatternType: '' // Build the list in ServerGui. Ellipse / Rose-Curve
+}; 
+export let PatternTypes = {
+    Ellipse: 0,
+    RoseCurve: 1
+}
+
+// Ellipse Params
 export let EllipseParams = {
-    originPosX: 0,
-    originPosY: 6, 
-    originPosZ: 0,
-    radiusX: 10,
-    radiusZ:  10,
-    amplitude: 0,
-    speed: 0.3, 
-    isClockwise: true
+    Origin: {x: 0, y: 6, z: 0},
+    Radius:  {x: 10, y: 10 },
+    Amplitude: 0,
+    Speed: 0.3, 
+    Direction: true
 }  
+
+// Rose-Curve Params
+export let RoseCurveParams = {
+    Origin: {x: 0, y: 6, z: 0},
+    Radius: 5,
+    Phase: 0.5, 
+    NumPetals: 3, 
+    Amplitude: 0,
+    Sinusoidal: true,
+    Direction: true,
+    Speed: 0.3
+}
 
 class Pattern {
     constructor(patternObj) {
@@ -54,12 +73,6 @@ class Pattern {
     getTargetPos() {
         return this.targetPos; 
     }
-
-    // Debug Only 
-    // To see where we're at. 
-    syncPatternObj() {
-        // SparkUtility.syncSceneObject(this.originObj, this.targetPos); 
-    }
 }
 
 export const ellipseConstructor = (originPos, radX, radZ, amplitude, isClockwise, moveFactor) => {
@@ -82,8 +95,7 @@ export class EllipsePattern extends Pattern {
     }
 
     update() {
-        //this.setGuiParams(ellipseParams); 
-
+        this.updateGuiParams(); 
         // Ellipse: Cartesian coordinates. 
         let xPos = this.cartesianX(this.radX); // Defines polar curve. 
         let zPos = this.cartesianZ(this.radZ); // Define polar curve. 
@@ -93,13 +105,13 @@ export class EllipsePattern extends Pattern {
         this.updateTheta(this.maxTheta); 
     }
 
-    setGuiParams(ellipseParams) {
-        this.originPos.set(ellipseParams.originPosX, ellipseParams.originPosY, ellipseParams.originPosZ);
-        this.radX = ellipseParams.radiusX;
-        this.radZ = ellipseParams.radiusZ;
-        this.amp = ellipseParams.amplitude; 
-        this.moveFactor = THREE.Math.degToRad(ellipseParams.speed); 
-        this.isClockwise = ellipseParams.isClockwise; 
+    updateGuiParams() {
+        this.originPos.set(EllipseParams.Origin.x, EllipseParams.Origin.y, EllipseParams.Origin.z);
+        this.radX = EllipseParams.Radius.x;
+        this.radZ = EllipseParams.Radius.y;
+        this.amp = EllipseParams.Amplitude; 
+        this.moveFactor = THREE.Math.degToRad(EllipseParams.Speed); 
+        this.isClockwise = EllipseParams.Direction; 
     }   
 }
 
@@ -132,6 +144,8 @@ export class RosePattern extends Pattern {
     }
 
     update() {
+        this.updateGuiParams(); 
+
         let xPos, yPos, zPos; 
         let r = this.isSin ? this.rad * Math.sin(this.phase + this.numPetals * this.theta_rad) : 
             this.rad * Math.cos(this.phase + this.numPetals * this.theta_rad)
@@ -143,5 +157,56 @@ export class RosePattern extends Pattern {
         this.targetPos.set(xPos, yPos, zPos); 
 
         this.updateTheta(this.maxTheta);
+    }
+
+    updateGuiParams() {
+        this.originPos.set(RoseCurveParams.Origin.x, RoseCurveParams.Origin.y, RoseCurveParams.Origin.z); 
+        this.rad = RoseCurveParams.Radius; 
+        this.phase = RoseCurveParams.Phase;
+        this.amp = RoseCurveParams.Amplitude; 
+        this.numPetals = RoseCurveParams.NumPetals;
+        this.isSin = RoseCurveParams.Sinusoidal; 
+        this.isClockwise = RoseCurveParams.Direction; 
+        this.moveFactor = THREE.Math.degToRad(RoseCurveParams.Speed); 
+    }
+}
+
+export class PatternManager {
+    constructor() {
+        // Just a simple instance to begin with. 
+    }
+
+    setTargetPattern(curPatternType) {
+        if (curPatternType === PatternTypes.Ellipse) {
+            console.log('Creating Ellipse Pattern');
+            let pos = new THREE.Vector3(0, 6, 0); // Target position
+            let radX = 10; 
+            let radZ = 10;
+            let amp = 0; 
+            let dir = true; 
+            let moveFactor = THREE.Math.degToRad(0.3); 
+            let patternObj = ellipseConstructor(pos, radX, radZ, amp, dir, moveFactor); 
+            this.curPattern = new EllipsePattern(patternObj); 
+        } else if (curPatternType === PatternTypes.RoseCurve) {
+            // Initialize Rose-Curve pattern. 
+            console.log('Creating Rose-Curve Pattern');
+            let pos = new THREE.Vector3(0, 6, 0); 
+            let rad = 10; 
+            let phase = 0.5; 
+            let numPetals = 3; 
+            let amp = 0;
+            let isSin = true; 
+            let dir = true; 
+            let moveFactor = THREE.Math.degToRad(0.3); 
+            let patternObj = roseConstructor(pos, rad, phase, numPetals, amp, isSin, dir, moveFactor);
+            this.curPattern = new RosePattern(patternObj);
+        }
+    }
+
+    update() {
+        if (this.curPattern) {
+            this.curPattern.update(); 
+            return this.curPattern.getTargetPos();
+        }        
     }
 }

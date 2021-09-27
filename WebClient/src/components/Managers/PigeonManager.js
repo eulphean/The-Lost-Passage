@@ -7,7 +7,7 @@
 
 import * as THREE from 'three'
 
-import { EllipsePattern, ellipseConstructor } from './PatternManager';
+import { PatternManager } from './PatternManager';
 import { OctreeManager } from './OctreeManager'
 import Pigeon from '../Environment/Pigeon'
 import Target from '../Environment/Target'
@@ -19,20 +19,22 @@ export let TargetParams = {
 }
 
 class PigeonManager {
-    constructor(scene) {
+    constructor() {
         // Manages the octree for the pigeons. 
         this.octreeManager = new OctreeManager();
+
+        // Manages the current pattern for the flock. 
+        this.patternManager = new PatternManager(); 
         
         // Container of all the pigeons. 
         this.pigeons = [];
         
         // Clock, required for animation of the agents. 
         this.clock = new THREE.Clock(); 
-
-        this.setupTargetPattern(); 
     }
 
-    setup(scene) {
+    setup(scene, currentPatternType) {
+        console.log('Pigeon Manager Pattern: ' + currentPatternType);
         // Instantiate all the pigeons. 
         for (let i = 0; i < NUM_PIGEONS; i++) {
             let p = new Pigeon(scene); 
@@ -41,49 +43,45 @@ class PigeonManager {
 
         // Create the target object that the pigeons are following. 
         this.target = new Target(scene);
-    }
 
-    setupTargetPattern() {
-        let pos = new THREE.Vector3(0, 6, 0); // Target position
-        let radX = 10; 
-        let radZ = 10;
-        let amp = 0; 
-        let dir = true; 
-        let moveFactor = THREE.Math.degToRad(0.3); 
-        let patternObj = ellipseConstructor(pos, radX, radZ, amp, dir, moveFactor); 
-        this.ellipsePattern = new EllipsePattern(patternObj); 
+        // Create the target pattern.
+        this.patternManager.setTargetPattern(currentPatternType); 
     }
 
     update() {
         // Do any pigeons exist? 
         if (this.pigeons.length > 0) {
-            // Target pattern's current position. 
-            this.ellipsePattern.update();
-            let patternPos = this.ellipsePattern.getTargetPos();
+            // Don't do anything until we have a valid target position. 
+            let patternPos = this.patternManager.update(); 
+            if (patternPos) {
+                this.target.setVector(patternPos);
+                this.target.setVisibility(TargetParams.ShowTarget);
 
-            // Update octree. Note: On every update, we instantiate a new octree
-            // and populate it with the new pigeon position. So everytime, 
-            // the neighbors get updated. 
-            this.octreeManager.update(patternPos, this.pigeons); 
+                // Update octree. 
+                // Note: On every update, we instantiate a new octree
+                // and populate it with the new pigeon position. So everytime, 
+                // the neighbors get updated. 
+                this.octreeManager.update(patternPos, this.pigeons); 
 
-            let nAgents = []; // Neighboring agents. 
+                let nAgents = []; // Neighboring agents. 
 
-            // Delta change in time to advance the animation of the wings. 
-            let delta = this.clock.getDelta(); 
-            this.pigeons.forEach(p => {
-                // Update the target's position 
-                p.setTarget(patternPos); 
-                // Find and update the location of neighboring agents
-                nAgents = this.octreeManager.getNeighbours(p.position); 
-                p.update(delta, nAgents);
-            });
-
-            // Target object properties. 
-            this.target.setVector(patternPos);
-            this.target.setVisibility(TargetParams.ShowTarget);
+                // Delta change in time to advance the animation of the wings. 
+                let delta = this.clock.getDelta(); 
+                this.pigeons.forEach(p => {
+                    // Update the target's position 
+                    p.setTarget(patternPos); 
+                    // Find and update the location of neighboring agents
+                    nAgents = this.octreeManager.getNeighbours(p.position); 
+                    p.update(delta, nAgents);
+                });
+            }
         }
 
         // Else don't do anything. 
+    }
+
+    setNewPatternType(newPatternType) {
+        this.patternManager.setTargetPattern(newPatternType)
     }
 } 
 

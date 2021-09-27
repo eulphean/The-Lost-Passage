@@ -57,7 +57,7 @@ const styles = {
     }
 };
 
-const Load_Time = 3000; // 3 seconds for now. 
+const Load_Time = 0; // 3 seconds for now. // Change it back once we are ready.
 
 class EnterPanel extends React.Component {
   constructor(props) {

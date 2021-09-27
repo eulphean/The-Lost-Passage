@@ -9,12 +9,12 @@
 
 import { Pane } from 'tweakpane';
 import * as EssentialsPlugin from '@tweakpane/plugin-essentials';
-import _ from 'lodash';
+import _, { times } from 'lodash';
 
 import Websocket from './Websocket';
 
 import { TargetParams } from '../Managers/PigeonManager';
-// import { EllipseParams } from './PatternManager.js';
+import { PatternParams, PatternTypes, EllipseParams, EllipsePattern, RoseCurveParams } from '../Managers/PatternManager.js';
 import { AgentParams } from '../Environment/Agent.js';
 import { OrbitParams } from '../Managers/CameraControl.js'
 
@@ -25,6 +25,7 @@ let GuiParams = {
     Presets: ''
 }
 const PRESETS_IDX = 1; 
+const PATTERN_TYPE_IDX =0; 
 
 class ServerGui {
     constructor(containerComponent) {
@@ -53,9 +54,36 @@ class ServerGui {
         f0.addInput(OrbitParams, 'RotateSpeed', { label: 'Rotation Speed', min: 0.1, max: 1.0 });
         f0.addInput(OrbitParams, 'EnableKeys', {label: 'Enable Keys'});
 
-        // World Parameters
+        // World Parameters.
         let f1 = this.gui.addFolder({ title: 'Target Params', expanded: true });
         f1.addInput(TargetParams, 'ShowTarget', {label: 'Show Target'});
+
+        // Pattern Parameters.
+        this.patternFolder = this.gui.addFolder({ title: 'Pattern Params', expanded: true });
+        this.buildPatternTypeOptions(PatternTypes.Ellipse); // Default pattern type.
+        this.buildPatterns(); 
+
+        // Ellipse Parameters. 
+        this.ellipseParamsFolder = this.patternFolder.addFolder({ title: 'Ellipse Pattern Params', expanded: true });
+        this.ellipseParamsFolder.addInput(EllipseParams, 'Origin');
+        this.ellipseParamsFolder.addInput(EllipseParams, 'Radius', {
+            x: { min: 0, max: 50 },
+            y: { min: 0, max: 50 }
+        });
+        this.ellipseParamsFolder.addInput(EllipseParams, 'Amplitude', { min: 0, max: 10 });
+        this.ellipseParamsFolder.addInput(EllipseParams, 'Speed', { min: 0, max: 2 });
+        this.ellipseParamsFolder.addInput(EllipseParams, 'Direction'); 
+
+        this.roseCurveParamsFolder = this.patternFolder.addFolder({ title: 'Rose-Curve Pattern Params', expanded: true });
+        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Origin');
+        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Radius', { min: 1, max: 50 });
+        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Phase', { min: 0, max: 10 });
+        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'NumPetals', { min: 1, max: 10, step: 1 });
+        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Amplitude', { min: 0, max: 10 });
+        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Sinusoidal');
+        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Direction');
+        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Speed', { min: 0, max: 2 });
+
 
         let f2 = this.gui.addFolder({ title: 'Agent Params', expanded: true});
         f2.addInput(AgentParams, 'MaxForce', {label: 'Max Force', min: 0.005, max: 2, step: 0.005});
@@ -93,6 +121,9 @@ class ServerGui {
                 // the entries were pushed in the database. 
                 this.presetOptions.push({ text: name, value: JSON.stringify(config)});
             }); 
+            
+            // Dispose pattern type list. 
+            // this.patternTypeList.dispose();   
 
             // Get the first preset and set the GUI with that. 
             let defaultPresetJSON = data[0]['config'];
@@ -101,6 +132,13 @@ class ServerGui {
             // Rebuild the preset controller using this.presetOptions. 
             this.disposePresets();
             this.buildPresets();
+
+            // Build Pattern type options. 
+            this.currentPatternType = defaultPresetJSON['PatternType'];  
+            this.buildPatternTypeOptions(); 
+            this.disposePatterns();
+            this.buildPatterns(); 
+            this.showPatternParams(); 
         }
     }
 
@@ -179,13 +217,58 @@ class ServerGui {
         this.presetList.on('change', this.onPresetSelected.bind(this));
     }
 
+    buildPatternTypeOptions() {
+        if (this.currentPatternType === PatternTypes.Ellipse) {
+            this.patternTypeOptions = { Ellipse: PatternTypes.Ellipse, RoseCurve: PatternTypes.RoseCurve };
+        } else if (this.currentPatternType === PatternTypes.RoseCurve) {
+            this.patternTypeOptions = { RoseCurve: PatternTypes.RoseCurve, Ellipse: PatternTypes.Ellipse };
+        } else {
+            this.patternTypeOptions = { Ellipse: PatternTypes.Ellipse, RoseCurve: PatternTypes.RoseCurve }; // Default pattern type. 
+        }
+    }
+
+    disposePatterns() {
+        this.patternList.dispose();
+    }
+
+    buildPatterns() {
+        this.patternList = this.patternFolder.addInput(PatternParams, 'PatternType', {
+            label: 'Pattern Type',
+            index: PATTERN_TYPE_IDX,
+            options: this.patternTypeOptions
+        }); 
+        this.patternList.on('change', this.onPatternSelected.bind(this)); 
+    }
+
+    onPatternSelected(ev) {
+        this.currentPatternType = ev.value;
+        this.showPatternParams();
+
+        // Fire the callback to notify that the pattern has changed.
+        this.patternChangeUpdate(this.currentPatternType); 
+    }
+
+    showPatternParams() {
+        if (this.currentPatternType === PatternTypes.Ellipse) {
+            this.ellipseParamsFolder.hidden = false; 
+            this.roseCurveParamsFolder.hidden = true; 
+        } else if (this.currentPatternType === PatternTypes.RoseCurve) {
+            this.ellipseParamsFolder.hidden = true; 
+            this.roseCurveParamsFolder.hidden = false;
+        }
+    }
+
+    subscribeForPatternChange(callback) {
+        this.patternChangeUpdate = callback; 
+    }
+
     subscribeShowPanel(callback) {
         this.onShowPanel = callback; 
     }
 
     onShowPanel() {
         this.onShowPanel(); 
-    }   
+    }  
 } 
 
 // Keep a singleton instance of this - through App.js
