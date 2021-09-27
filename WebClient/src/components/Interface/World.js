@@ -82,6 +82,7 @@ class World extends React.Component {
         <GuiPanel 
           ref={this.guiRef} 
           onShowInfoPanel={this.onShowInfoPanel.bind(this)}
+          onSpawnAgents={this.onSpawnAgents.bind(this)}
         />
         <EnterPanel 
           onEnterWorld={this.onEnterWorld.bind(this)} 
@@ -125,6 +126,10 @@ class World extends React.Component {
 
   onPatternChanged(newPatternType) {
     this.pigeonManager.setNewPatternType(newPatternType);
+  }
+
+  onSpawnAgents() {
+    this.pigeonManager.spawnPigeons(this.scene);
   }
 }
 

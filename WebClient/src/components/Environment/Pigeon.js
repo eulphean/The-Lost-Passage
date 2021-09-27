@@ -23,6 +23,8 @@ export default class Pigeon extends Agent {
     loadPigeon(scene) {
         loader.load(model, gltf => {
             this.pigeon = gltf.scene; 
+
+            this.pigeon.name = 'pChild';
             
             // Agent is the parent object under which pigeon sits. 
             this.parent = new THREE.Group();
@@ -30,6 +32,7 @@ export default class Pigeon extends Agent {
             this.parent.frustumCulled = false;
             this.parent.castShadow = true;
             this.parent.receiveShadow = true; 
+            this.parent.name = 'pigeon';
 
             // Store all the parameters that we'll be changing for this agent. 
             this.agentPosition = this.parent.position; 

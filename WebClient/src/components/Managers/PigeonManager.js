@@ -11,6 +11,7 @@ import { PatternManager } from './PatternManager';
 import { OctreeManager } from './OctreeManager'
 import Pigeon from '../Environment/Pigeon'
 import Target from '../Environment/Target'
+import { Scene } from 'three';
 
 const NUM_PIGEONS = 50; 
 
@@ -35,11 +36,8 @@ class PigeonManager {
 
     setup(scene, currentPatternType) {
         console.log('Pigeon Manager Pattern: ' + currentPatternType);
-        // Instantiate all the pigeons. 
-        for (let i = 0; i < NUM_PIGEONS; i++) {
-            let p = new Pigeon(scene); 
-            this.pigeons.push(p);
-        }
+        
+        this.spawnPigeons(scene);
 
         // Create the target object that the pigeons are following. 
         this.target = new Target(scene);
@@ -82,6 +80,25 @@ class PigeonManager {
 
     setNewPatternType(newPatternType) {
         this.patternManager.setTargetPattern(newPatternType)
+    }
+
+    spawnPigeons(scene) {
+        // NOT IMPLEMENTED
+        // ISSUES IN CLEANING GEOMETRY!!
+        /// Empty the pigeons first. 
+        // if (this.pigeons.length > 0) {
+        //     scene.children.forEach(child => {
+        //         if (child.name === 'pigeon') {
+        //             child.remove(child[0]);
+        //         }
+        //     });
+        // }
+
+        // // Instantiate pigeons again. 
+        // for (let i = 0; i < NUM_PIGEONS; i++) {
+        //     let p = new Pigeon(scene); 
+        //     this.pigeons.push(p);
+        // }
     }
 } 
 

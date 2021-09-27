@@ -20,7 +20,7 @@ export let PatternTypes = {
 // Ellipse Params
 export let EllipseParams = {
     Origin: {x: 0, y: 6, z: 0},
-    Radius:  {x: 10, y: 10 },
+    Radii: {x: 10, y: 10},
     Amplitude: 0,
     Speed: 0.3, 
     Direction: true
@@ -107,8 +107,8 @@ export class EllipsePattern extends Pattern {
 
     updateGuiParams() {
         this.originPos.set(EllipseParams.Origin.x, EllipseParams.Origin.y, EllipseParams.Origin.z);
-        this.radX = EllipseParams.Radius.x;
-        this.radZ = EllipseParams.Radius.y;
+        this.radX = EllipseParams.Radii.x;
+        this.radZ = EllipseParams.Radii.y;
         this.amp = EllipseParams.Amplitude; 
         this.moveFactor = THREE.Math.degToRad(EllipseParams.Speed); 
         this.isClockwise = EllipseParams.Direction; 

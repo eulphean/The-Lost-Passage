@@ -66,7 +66,7 @@ class ServerGui {
         // Ellipse Parameters. 
         this.ellipseParamsFolder = this.patternFolder.addFolder({ title: 'Ellipse Pattern Params', expanded: true });
         this.ellipseParamsFolder.addInput(EllipseParams, 'Origin');
-        this.ellipseParamsFolder.addInput(EllipseParams, 'Radius', {
+        this.ellipseParamsFolder.addInput(EllipseParams, 'Radii', {
             x: { min: 0, max: 50 },
             y: { min: 0, max: 50 }
         });
@@ -84,7 +84,6 @@ class ServerGui {
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Direction');
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Speed', { min: 0, max: 2 });
 
-
         let f2 = this.gui.addFolder({ title: 'Agent Params', expanded: true});
         f2.addInput(AgentParams, 'MaxForce', {label: 'Max Force', min: 0.005, max: 2, step: 0.005});
         f2.addInput(AgentParams, 'SmoothFactor', {label: 'Smooth Factor', min: 0.005, max: 0.1, step: 0.005});
@@ -96,6 +95,7 @@ class ServerGui {
         this.gui.addButton({title: 'Save Preset'}).on('click', this.onSavePreset.bind(this));       
         this.gui.addButton({title: 'Delete Preset'}).on('click', this.onDeletePreset.bind(this));
         this.gui.addButton({title: 'Show Panel'}).on('click', this.onShowPanel.bind(this)); 
+        this.gui.addButton({title: 'Spawn Agents'}).on('click', this.onSpawnAgents.bind(this));
 
         // Read presets from the database. 
         Websocket.readAllPresets(this.onReceivePresets.bind(this)); 
@@ -263,34 +263,21 @@ class ServerGui {
     }
 
     subscribeShowPanel(callback) {
-        this.onShowPanel = callback; 
+        this.onShowPanelCallback = callback; 
     }
 
     onShowPanel() {
-        this.onShowPanel(); 
+        this.onShowPanelCallback(); 
     }  
+
+    subscribeSpawnAgents(callback) {
+        this.onSpawnAgentCallback = callback; 
+    }
+
+    onSpawnAgents() {
+        this.onSpawnAgentCallback(); 
+    }
 } 
 
 // Keep a singleton instance of this - through App.js
 export default ServerGui;
-
-//     // // Ellipse parameters
-//     // let ellipseFolder = this.gui.addFolder('Ellipse Params'); 
-//     // ellipseFolder.add(ellipseParams, 'originPosX').name('OriginX')
-//     // .min(-20).max(20).step(0.1);
-//     // ellipseFolder.add(ellipseParams, 'originPosY').name('OriginY')
-//     // .min(0).max(50).step(0.1);
-//     // ellipseFolder.add(ellipseParams, 'originPosZ').name('OriginZ')
-//     // .min(-50).max(50).step(0.1);
-//     // ellipseFolder.add(ellipseParams, 'radiusX').name('RadX')
-//     // .min(0).max(20).step(0.5);
-//     // ellipseFolder.add(ellipseParams, 'radiusZ').name('RadZ')
-//     // .min(0).max(20).step(0.5);
-//     // ellipseFolder.add(ellipseParams, 'amplitude').name('Amplitude')
-//     // .min(0).max(10).step(0.5);
-//     // ellipseFolder.add(ellipseParams, 'speed').name('Speed')
-//     // .min(0.1).max(1.0).step(0.1);
-//     // ellipseFolder.add(ellipseParams, 'isClockwise').name('Is Clockwise');
-
-//     // How to save the parameters in a preset, so next time we pull those params.
-//   }
