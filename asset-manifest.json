@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/virtualCompanion/static/css/main.a7ce91f7.chunk.css",
-    "main.js": "/virtualCompanion/static/js/main.9d0db096.chunk.js",
-    "main.js.map": "/virtualCompanion/static/js/main.9d0db096.chunk.js.map",
+    "main.css": "/virtualCompanion/static/css/main.a4c33d27.chunk.css",
+    "main.js": "/virtualCompanion/static/js/main.e2718c9c.chunk.js",
+    "main.js.map": "/virtualCompanion/static/js/main.e2718c9c.chunk.js.map",
     "runtime-main.js": "/virtualCompanion/static/js/runtime-main.c02b6213.js",
     "runtime-main.js.map": "/virtualCompanion/static/js/runtime-main.c02b6213.js.map",
-    "static/js/2.9af0710b.chunk.js": "/virtualCompanion/static/js/2.9af0710b.chunk.js",
-    "static/js/2.9af0710b.chunk.js.map": "/virtualCompanion/static/js/2.9af0710b.chunk.js.map",
+    "static/js/2.0dc3c2c0.chunk.js": "/virtualCompanion/static/js/2.0dc3c2c0.chunk.js",
+    "static/js/2.0dc3c2c0.chunk.js.map": "/virtualCompanion/static/js/2.0dc3c2c0.chunk.js.map",
     "index.html": "/virtualCompanion/index.html",
-    "precache-manifest.1eb11093e1c507e6340801b0c233a75c.js": "/virtualCompanion/precache-manifest.1eb11093e1c507e6340801b0c233a75c.js",
+    "precache-manifest.071d35d2bc2f05c6edf42478e9192777.js": "/virtualCompanion/precache-manifest.071d35d2bc2f05c6edf42478e9192777.js",
     "service-worker.js": "/virtualCompanion/service-worker.js",
-    "static/css/main.a7ce91f7.chunk.css.map": "/virtualCompanion/static/css/main.a7ce91f7.chunk.css.map",
-    "static/js/2.9af0710b.chunk.js.LICENSE.txt": "/virtualCompanion/static/js/2.9af0710b.chunk.js.LICENSE.txt",
+    "static/css/main.a4c33d27.chunk.css.map": "/virtualCompanion/static/css/main.a4c33d27.chunk.css.map",
+    "static/js/2.0dc3c2c0.chunk.js.LICENSE.txt": "/virtualCompanion/static/js/2.0dc3c2c0.chunk.js.LICENSE.txt",
     "static/media/Bird_simple.glb": "/virtualCompanion/static/media/Bird_simple.d1d4aa0b.glb",
-    "static/media/stylesheet.css": "/virtualCompanion/static/media/slice-webfont.60013d1c.woff",
+    "static/media/stylesheet.css": "/virtualCompanion/static/media/warsawgothic-webfont.911a64f9.woff",
     "static/media/world.glb": "/virtualCompanion/static/media/world.9a0ad0bd.glb"
   },
   "entrypoints": [
     "static/js/runtime-main.c02b6213.js",
-    "static/js/2.9af0710b.chunk.js",
-    "static/css/main.a7ce91f7.chunk.css",
-    "static/js/main.9d0db096.chunk.js"
+    "static/js/2.0dc3c2c0.chunk.js",
+    "static/css/main.a4c33d27.chunk.css",
+    "static/js/main.e2718c9c.chunk.js"
   ]
 }
