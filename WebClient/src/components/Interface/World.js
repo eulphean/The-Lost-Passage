@@ -36,7 +36,7 @@ class World extends React.Component {
     super(props);
     this.state={};
 
-    // Refs that need to be accessed. 
+    // Reference to the components that need to be accesed. 
     this.worldRef = React.createRef(); 
     this.guiRef = React.createRef(); 
     this.titleRef = React.createRef(); 
