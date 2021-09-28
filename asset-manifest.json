@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/virtualCompanion/static/css/main.a4c33d27.chunk.css",
-    "main.js": "/virtualCompanion/static/js/main.63e315b2.chunk.js",
-    "main.js.map": "/virtualCompanion/static/js/main.63e315b2.chunk.js.map",
+    "main.js": "/virtualCompanion/static/js/main.18367e53.chunk.js",
+    "main.js.map": "/virtualCompanion/static/js/main.18367e53.chunk.js.map",
     "runtime-main.js": "/virtualCompanion/static/js/runtime-main.c02b6213.js",
     "runtime-main.js.map": "/virtualCompanion/static/js/runtime-main.c02b6213.js.map",
     "static/js/2.0dc3c2c0.chunk.js": "/virtualCompanion/static/js/2.0dc3c2c0.chunk.js",
     "static/js/2.0dc3c2c0.chunk.js.map": "/virtualCompanion/static/js/2.0dc3c2c0.chunk.js.map",
     "index.html": "/virtualCompanion/index.html",
-    "precache-manifest.1cbe76c7c859b87d3bb65a0d2962cc10.js": "/virtualCompanion/precache-manifest.1cbe76c7c859b87d3bb65a0d2962cc10.js",
+    "precache-manifest.d482e1a3bc6e9e2a5e5025e898b18c63.js": "/virtualCompanion/precache-manifest.d482e1a3bc6e9e2a5e5025e898b18c63.js",
     "service-worker.js": "/virtualCompanion/service-worker.js",
     "static/css/main.a4c33d27.chunk.css.map": "/virtualCompanion/static/css/main.a4c33d27.chunk.css.map",
     "static/js/2.0dc3c2c0.chunk.js.LICENSE.txt": "/virtualCompanion/static/js/2.0dc3c2c0.chunk.js.LICENSE.txt",
@@ -20,6 +20,6 @@
     "static/js/runtime-main.c02b6213.js",
     "static/js/2.0dc3c2c0.chunk.js",
     "static/css/main.a4c33d27.chunk.css",
-    "static/js/main.63e315b2.chunk.js"
+    "static/js/main.18367e53.chunk.js"
   ]
 }
