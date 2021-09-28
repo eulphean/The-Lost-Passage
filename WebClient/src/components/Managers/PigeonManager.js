@@ -94,11 +94,11 @@ class PigeonManager {
         //     });
         // }
 
-        // // Instantiate pigeons again. 
-        // for (let i = 0; i < NUM_PIGEONS; i++) {
-        //     let p = new Pigeon(scene); 
-        //     this.pigeons.push(p);
-        // }
+        // Instantiate pigeons again. 
+        for (let i = 0; i < NUM_PIGEONS; i++) {
+            let p = new Pigeon(scene); 
+            this.pigeons.push(p);
+        }
     }
 } 
 
