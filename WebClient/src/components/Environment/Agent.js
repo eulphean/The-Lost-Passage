@@ -2,19 +2,20 @@ import * as THREE from 'three'
 import * as Utility from '../Utilities/Utility'
 
 export let AgentParams = {
-    MaxForce: 0.01,
     SmoothFactor: 0.01,
+    AttractionForce : 1.5,
     SeperationForce: 1.2,
-    CohesionForce: 0.5,
-    AlignmentForce: 0.2
+    CohesionForce: 1.1,
+    AlignmentForce: 1.4,
+    Gravity: new THREE.Vector3(0, -0.3, 0)
 }
 
 export default class Agent {
     constructor() {
         // this.idx = i; 
         // // Construct all important variables. 
-        this.position = new THREE.Vector3(Math.random() * 20, 2, 0); 
-        this.velocity = new THREE.Vector3(0.1, 0.1, 0.1); 
+        this.position = new THREE.Vector3(Math.random() * 20, Math.random() * 20, Math.random() * 20); 
+        this.velocity = new THREE.Vector3(0.0, 0.0, 0.0); 
         this.acceleration = new THREE.Vector3(0, 0, 0); 
         this.rotationA = new THREE.Quaternion(); 
         this.rotationB = new THREE.Quaternion(); 
@@ -26,39 +27,31 @@ export default class Agent {
         this.diffVec = new THREE.Vector3(0, 0, 0); 
 
         // Force and speeds. 
-        this.maxSpeed = Utility.getRandomNum(0.015, 0.050); 
-        this.maxSlowDownSpeed = 0; 
-
-        // Tolerances
-        this.slowDownTolerance = 0.2 * 0.2; 
-        this.arriveTolerance = 0.01 * 0.01; 
+        this.maxSpeed = Utility.getRandomNum(0.03, 0.5); 
 
         // Target value that changes based on the pattern position. 
         this.target = new THREE.Vector3(0, 0, 0); 
+
+        // Agent will be animated if it's alive
+        this.isAlive = true;
     }
 
-    updateAgent(nAgents) {
-        this.seekTarget(); // Forces
-        this.flock(nAgents); // Forces
-        this.updatePosition();
-    }
+    updateBehaviour(nAgents) {
+        // Seek target
+        this.seek();
 
-    seekTarget() {
-        this.seek(); // Calculate the force required to seek the target position. 
-        this.applyForce(); // Apply the force. 
-    }
+        // Flock with other nearby pigeons
+        nAgents.forEach( neighbor => {
+            // calculate a directional vec from my neighbor to me
+            this.diffVec.subVectors(this.position, neighbor.position)
 
-    flock(nAgents) {
-        if (nAgents.length > 0) {
-            this.seperation(nAgents); 
-            this.applyForce(); 
+            // Pass it down for force calculation
+            this.seperate(this.diffVec); 
 
-            this.cohesion(nAgents);
-            this.applyForce();
+            this.cohere(this.diffVec);
 
-            this.align(nAgents);
-            this.applyForce();
-        }
+            this.align(neighbor, this.diffVec);
+        })
     }
 
     updatePosition() {
@@ -80,77 +73,35 @@ export default class Agent {
     }
 
     seek() {
-        // Calculate desired velocity. 
+        // Calculate a desired direction, and multiply it by force. 
         this.vDesired.subVectors(this.target, this.position); 
         this.vDesired.normalize();
+        this.vDesired.multiplyScalar(AgentParams.AttractionForce);
 
-        let d = this.vDesired.lengthSq(); 
-        if (d < this.slowDownTolerance && d > this.arriveTolerance) {
-            let newMaxSpeed = Utility.map_range(d, this.slowDownTolerance, this.arriveTolerance, this.maxSpeed, this.maxSlowDownSpeed); 
-            this.vDesired.multiplyScalar(newMaxSpeed); 
-        } else {
-            this.vDesired.multiplyScalar(this.maxSpeed); 
-        }
-
-        // Calculate steering force.
-        this.fSteer.subVectors(this.vDesired, this.velocity); 
-        this.fSteer.clampLength(-99999, AgentParams.MaxForce); 
+        // Add steering force.
+        this.fSteer.add(this.vDesired); 
     }
 
-    seperation(nAgents) {
-        this.fSteer.set(0, 0, 0); 
-        this.sumVec.set(0, 0, 0); 
-
-        if (nAgents.length > 0) {
-            nAgents.forEach(n => {
-                this.diffVec.subVectors(this.position, n.position); 
-                this.diffVec.normalize(); 
-                this.diffVec.divideScalar(this.diffVec.length());  // Weight the vector properly based on the distance from the target. 
-                this.sumVec.add(this.diffVec); 
-            });
-            
-            // Calculate desired force using the average desired velocity 
-            this.sumVec.divideScalar(nAgents.length); 
-            if (this.sumVec.lengthSq() > 0) {
-                this.sumVec.normalize(); 
-                this.sumVec.clampLength(-99999, this.maxSpeed);
-                this.fSteer.subVectors(this.sumVec, this.velocity);
-                this.fSteer.clampLength(-99999, AgentParams.MaxForce); 
-                this.fSteer.multiplyScalar(AgentParams.SeperationForce); // Apply seperation weight. 
-            }
-        }
+    seperate(diffVec) {
+        this.vDesired.copy(diffVec)
+        this.vDesired.normalize(); 
+        this.vDesired.multiplyScalar(AgentParams.SeperationForce);
+        this.fSteer.add(this.vDesired)
     }
 
-    cohesion(nAgents) {
-        this.target.set(0, 0, 0); 
-        this.fSteer.set(0, 0, 0); 
-
-        if (nAgents.length > 0) {
-            nAgents.forEach(n => {
-                this.target.add(n.position); 
-            }); 
-
-            this.target.divideScalar(nAgents.length); 
-            this.seek(); // Seek the new target
-            this.fSteer.multiplyScalar(AgentParams.CohesionForce); 
-        }
+    cohere(diffVec) {
+        this.vDesired.copy(diffVec);
+        this.vDesired.multiplyScalar(-1); // Reverse the vector direction to get closer
+        this.vDesired.normalize();
+        this.vDesired.multiplyScalar(AgentParams.CohesionForce);
+        this.fSteer.add(this.vDesired); 
     }
 
-    align(nAgents) {
-        this.fSteer.set(0, 0, 0); 
-
-        if (nAgents.length > 0) {
-            nAgents.forEach(a => {
-                this.fSteer.add(a.velocity); 
-            }); 
-        
-            this.fSteer.divideScalar(nAgents.length); 
-            this.fSteer.normalize(); 
-            this.fSteer.multiplyScalar(this.maxSpeed); 
-            this.fSteer.sub(this.velocity); 
-            this.fSteer.clampLength(-99999, AgentParams.MaxForce); 
-            this.fSteer.multiplyScalar(AgentParams.AlignmentForce); // Apply alignment weight. 
-        }
+    align(neighbor, diffVec) {
+        this.vDesired.copy(neighbor.velocity);
+        this.vDesired.divideScalar(diffVec.lengthSq()); // Weighted alignment by distance
+        this.vDesired.multiplyScalar(AgentParams.AlignmentForce); // Apply alignment weight. 
+        this.fSteer.add(this.vDesired); 
     }
 
     setTarget(targetPos) {

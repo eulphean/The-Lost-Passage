@@ -85,7 +85,7 @@ class ServerGui {
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Speed', { min: 0, max: 2 });
 
         let f2 = this.gui.addFolder({ title: 'Agent Params', expanded: true});
-        f2.addInput(AgentParams, 'MaxForce', {label: 'Max Force', min: 0.005, max: 2, step: 0.005});
+        f2.addInput(AgentParams, 'AttractionForce', {label: 'AttractionForce', min: 0.5, max: 2, step: 0.05});
         f2.addInput(AgentParams, 'SmoothFactor', {label: 'Smooth Factor', min: 0.005, max: 0.1, step: 0.005});
         f2.addInput(AgentParams, 'SeperationForce', {label: 'Seperation Force', min: 0.5, max: 2, step: 0.1}); 
         f2.addInput(AgentParams, 'CohesionForce', {label: 'Cohesion Force', min: 0.1, max: 2, step: 0.1});
@@ -96,6 +96,7 @@ class ServerGui {
         this.gui.addButton({title: 'Delete Preset'}).on('click', this.onDeletePreset.bind(this));
         this.gui.addButton({title: 'Show Panel'}).on('click', this.onShowPanel.bind(this)); 
         this.gui.addButton({title: 'Spawn Agents'}).on('click', this.onSpawnAgents.bind(this));
+        this.gui.addButton({title: 'Shoot Pigeon'}).on('click', this.onShootPigeon.bind(this));
 
         // Read presets from the database. 
         Websocket.readAllPresets(this.onReceivePresets.bind(this)); 
@@ -276,6 +277,14 @@ class ServerGui {
 
     onSpawnAgents() {
         this.onSpawnAgentCallback(); 
+    }
+
+    subscribeShootPigeon(callback) {
+        this.onShootPigeonCallback = callback;
+    }
+
+    onShootPigeon(){
+        this.onShootPigeonCallback();
     }
 } 
 

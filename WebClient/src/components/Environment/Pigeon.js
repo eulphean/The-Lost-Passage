@@ -8,8 +8,8 @@
 
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import Agent from '../Environment/Agent.js'
-import model from '../../models/Bird_simple.glb'; 
+import Agent, { AgentParams } from '../Environment/Agent.js'
+import model from '../../models/birds_exercise.glb'; 
 import * as Utility from '../Utilities/Utility';
 
 const loader = new GLTFLoader(); 
@@ -40,7 +40,7 @@ export default class Pigeon extends Agent {
             this.agentScale = this.parent.scale
             this.agentAnimations = gltf.animations; 
 
-            this.agentScale.set(0.50, 0.50, 0.50);
+            this.agentScale.set(0.10, 0.10, 0.10); 
 
             // Setup animation. 
             this.animationMixer = new THREE.AnimationMixer(this.parent); 
@@ -58,12 +58,31 @@ export default class Pigeon extends Agent {
     update(delta, nAgents) {
         // Animation update. 
         if (this.animationMixer) {
-            this.animationMixer.update(delta * this.randSeed);
 
-            // Behaviors. 
-            this.updateAgent(nAgents);  
+            // Reset steering force. It will accumulate over each behaviour function call 
+            this.fSteer.set(0, 0, 0);
+
+            if (this.isAlive){
+                // Animating flipping wings
+                this.animationMixer.update(delta * this.randSeed);
+
+                // Behaviors. 
+                this.updateBehaviour(nAgents);  
+            }
+
+            // Gravity pulls agent downwards
+            this.fSteer.add(AgentParams.Gravity);
+
+            // Apply steering force
+            this.applyForce();
+
+            if (!this.isAlive && this.position.y < 0){
+                // Don't update dead agents if they are already on the ground
+                return  
+            }
 
             // Sync rotation and position. 
+            this.updatePosition();
             this.syncPosition();
             this.syncRotation(); 
         }

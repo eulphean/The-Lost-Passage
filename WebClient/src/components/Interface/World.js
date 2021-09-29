@@ -94,6 +94,7 @@ class World extends React.Component {
           ref={this.guiRef} 
           onShowInfoPanel={this.onShowInfoPanel.bind(this)}
           onSpawnAgents={this.onSpawnAgents.bind(this)}
+          onShootPigeon={this.onShootPigeon.bind(this)}
         />
         <EnterPanel 
           onEnterWorld={this.onEnterWorld.bind(this)} 
@@ -163,6 +164,10 @@ class World extends React.Component {
 
   onSpawnAgents() {
     this.pigeonManager.spawnPigeons(this.scene);
+  }
+
+  onShootPigeon() {
+    this.pigeonManager.shootPigeon();
   }
 }
 

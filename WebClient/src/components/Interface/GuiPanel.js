@@ -38,6 +38,7 @@ class GuiPanel extends React.Component {
     this.gui = new ServerGui(containerComponent); 
     this.gui.subscribeShowPanel(this.onShowPanel.bind(this));
     this.gui.subscribeSpawnAgents(this.onSpawnAgents.bind(this));
+    this.gui.subscribeShootPigeon(this.onShootPigeon.bind(this));
   }
 
   getFpsGraph() {
@@ -50,6 +51,10 @@ class GuiPanel extends React.Component {
 
   onSpawnAgents() {
     this.props.onSpawnAgents();
+  }
+
+  onShootPigeon() {
+    this.props.onShootPigeon();
   }
 
   subscribeForPatternChange(callback) {

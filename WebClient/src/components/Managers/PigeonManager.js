@@ -11,9 +11,10 @@ import { PatternManager } from './PatternManager';
 import { OctreeManager } from './OctreeManager'
 import Pigeon from '../Environment/Pigeon'
 import Target from '../Environment/Target'
-import { Scene } from 'three';
+import { MathUtils, Scene } from 'three';
+import Agent, { AgentParams } from '../Environment/Agent';
 
-const NUM_PIGEONS = 50; 
+const NUM_PIGEONS = 500; 
 
 export let TargetParams = {
     ShowTarget: true
@@ -73,9 +74,10 @@ class PigeonManager {
                     p.update(delta, nAgents);
                 });
             }
+            
+            // Slowly reset some of the agent params that was disturbed by the gun shot
+            this.recoverFromShock()
         }
-
-        // Else don't do anything. 
     }
 
     setNewPatternType(newPatternType) {
@@ -99,6 +101,26 @@ class PigeonManager {
             let p = new Pigeon(scene); 
             this.pigeons.push(p);
         }
+    }
+
+    shootPigeon() {
+        // Set one randome pigeon to be dead
+        let choseOne = MathUtils.randInt(0, this.pigeons.length - 1)
+        this.pigeons[choseOne].isAlive = false;
+        
+        // Gun shot will scare them away
+        AgentParams.SeperationForce *= 3
+        AgentParams.AttractionForce *= 0.1
+    }
+
+    recoverFromShock() {
+        // Separation would decay overtime to recover from gun shot
+        AgentParams.SeperationForce *= 0.999;
+        AgentParams.SeperationForce = MathUtils.clamp(AgentParams.SeperationForce, 1.2, 2);      
+        
+        // Agent would focus back on seeking target again
+        AgentParams.AttractionForce *= 1.001;
+        AgentParams.AttractionForce = MathUtils.clamp(AgentParams.AttractionForce, 0.5, 2);
     }
 } 
 
