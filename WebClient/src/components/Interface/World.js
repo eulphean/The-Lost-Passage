@@ -23,11 +23,18 @@ import EnterPanel from './EnterPanel.js'
 import Title from './Title.js'
 import InfoPanel from './InfoPanel.js'
 
+import landscape from '../../assets/landscape.jpg'
+import clouds from '../../assets/clouds.mp4'
+
 const styles = {
   container: {
     width: '100vw', 
     height: '100vh',
     overflow: 'hidden'
+  },
+
+  video: {
+    display: 'none'
   }
 };
 
@@ -41,6 +48,7 @@ class World extends React.Component {
     this.guiRef = React.createRef(); 
     this.titleRef = React.createRef(); 
     this.panelRef = React.createRef(); 
+    this.videoRef = React.createRef();
     
     // 3D scene object where everything is added. 
     this.scene = new THREE.Scene(); 
@@ -55,7 +63,7 @@ class World extends React.Component {
     this.pigeonManager = new PigeonManager(); 
 
     // Instantiate terrain geometry.
-    this.terrain = new Terrain(this.scene); 
+    // this.terrain = new Terrain(this.scene); 
 
     // Three.js Renderer
     this.rendererManager = new RendererManager(); 
@@ -73,6 +81,9 @@ class World extends React.Component {
     // This is the initial render. 
     // Initialize the recursive rendering call. 
     this.initializeRender(); 
+
+    this.addSkybox();
+    //this.addSkySphere();
   }
 
   // Component render. 
@@ -90,6 +101,7 @@ class World extends React.Component {
         />
         <Title ref={this.titleRef} />
         <InfoPanel ref={this.panelRef} />
+        <video id={'video'} ref={this.videoRef} playsInline autoPlay loop src={clouds} style={styles.video} />
       </div>
     );
   }
@@ -105,6 +117,26 @@ class World extends React.Component {
 
     // Register this function as a callback to every repaint from the browser.
     requestAnimationFrame(this.initializeRender.bind(this)); 
+  }
+
+  addSkybox() {
+    // const texture = new THREE.TextureLoader().load(landscape);
+    const texture = new THREE.VideoTexture(this.videoRef.current);
+    texture.wrapS = THREE.MirroredRepeatWrapping;
+    const geometry = new THREE.BoxGeometry(300, 300, 300);
+    const material = new THREE.MeshBasicMaterial( {side: THREE.BackSide, map: texture} );
+    const cube = new THREE.Mesh( geometry, material );
+    this.scene.add(cube);
+  }
+
+  addSkySphere() {
+    //const texture = new THREE.TextureLoader().load(landscape);   ;
+    const texture = new THREE.VideoTexture(this.videoRef.current);
+    const geometry = new THREE.SphereGeometry(80, 80, 80); 
+    const material = new THREE.MeshBasicMaterial( {side: THREE.BackSide, map: texture});
+    const sphere = new THREE.Mesh (geometry, material);
+
+    this.scene.add(sphere);
   }
 
   onEnterWorld() {
