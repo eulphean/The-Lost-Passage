@@ -101,7 +101,7 @@ class World extends React.Component {
         />
         <Title ref={this.titleRef} />
         <InfoPanel ref={this.panelRef} />
-        <video id={'video'} ref={this.videoRef} playsInline autoPlay loop src={clouds} style={styles.video} />
+        <video id={'video'} ref={this.videoRef} playsInline loop src={clouds} style={styles.video} />
       </div>
     );
   }
@@ -122,7 +122,7 @@ class World extends React.Component {
   addSkybox() {
     // const texture = new THREE.TextureLoader().load(landscape);
     const texture = new THREE.VideoTexture(this.videoRef.current);
-    texture.wrapS = THREE.MirroredRepeatWrapping;
+    // texture.wrapS = THREE.MirroredRepeatWrapping;
     const geometry = new THREE.BoxGeometry(300, 300, 300);
     const material = new THREE.MeshBasicMaterial( {side: THREE.BackSide, map: texture} );
     const cube = new THREE.Mesh( geometry, material );
@@ -141,6 +141,7 @@ class World extends React.Component {
 
   onEnterWorld() {
     // Instantiate pigeon geometry. 
+    this.videoRef.current.play();
     let currentPatternType = this.guiRef.current.getCurPatternType(); 
     this.pigeonManager.setup(this.scene, currentPatternType); 
   }
