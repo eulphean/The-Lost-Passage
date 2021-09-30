@@ -24,7 +24,7 @@ import Title from './Title.js'
 import InfoPanel from './InfoPanel.js'
 
 import landscape from '../../assets/landscape.jpg'
-import clouds from '../../assets/clouds.mp4'
+import clouds from '../../assets/gaugan.mp4'
 
 const styles = {
   container: {
@@ -124,7 +124,7 @@ class World extends React.Component {
     // const texture = new THREE.TextureLoader().load(landscape);
     const texture = new THREE.VideoTexture(this.videoRef.current);
     // texture.wrapS = THREE.MirroredRepeatWrapping;
-    const geometry = new THREE.BoxGeometry(300, 300, 300);
+    const geometry = new THREE.BoxGeometry(100, 100, 100);
     const material = new THREE.MeshBasicMaterial( {side: THREE.BackSide, map: texture} );
     const cube = new THREE.Mesh( geometry, material );
     this.scene.add(cube);
@@ -133,7 +133,7 @@ class World extends React.Component {
   addSkySphere() {
     //const texture = new THREE.TextureLoader().load(landscape);   ;
     const texture = new THREE.VideoTexture(this.videoRef.current);
-    const geometry = new THREE.SphereGeometry(80, 80, 80); 
+    const geometry = new THREE.SphereGeometry(100, 100, 100); 
     const material = new THREE.MeshBasicMaterial( {side: THREE.BackSide, map: texture});
     const sphere = new THREE.Mesh (geometry, material);
 
