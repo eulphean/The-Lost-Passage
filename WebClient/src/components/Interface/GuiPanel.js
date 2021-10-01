@@ -13,8 +13,8 @@ import ServerGui from '../Utilities/ServerGui';
 const styles = {
     container: {
         position: 'absolute',
-        top: '150px',
-        right: '20px'
+        top: '120px',
+        left: '35px'
     }
 };
 

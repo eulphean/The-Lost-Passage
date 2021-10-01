@@ -99,7 +99,7 @@ class Title extends React.Component {
       <div style={containerStyle} >
           <div style={styles.content}>
             <div style={styles.title}>MARTHA.I</div>
-            <div style={styles.title}>ABOUT</div>
+            <div onClick={this.handleAboutClick.bind(this)} style={styles.title}>ABOUT</div>
           </div>
       </div>
     );
@@ -119,6 +119,10 @@ class Title extends React.Component {
             aniState: ANIMATION_STATE.SHOW
         }); 
     }
+  }
+
+  handleAboutClick() {
+    this.props.onClickAbout();
   }
 }
 

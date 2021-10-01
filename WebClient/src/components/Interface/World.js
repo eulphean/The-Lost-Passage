@@ -25,6 +25,7 @@ import InfoPanel from './InfoPanel.js'
 
 import landscape from '../../assets/landscape.jpg'
 import clouds from '../../assets/gaugan.mp4'
+import Panel from './ContentPanel.js'
 
 const styles = {
   container: {
@@ -100,7 +101,7 @@ class World extends React.Component {
           onEnterWorld={this.onEnterWorld.bind(this)} 
           onLoadComplete={this.onLoadComplete.bind(this)}
         />
-        <Title ref={this.titleRef} />
+        <Title onClickAbout={this.onClickAbout.bind(this)} ref={this.titleRef} />
         <InfoPanel ref={this.panelRef} />
         <video id={'video'} ref={this.videoRef} playsInline loop src={clouds} style={styles.video} />
       </div>
@@ -168,6 +169,10 @@ class World extends React.Component {
 
   onShootPigeon() {
     this.pigeonManager.shootPigeon();
+  }
+
+  onClickAbout() {
+    this.props.onScroll(); 
   }
 }
 

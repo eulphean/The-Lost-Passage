@@ -17,6 +17,12 @@ class RendererManager {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.outputEncoding = THREE.sRGBEncoding; 
+
+        console.log(window.innerWidth);
+        console.log(window.innerHeight);
+
+        // this.renderer.setScissor(0, 0, window.innerWidth, window.innerHeight); 
+        // this.renderer.setScissorTest(true);
     }
 
     getDomElement() {
