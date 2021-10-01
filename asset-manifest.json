@@ -1,25 +1,27 @@
 {
   "files": {
     "main.css": "/virtualCompanion/static/css/main.a4c33d27.chunk.css",
-    "main.js": "/virtualCompanion/static/js/main.18367e53.chunk.js",
-    "main.js.map": "/virtualCompanion/static/js/main.18367e53.chunk.js.map",
+    "main.js": "/virtualCompanion/static/js/main.d45492bf.chunk.js",
+    "main.js.map": "/virtualCompanion/static/js/main.d45492bf.chunk.js.map",
     "runtime-main.js": "/virtualCompanion/static/js/runtime-main.c02b6213.js",
     "runtime-main.js.map": "/virtualCompanion/static/js/runtime-main.c02b6213.js.map",
-    "static/js/2.0dc3c2c0.chunk.js": "/virtualCompanion/static/js/2.0dc3c2c0.chunk.js",
-    "static/js/2.0dc3c2c0.chunk.js.map": "/virtualCompanion/static/js/2.0dc3c2c0.chunk.js.map",
+    "static/js/2.ce7367ba.chunk.js": "/virtualCompanion/static/js/2.ce7367ba.chunk.js",
+    "static/js/2.ce7367ba.chunk.js.map": "/virtualCompanion/static/js/2.ce7367ba.chunk.js.map",
     "index.html": "/virtualCompanion/index.html",
-    "precache-manifest.d482e1a3bc6e9e2a5e5025e898b18c63.js": "/virtualCompanion/precache-manifest.d482e1a3bc6e9e2a5e5025e898b18c63.js",
+    "precache-manifest.d58b6cf959e6de2eb0be76449d775053.js": "/virtualCompanion/precache-manifest.d58b6cf959e6de2eb0be76449d775053.js",
     "service-worker.js": "/virtualCompanion/service-worker.js",
     "static/css/main.a4c33d27.chunk.css.map": "/virtualCompanion/static/css/main.a4c33d27.chunk.css.map",
-    "static/js/2.0dc3c2c0.chunk.js.LICENSE.txt": "/virtualCompanion/static/js/2.0dc3c2c0.chunk.js.LICENSE.txt",
-    "static/media/Bird_simple.glb": "/virtualCompanion/static/media/Bird_simple.d1d4aa0b.glb",
+    "static/js/2.ce7367ba.chunk.js.LICENSE.txt": "/virtualCompanion/static/js/2.ce7367ba.chunk.js.LICENSE.txt",
+    "static/media/birds_exercise.glb": "/virtualCompanion/static/media/birds_exercise.75b465c7.glb",
     "static/media/stylesheet.css": "/virtualCompanion/static/media/warsawgothic-webfont.911a64f9.woff",
+    "static/media/gaugan.mp4": "/virtualCompanion/static/media/gaugan.7656d0aa.mp4",
+    "static/media/landscape.jpg": "/virtualCompanion/static/media/landscape.c8a4b0e7.jpg",
     "static/media/world.glb": "/virtualCompanion/static/media/world.9a0ad0bd.glb"
   },
   "entrypoints": [
     "static/js/runtime-main.c02b6213.js",
-    "static/js/2.0dc3c2c0.chunk.js",
+    "static/js/2.ce7367ba.chunk.js",
     "static/css/main.a4c33d27.chunk.css",
-    "static/js/main.18367e53.chunk.js"
+    "static/js/main.d45492bf.chunk.js"
   ]
 }
