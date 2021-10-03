@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "4b4bbf829f4132748f4a9c5328589682",
+    "revision": "5e665430bab23a469374655975582925",
     "url": "/virtualCompanion/index.html"
   },
   {
-    "revision": "a61b554858ef0ffae908",
+    "revision": "ebef689da8975f472367",
     "url": "/virtualCompanion/static/css/main.a4c33d27.chunk.css"
   },
   {
@@ -16,16 +16,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/virtualCompanion/static/js/2.ce7367ba.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "a61b554858ef0ffae908",
-    "url": "/virtualCompanion/static/js/main.d45492bf.chunk.js"
+    "revision": "ebef689da8975f472367",
+    "url": "/virtualCompanion/static/js/main.ab00dd83.chunk.js"
   },
   {
     "revision": "9adcd84bdda17853f84a",
     "url": "/virtualCompanion/static/js/runtime-main.c02b6213.js"
   },
   {
-    "revision": "75b465c771e26743e08e2ab06aef493b",
-    "url": "/virtualCompanion/static/media/birds_exercise.75b465c7.glb"
+    "revision": "7c4dad5ebd97a5c18a404c9d282c9fb4",
+    "url": "/virtualCompanion/static/media/New_Bird.7c4dad5e.glb"
   },
   {
     "revision": "e13ce42a9d64e753315088909c4bed53",
