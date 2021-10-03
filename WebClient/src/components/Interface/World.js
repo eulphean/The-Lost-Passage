@@ -125,7 +125,7 @@ class World extends React.Component {
     // const texture = new THREE.TextureLoader().load(landscape);
     const texture = new THREE.VideoTexture(this.videoRef.current);
     // texture.wrapS = THREE.MirroredRepeatWrapping;
-    const geometry = new THREE.BoxGeometry(100, 100, 100);
+    const geometry = new THREE.BoxGeometry(70, 70, 70);
     const material = new THREE.MeshBasicMaterial( {side: THREE.BackSide, map: texture} );
     const cube = new THREE.Mesh( geometry, material );
     this.scene.add(cube);

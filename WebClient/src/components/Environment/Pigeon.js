@@ -9,7 +9,7 @@
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import Agent, { AgentParams } from '../Environment/Agent.js'
-import model from '../../models/birds_exercise.glb'; 
+import model from '../../models/New_Bird.glb'; 
 import * as Utility from '../Utilities/Utility';
 
 const loader = new GLTFLoader(); 
@@ -63,9 +63,6 @@ export default class Pigeon extends Agent {
             this.fSteer.set(0, 0, 0);
 
             if (this.isAlive){
-                // Animating flipping wings
-                this.animationMixer.update(delta * this.randSeed);
-
                 // Behaviors. 
                 this.updateBehaviour(nAgents);  
             }
@@ -75,6 +72,11 @@ export default class Pigeon extends Agent {
 
             // Apply steering force
             this.applyForce();
+
+            if (this.isAlive) {
+                // Animating flipping wings
+                this.animationMixer.update(delta * this.acceleration.lengthSq() * 0.15);
+            }
 
             if (!this.isAlive && this.position.y < 0){
                 // Don't update dead agents if they are already on the ground
