@@ -172,10 +172,6 @@ export class RosePattern extends Pattern {
 }
 
 export class PatternManager {
-    constructor() {
-        // Just a simple instance to begin with. 
-    }
-
     setTargetPattern(curPatternType) {
         if (curPatternType === PatternTypes.Ellipse) {
             console.log('Creating Ellipse Pattern');

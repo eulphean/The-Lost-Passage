@@ -11,7 +11,7 @@ import Radium from 'radium'
 import * as THREE from 'three'
 
 // Utility components
-import Terrain from '../Environment/Terrain.js'
+// import Terrain from '../Environment/Terrain.js'
 import CameraControl from '../Managers/CameraControl.js'
 import LightingManager from '../Managers/LightingManager.js'
 import RendererManager from '../Managers/RendererManager.js'
@@ -23,9 +23,8 @@ import EnterPanel from './EnterPanel.js'
 import Title from './Title.js'
 import InfoPanel from './InfoPanel.js'
 
-import landscape from '../../assets/landscape.jpg'
+// Clouds video. 
 import clouds from '../../assets/gaugan.mp4'
-import Panel from './ContentPanel.js'
 
 const styles = {
   container: {

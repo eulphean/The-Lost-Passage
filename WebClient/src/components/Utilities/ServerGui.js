@@ -9,12 +9,12 @@
 
 import { Pane } from 'tweakpane';
 import * as EssentialsPlugin from '@tweakpane/plugin-essentials';
-import _, { times } from 'lodash';
+import _ from 'lodash';
 
 import Websocket from './Websocket';
 
 import { TargetParams } from '../Managers/PigeonManager';
-import { PatternParams, PatternTypes, EllipseParams, EllipsePattern, RoseCurveParams } from '../Managers/PatternManager.js';
+import { PatternParams, PatternTypes, EllipseParams, RoseCurveParams } from '../Managers/PatternManager.js';
 import { AgentParams } from '../Environment/Agent.js';
 import { OrbitParams } from '../Managers/CameraControl.js'
 
@@ -60,7 +60,8 @@ class ServerGui {
 
         // Pattern Parameters.
         this.patternFolder = this.gui.addFolder({ title: 'Pattern Params', expanded: true });
-        this.buildPatternTypeOptions(PatternTypes.Ellipse); // Default pattern type.
+        this.currentPatternType = PatternTypes.Ellipse; 
+        this.buildPatternTypeOptions(); // Default pattern type.
         this.buildPatterns(); 
 
         // Ellipse Parameters. 
@@ -83,6 +84,9 @@ class ServerGui {
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Sinusoidal');
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Direction');
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Speed', { min: 0, max: 2 });
+
+        // Show the params based on the current pattern selected.
+        this.showPatternParams();
 
         let f2 = this.gui.addFolder({ title: 'Agent Params', expanded: true});
         f2.addInput(AgentParams, 'AttractionForce', {label: 'AttractionForce', min: 0.5, max: 2, step: 0.05});

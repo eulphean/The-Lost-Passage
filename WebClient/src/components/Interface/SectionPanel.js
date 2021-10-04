@@ -39,10 +39,6 @@ class SectionPanel extends React.Component {
     );
   }
 
-  componentDidMount() {
-    console.log('Hello');
-  }
-
   scroll() {
     setTimeout(() => {
       this.panelRef.current.scrollIntoView({

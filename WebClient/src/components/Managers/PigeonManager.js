@@ -11,8 +11,8 @@ import { PatternManager } from './PatternManager';
 import { OctreeManager } from './OctreeManager'
 import Pigeon from '../Environment/Pigeon'
 import Target from '../Environment/Target'
-import { MathUtils, Scene } from 'three';
-import Agent, { AgentParams } from '../Environment/Agent';
+import { MathUtils } from 'three';
+import { AgentParams } from '../Environment/Agent';
 
 const NUM_PIGEONS = 500; 
 
