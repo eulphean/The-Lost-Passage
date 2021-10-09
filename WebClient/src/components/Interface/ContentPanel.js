@@ -19,33 +19,41 @@ const styles = {
     }
 };
 
+export const PanelTitle = {
+  PIGEONS: 'PASSENGER PIGEONS',
+  CLIMATE: 'CLIMATE STATEMENT',
+  ABOUT: 'ABOUT US'
+}
+
 class ContentPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state={
     };
 
-    this.panelRef = React.createRef();
+    this.pigeonPanelRef = React.createRef();
+    this.climatePanelRef = React.createRef();
+    this.aboutPanelRef = React.createRef(); 
   }
 
   render() {
     return (
-      <div ref={this.panelRef} style={styles.container}>
-        <SectionPanel panelNum={0} />
-        <SectionPanel panelNum={1} />
-        <SectionPanel panelNum={0} />
-        <SectionPanel panelNum={1} />
+      <div style={styles.container}>
+        <SectionPanel ref={this.pigeonPanelRef} title={PanelTitle.PIGEONS} panelNum={0} />
+        <SectionPanel ref={this.climatePanelRef} title={PanelTitle.CLIMATE} panelNum={1} />
+        <SectionPanel ref={this.aboutPanelRef} title={PanelTitle.ABOUT} panelNum={0} />
       </div>
     );
   }
 
-  scroll() {
-    setTimeout(() => {
-      this.panelRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }, 50); // Give a little timeout so the panel can be made visible first.
+  scroll(panelTitle) {
+    if (panelTitle === PanelTitle.PIGEONS) {
+      this.pigeonPanelRef.current.scrollTo();
+    } else if (panelTitle === PanelTitle.CLIMATE) {
+      this.climatePanelRef.current.scrollTo();
+    } else if (panelTitle === PanelTitle.ABOUT) {
+      this.aboutPanelRef.current.scrollTo(); 
+    }
   }
 }
 

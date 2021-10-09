@@ -29,7 +29,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state={
-      showPanel: false
+      showContentPanel: false
     };
 
     this.worldRef = React.createRef(); 
@@ -37,7 +37,7 @@ class App extends React.Component {
   }
 
   render() {
-    let panelStyles = this.state.showPanel ? [styles.panelStyles, styles.panelVisible] : [styles.panelStyles];
+    let panelStyles = this.state.showContentPanel ? [styles.panelStyles, styles.panelVisible] : [styles.panelStyles];
     return (
       <div style={styles.container}>
         <World onScroll={this.onScrollDown.bind(this)} ref={this.worldRef} />
@@ -48,13 +48,13 @@ class App extends React.Component {
     );
   }
 
-  onScrollDown() {
+  onScrollDown(panelTitle) {
     this.setState({
-      showPanel: true
+      showContentPanel: true
     });
 
     // Trigger scroll.
-    this.contentPanelRef.current.scroll();
+    this.contentPanelRef.current.scroll(panelTitle);
   }
 }
 

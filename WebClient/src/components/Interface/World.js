@@ -20,7 +20,7 @@ import PigeonManager from '../Managers/PigeonManager.js'
 // Interface components. 
 import GuiPanel from './GuiPanel.js'
 import EnterPanel from './EnterPanel.js'
-import Title from './Title.js'
+import Navigation from './Navigation.js'
 import InfoPanel from './InfoPanel.js'
 
 // Clouds video. 
@@ -46,7 +46,7 @@ class World extends React.Component {
     // Reference to the components that need to be accesed. 
     this.worldRef = React.createRef(); 
     this.guiRef = React.createRef(); 
-    this.titleRef = React.createRef(); 
+    this.navRef = React.createRef(); 
     this.panelRef = React.createRef(); 
     this.videoRef = React.createRef();
     
@@ -92,7 +92,6 @@ class World extends React.Component {
       <div style={styles.container} ref={this.worldRef}>
         <GuiPanel 
           ref={this.guiRef} 
-          onShowInfoPanel={this.onShowInfoPanel.bind(this)}
           onSpawnAgents={this.onSpawnAgents.bind(this)}
           onShootPigeon={this.onShootPigeon.bind(this)}
         />
@@ -100,8 +99,7 @@ class World extends React.Component {
           onEnterWorld={this.onEnterWorld.bind(this)} 
           onLoadComplete={this.onLoadComplete.bind(this)}
         />
-        <Title onClickAbout={this.onClickAbout.bind(this)} ref={this.titleRef} />
-        <InfoPanel ref={this.panelRef} />
+        <Navigation onClickNavTitle={this.onClickNavTitle.bind(this)} ref={this.navRef} />
         <video id={'video'} ref={this.videoRef} playsInline loop src={clouds} style={styles.video} />
       </div>
     );
@@ -150,12 +148,11 @@ class World extends React.Component {
   onLoadComplete() {
     // Kick off a camera animation to go somewhere into the agent. 
     // Animate the Title-In. 
-    this.titleRef.current.updateTitle(); 
+    this.navRef.current.showNav(); 
   }
   
-  onShowInfoPanel() {
-    this.panelRef.current.updatePanel(); 
-    this.titleRef.current.updateTitle(); 
+  onClickNavTitle(panelTitle) {
+    this.props.onScroll(panelTitle); 
   }
 
   onPatternChanged(newPatternType) {
@@ -170,9 +167,7 @@ class World extends React.Component {
     this.pigeonManager.shootPigeon();
   }
 
-  onClickAbout() {
-    this.props.onScroll(); 
-  }
+
 }
 
 export default Radium(World);

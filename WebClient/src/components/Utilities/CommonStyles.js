@@ -6,7 +6,8 @@ const color = {
     panel: '#E7EFE0',
     lightBlue: '#E6E9EC',
     darkBlue: '#67749C',
-    midGrey: '#B2B6C2'
+    midGrey: '#B2B6C2',
+    brown: '#91614B'
 };
 
 const fontSize = {

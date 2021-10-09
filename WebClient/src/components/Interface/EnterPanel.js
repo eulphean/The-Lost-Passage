@@ -13,7 +13,7 @@ import { bounceOut, zoomIn } from 'react-animations'
 import { fontFamily, color, fontSize, padding } from '../Utilities/CommonStyles.js'
 import { ReactComponent as Pigeon } from '../../assets/pigeon.svg'
 
-const FLASH_DURATION = '2.0s';
+const FLASH_DURATION = '1.0s';
 const Load_Time = 4000; // 4 seconds for now. // Change it back once we are ready.
 const TopMessage = "\"The avarice and thoughtlessness of humankind led to the extinction of this species.\"";
 const BottomMessage = "\"May we gather the strength to confront the reality of our climate condition.\"";
@@ -82,7 +82,7 @@ const styles = {
         paddingLeft: padding.big,
         paddingRight: padding.big,
         letterSpacing: '5px',
-        cursor: 'default'
+        cursor: 'crosshair'
     },
 
     hover: {

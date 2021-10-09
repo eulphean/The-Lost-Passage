@@ -30,18 +30,19 @@ class SectionPanel extends React.Component {
     this.state={
     };
 
+    this.containerRef = React.createRef(); 
   }
 
   render() {
     let containerStyles = this.props.panelNum === 0 ? [styles.container, styles.colorA] : [styles.container, styles.colorB]; 
     return (
-      <div style={containerStyles}></div>
+      <div style={containerStyles} ref={this.containerRef}></div>
     );
   }
 
-  scroll() {
+  scrollTo() {
     setTimeout(() => {
-      this.panelRef.current.scrollIntoView({
+      this.containerRef.current.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
       });
