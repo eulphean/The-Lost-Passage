@@ -8,6 +8,11 @@
 import React from 'react'
 import Radium from 'radium'
 
+import { PanelTitle } from './ContentPanel';
+import PassengerPigeons from './PassengerPigeons'
+import ClimateStatement from './ClimateStatement'
+import About from './About'
+
 const styles = {
     container: {
         position: 'relative',
@@ -16,7 +21,7 @@ const styles = {
     },
 
     colorA: {
-        backgroundColor: 'black'
+        backgroundColor: 'red'
     },
 
     colorB: {
@@ -35,9 +40,22 @@ class SectionPanel extends React.Component {
 
   render() {
     let containerStyles = this.props.panelNum === 0 ? [styles.container, styles.colorA] : [styles.container, styles.colorB]; 
+    let panel = this.getPanel(); 
     return (
-      <div style={containerStyles} ref={this.containerRef}></div>
+      <div style={containerStyles} ref={this.containerRef}>
+        {panel}
+      </div>
     );
+  }
+
+  getPanel() {
+    if (this.props.title === PanelTitle.PIGEONS) {
+      return <PassengerPigeons />
+    } else if (this.props.title === PanelTitle.CLIMATE) {
+      return <ClimateStatement />
+    } else if (this.props.title === PanelTitle.ABOUT) {
+      return <About />
+    }
   }
 
   scrollTo() {
