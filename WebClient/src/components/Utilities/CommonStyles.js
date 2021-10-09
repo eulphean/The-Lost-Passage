@@ -3,7 +3,10 @@ const color = {
     darkWithAlpha: 'rgb(0, 0, 0, 0.4)',
     button: 'rgb(255, 255, 255, 0.4)',
     link: '#D34C00',
-    panel: '#E7EFE0'
+    panel: '#E7EFE0',
+    lightBlue: '#E6E9EC',
+    darkBlue: '#67749C',
+    midGrey: '#B2B6C2'
 };
 
 const fontSize = {
@@ -61,12 +64,9 @@ const padding = {
 };
 
 const fontFamily = {
-    din: 'd-dinregular',
-    opensanslight: 'open_sanslight',
-    opensansregular: 'open_sansregular',
-    demode: 'demoderegular',
-    slice: 'sliceregular',
-    warsaw: 'warsaw_gothic'
+    bebas: 'bebas',
+    mont: 'montserrat',
+    tenor: 'tenorsans'
 };
 
 

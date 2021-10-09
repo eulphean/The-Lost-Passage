@@ -14,7 +14,7 @@ import Target from '../Environment/Target'
 import { MathUtils } from 'three';
 import { AgentParams } from '../Environment/Agent';
 
-const NUM_PIGEONS = 500; 
+const NUM_PIGEONS = 800; 
 
 export let TargetParams = {
     ShowTarget: true
