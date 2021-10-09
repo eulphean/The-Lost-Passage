@@ -19,9 +19,6 @@ import PigeonManager from '../Managers/PigeonManager.js'
 
 // Interface components. 
 import GuiPanel from './GuiPanel.js'
-import EnterPanel from './EnterPanel.js'
-import Navigation from './Navigation.js'
-import InfoPanel from './InfoPanel.js'
 
 // Clouds video. 
 import clouds from '../../assets/gaugan.mp4'
@@ -95,11 +92,6 @@ class World extends React.Component {
           onSpawnAgents={this.onSpawnAgents.bind(this)}
           onShootPigeon={this.onShootPigeon.bind(this)}
         />
-        <EnterPanel 
-          onEnterWorld={this.onEnterWorld.bind(this)} 
-          onLoadComplete={this.onLoadComplete.bind(this)}
-        />
-        <Navigation onClickNavTitle={this.onClickNavTitle.bind(this)} ref={this.navRef} />
         <video id={'video'} ref={this.videoRef} playsInline loop src={clouds} style={styles.video} />
       </div>
     );
@@ -138,21 +130,11 @@ class World extends React.Component {
     this.scene.add(sphere);
   }
 
-  onEnterWorld() {
-    // Instantiate pigeon geometry. 
+  // Instantiate pigeon geometry. 
+  beginWorld() {
     this.videoRef.current.play();
     let currentPatternType = this.guiRef.current.getCurPatternType(); 
     this.pigeonManager.setup(this.scene, currentPatternType); 
-  }
-
-  onLoadComplete() {
-    // Kick off a camera animation to go somewhere into the agent. 
-    // Animate the Title-In. 
-    this.navRef.current.showNav(); 
-  }
-  
-  onClickNavTitle(panelTitle) {
-    this.props.onScroll(panelTitle); 
   }
 
   onPatternChanged(newPatternType) {
@@ -167,7 +149,12 @@ class World extends React.Component {
     this.pigeonManager.shootPigeon();
   }
 
-
+  scrollTo() {
+    this.worldRef.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
 }
 
 export default Radium(World);

@@ -8,13 +8,14 @@
 */
 
 import React from 'react'
+
 import Radium from 'radium'
 import { bounceOut, zoomIn } from 'react-animations'
 import { fontFamily, color, fontSize, padding } from '../Utilities/CommonStyles.js'
 import { ReactComponent as Pigeon } from '../../assets/pigeon.svg'
 
 const FLASH_DURATION = '1.0s';
-const Load_Time = 4000; // 4 seconds for now. // Change it back once we are ready.
+const Load_Time = 0; // 4 seconds for now. // Change it back once we are ready.
 const TopMessage = "\"The avarice and thoughtlessness of humankind led to the extinction of this species.\"";
 const BottomMessage = "\"May we gather the strength to confront the reality of our climate condition.\"";
 const LeftMessage = "\"Its disappearance is nearly unfathomable. Still can't fully get my mind around it.\"";
@@ -48,8 +49,7 @@ const styles = {
     },
 
     loadContainer: {
-        fontSize: fontSize.veryBig,
-        fill: color.button
+        fontSize: fontSize.veryBig
     },
 
     svg: {
@@ -78,7 +78,8 @@ const styles = {
         borderStyle: 'solid',
         borderWidth: '4px',
         marginTop: padding.small,
-        padding: padding.small,
+        paddingTop: padding.small,
+        paddingBottom: padding.small,
         paddingLeft: padding.big,
         paddingRight: padding.big,
         letterSpacing: '5px',
@@ -139,7 +140,7 @@ class EnterPanel extends React.Component {
 
   // Overriding React function. 
   render() {
-    let containerStyle = this.state.isHidden ? [styles.container, styles.hide] : styles.container;
+    let containerStyle = styles.container;
     let content = this.state.isLoading ? this.getLoader() : this.getTitle(); 
     let messages = this.getMessages();
     return (

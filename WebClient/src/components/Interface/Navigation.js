@@ -10,6 +10,7 @@ import Radium from 'radium'
 
 import { fontFamily, color, fontSize, padding } from '../Utilities/CommonStyles.js'
 import { PanelTitle } from './ContentPanel.js';
+import { ReactComponent as Pigeon } from '../../assets/pigeon.svg'
 
 const styles = {
     container: {
@@ -50,6 +51,28 @@ const styles = {
 
     hover: {
       color: color.brown
+    },
+
+    homeButton: {
+      position: 'fixed',
+      right: padding.big,
+      bottom: padding.big,
+      fontSize: fontSize.small,
+      padding: padding.verySmall,
+      backgroundColor: color.lightBlue,
+      width: fontSize.gaia,
+      height: fontSize.gaia,
+      borderRadius: fontSize.extraMassive,
+      zIndex: 1
+    },
+
+    homeHover: {
+      backgroundColor: color.brown
+    },
+
+    svg: {
+      width: '100%',
+      height: '100%',
     }
 };
 
@@ -57,43 +80,66 @@ class Navigation extends React.Component {
   constructor(props) {
     super(props);
     this.state={ 
-      isHidden: true,
       isHoveringPigeons: false,
       isHoveringClimate: false,
-      isHoveringAbout: false
+      isHoveringAbout: false,
+      isHomeButtonHovering: false, 
+      showHomeButton: false
     };
   }
 
   render() {
-    let containerStyle = this.state.isHidden ? [styles.container, styles.hidden] : styles.container; 
+    let containerStyle = styles.container; 
     let pigeonStyle = this.state.isHoveringPigeons ? [styles.title, styles.hover] : styles.title;
     let climateStyle = this.state.isHoveringClimate ? [styles.title, styles.hover] : styles.title;
     let aboutStyle = this.state.isHoveringAbout ? [styles.title, styles.hover] : styles.title; 
+    let homeButton = this.getHomeButton(); 
     return (
       <div style={containerStyle} >
-            <div style={styles.homeTitle}>THE LOST PASSAGE</div>
-            <div style={styles.titleContainer}>
-              <div style={pigeonStyle}
-                  onClick={this.onClick.bind(this, PanelTitle.PIGEONS)}
-                  onMouseEnter={this.onHoverPigeons.bind(this)} 
-                  onMouseLeave={this.onHoverPigeons.bind(this)}>
-                PASSENGER PIGEONS
-              </div>
-              <div style={climateStyle} 
-                onClick={this.onClick.bind(this, PanelTitle.CLIMATE)}
-                onMouseEnter={this.onHoverClimate.bind(this)}
-                onMouseLeave={this.onHoverClimate.bind(this)}>
-                CLIMATE STATEMENT
-              </div>
-              <div style={aboutStyle}
-                  onClick={this.onClick.bind(this, PanelTitle.ABOUT)}
-                  onMouseEnter={this.onHoverAbout.bind(this)}
-                  onMouseLeave={this.onHoverAbout.bind(this)}>
-                ABOUT US
-              </div>
-            </div>
+        <div style={styles.homeTitle}>THE LOST PASSAGE</div>
+        <div style={styles.titleContainer}>
+          <div style={pigeonStyle}
+              onClick={this.onClick.bind(this, PanelTitle.PIGEONS)}
+              onMouseEnter={this.onHoverPigeons.bind(this)} 
+              onMouseLeave={this.onHoverPigeons.bind(this)}>
+            PASSENGER PIGEONS
+          </div>
+          <div style={climateStyle} 
+            onClick={this.onClick.bind(this, PanelTitle.CLIMATE)}
+            onMouseEnter={this.onHoverClimate.bind(this)}
+            onMouseLeave={this.onHoverClimate.bind(this)}>
+            CLIMATE STATEMENT
+          </div>
+          <div style={aboutStyle}
+              onClick={this.onClick.bind(this, PanelTitle.ABOUT)}
+              onMouseEnter={this.onHoverAbout.bind(this)}
+              onMouseLeave={this.onHoverAbout.bind(this)}>
+            ABOUT US
+          </div>
+        </div>
+        {homeButton}
       </div>
     );
+  }
+
+  getHomeButton() {
+    let buttonStyle = this.state.showHomeButton ? [styles.homeButton] : [styles.homeButton, styles.hidden];
+    buttonStyle = this.state.isHomeButtonHovering ? [buttonStyle, styles.homeHover] : buttonStyle; 
+    return (
+      <div style={buttonStyle}
+          onClick={this.onHomeButtonClick.bind(this)}
+          onMouseEnter={this.onHomeButtonHover.bind(this)}
+          onMouseLeave={this.onHomeButtonHover.bind(this)}>
+        <Pigeon style={styles.svg} />
+      </div>
+    );
+  }
+
+  onHomeButtonHover() {
+    let hovering = this.state.isHomeButtonHovering; 
+    this.setState({
+      isHomeButtonHovering: !hovering
+    }); 
   }
 
   onHoverPigeons() {
@@ -119,51 +165,24 @@ class Navigation extends React.Component {
 
   onClick(panelTitle) {
     this.props.onClickNavTitle(panelTitle);
+
+    // TODO: Do something about stopping the WebGL loop as well. 
+    // Stop rendering or animating the frame. 
+    this.setState({
+      showHomeButton: true
+    });
   }
 
-  showNav() {
+  onHomeButtonClick() {
+    this.props.onClickHomeButton(); 
     this.setState({
-      isHidden: false
+      showHomeButton: false
     }); 
+    // Hide the home button.
+    // Scroll back to the top
+    // Turn on the renderer again...
+    // Show the birds maybe....
   }
 }
 
 export default Radium(Navigation);
-
-
-// animateIn: {
-//   animation: 'x 2s linear 1 forwards',
-//   animationName: animation.floatIn
-// },
-
-// animateOut: {
-//   animation: 'x 2s linear 1 forwards',
-//   animationName: animation.floatOut
-// },
-
-
-// const animation = {
-//   floatIn: Radium.keyframes({
-//     '0%': {
-//       top: '-100px'
-//     },
-//     '50%': {
-//       top: '-50px',
-//     },
-//     '100%': {
-//       top: '0px',
-//     }
-//   }),
-
-//   floatOut: Radium.keyframes({
-//     '0%': {
-//       top: '0'
-//     },
-//     '50%': {
-//       top: '-50px',
-//     },
-//     '100%': {
-//       top: '-100px'
-//     }
-//   })
-// };
