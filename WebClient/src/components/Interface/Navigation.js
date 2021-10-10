@@ -15,8 +15,8 @@ import { ReactComponent as Pigeon } from '../../assets/pigeon.svg'
 const styles = {
     container: {
         position: 'absolute',
-        top: '50px',
-        left: '50px',
+        top: '30px',
+        left: '30px',
         display: 'flex',
         flexDirection: 'column',
         visibility: 'visible'
@@ -28,25 +28,24 @@ const styles = {
 
     homeTitle: {
       fontFamily: fontFamily.bebas,
-      fontSize: fontSize.extraHuge,
+      fontSize: fontSize.huge,
       letterSpacing: 6,
       color: color.darkBlue,
       cursor: 'default'
     },
 
     titleContainer: {
-      marginTop: padding.small,
       display: 'flex',
       flexDirection: 'column'
     },
 
     title: {
         fontFamily: fontFamily.tenor,
-        fontSize: fontSize.big,
-        letterSpacing: 3,
+        fontSize: fontSize.small,
+        letterSpacing: 2,
         color: color.darkBlue,
         cursor: 'crosshair',
-        paddingTop: padding.small
+        paddingTop: padding.verySmall
     },
 
     hover: {

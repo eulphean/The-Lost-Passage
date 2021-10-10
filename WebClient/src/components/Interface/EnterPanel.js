@@ -14,7 +14,7 @@ import { bounceOut, zoomIn } from 'react-animations'
 import { fontFamily, color, fontSize, padding } from '../Utilities/CommonStyles.js'
 import { ReactComponent as Pigeon } from '../../assets/pigeon.svg'
 
-const FLASH_DURATION = '1.0s';
+const FLASH_DURATION = '2.0s';
 const Load_Time = 0; // 4 seconds for now. // Change it back once we are ready.
 const TopMessage = "\"The avarice and thoughtlessness of humankind led to the extinction of this species.\"";
 const BottomMessage = "\"May we gather the strength to confront the reality of our climate condition.\"";
@@ -33,7 +33,7 @@ const styles = {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        zIndex: 0
+        zIndex: 1
     },
 
     hide: {
@@ -76,6 +76,7 @@ const styles = {
         color: color.darkBlue,
         fontSize: fontSize.extraBig,
         borderStyle: 'solid',
+        borderColor: color.darkBlue,
         borderWidth: '4px',
         marginTop: padding.small,
         paddingTop: padding.small,
@@ -104,7 +105,7 @@ const styles = {
       color: color.darkBlue, 
       fontSize: fontSize.lessBig,
       fontFamily: fontFamily.tenor,
-      left: '15%',
+      left: '10%',
       transform: 'rotate(-90deg)'
     },
 
@@ -113,7 +114,7 @@ const styles = {
       color: color.darkBlue, 
       fontSize: fontSize.lessBig,
       fontFamily: fontFamily.tenor,
-      right: '15%',
+      right: '12%',
       transform: 'rotate(90deg)'
     },
 
@@ -134,7 +135,8 @@ class EnterPanel extends React.Component {
     this.state={
         isHidden: false,
         isLoading: false,
-        isHovering: false
+        isHovering: false,
+        isDisabled: true
     };
   }
 
@@ -153,21 +155,26 @@ class EnterPanel extends React.Component {
 
   getLoader() {
     return (
-      <div style={[styles.loadContainer, styles.zoom]}>
+      <div style={[styles.loadContainer, styles.zoom]} onAnimationEnd={this.hasFinishedLoading.bind(this)}>
         <Pigeon style={styles.svg} />
       </div>); 
   }
 
   getTitle() {
     let buttonStyle = this.state.isHovering ? [styles.button, styles.hover] : [styles.button]; 
+    let button = this.state.isDisabled ? <React.Fragment></React.Fragment> : (
+      <button 
+      disabled={this.state.isDisabled}
+      onMouseEnter={this.onHoverOn.bind(this)} 
+      onMouseLeave={this.onHoverOff.bind(this)} 
+      onClick={this.onEnter.bind(this)} 
+      style={buttonStyle}>ENTER</button>
+    ); 
     return (
         <React.Fragment>
-            <div style={[styles.title, styles.flash]}>THE LOST PASSAGE</div>
-            <div 
-              onMouseEnter={this.onHover.bind(this)} 
-              onMouseLeave={this.onHover.bind(this)} 
-              onClick={this.onEnter.bind(this)} 
-              style={buttonStyle}>ENTER</div>
+            <div style={[styles.title, styles.flash]}
+                 onAnimationEnd={this.onStartAnimationEnd.bind(this)}>THE LOST PASSAGE</div>
+            {button}  
         </React.Fragment>
     );
   }
@@ -184,16 +191,12 @@ class EnterPanel extends React.Component {
   }
 
   onEnter() {
+    // Setup the world. 
+    this.props.onEnterWorld(); 
+    
     this.setState({
         isLoading: true
     });
-
-    // Tell the world that the user has
-    // clicked on enter. 
-    this.props.onEnterWorld(); 
-
-    // Schedule a cleanup here. 
-    setTimeout(this.hasFinishedLoading.bind(this), Load_Time); 
   }
 
   hasFinishedLoading() {
@@ -204,12 +207,28 @@ class EnterPanel extends React.Component {
     // Tel the world that load is complete. 
     this.props.onLoadComplete(); 
   }
+  
+  onHoverOn() {
+    if (!this.state.isDisabled) {
+      this.setState({
+        isHovering: true
+      }); 
+    }
+  }
 
-  onHover() {
-    let hoverState = !this.state.isHovering;
+  onHoverOff() {
+    if (!this.state.isDisabled) {
+      this.setState({
+        isHovering: false
+      }); 
+    }
+  }
+
+  onStartAnimationEnd() {
+    // Enable the button now. 
     this.setState({
-      isHovering: hoverState
-    });
+      isDisabled: false
+    }); 
   }
 }
 
