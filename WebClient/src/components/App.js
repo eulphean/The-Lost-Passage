@@ -110,7 +110,7 @@ class App extends React.Component {
       this.setState({
         showContentPanel: false
       });
-    }, 500); // Give a little timeout so the panel can be made visible first.
+    }, 1000); // Give a little timeout so the panel can be made visible first.
   }
 }
 

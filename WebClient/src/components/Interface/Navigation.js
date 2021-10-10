@@ -174,13 +174,11 @@ class Navigation extends React.Component {
 
   onHomeButtonClick() {
     this.props.onClickHomeButton(); 
-    this.setState({
-      showHomeButton: false
-    }); 
-    // Hide the home button.
-    // Scroll back to the top
-    // Turn on the renderer again...
-    // Show the birds maybe....
+    setTimeout(() => {
+      this.setState({
+        showHomeButton: false
+      }); 
+    }, 500);
   }
 }
 

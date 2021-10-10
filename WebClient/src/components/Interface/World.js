@@ -87,7 +87,6 @@ class World extends React.Component {
     // Setup texture on the skybox now that the video component is mounted. 
     this.skyboxManager.setupVideoTexture(this.videoRef);
 
-    // This is the initial render. 
     // Initialize the recursive rendering call. 
     this.initializeRender(); 
   }
@@ -110,6 +109,8 @@ class World extends React.Component {
       this.pigeonManager.update(boundingBox); 
 
       this.cameraControl.update();
+
+      // Target exists? 
       if (this.pigeonManager.target) {
         this.raycastManager.intersect(this.cameraControl.camera, this.pigeonManager.target.mesh); 
       }
@@ -144,7 +145,7 @@ class World extends React.Component {
     this.worldRef.current.scrollIntoView({
       behavior: 'smooth',
       block: 'start'
-    });
+    }, 100);
   }
 }
 
