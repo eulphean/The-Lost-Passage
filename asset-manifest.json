@@ -1,25 +1,26 @@
 {
   "files": {
-    "main.css": "/virtualCompanion/static/css/main.a4c33d27.chunk.css",
-    "main.js": "/virtualCompanion/static/js/main.1cecd61d.chunk.js",
-    "main.js.map": "/virtualCompanion/static/js/main.1cecd61d.chunk.js.map",
+    "main.css": "/virtualCompanion/static/css/main.0b917559.chunk.css",
+    "main.js": "/virtualCompanion/static/js/main.fef67392.chunk.js",
+    "main.js.map": "/virtualCompanion/static/js/main.fef67392.chunk.js.map",
     "runtime-main.js": "/virtualCompanion/static/js/runtime-main.c02b6213.js",
     "runtime-main.js.map": "/virtualCompanion/static/js/runtime-main.c02b6213.js.map",
-    "static/js/2.043c8bec.chunk.js": "/virtualCompanion/static/js/2.043c8bec.chunk.js",
-    "static/js/2.043c8bec.chunk.js.map": "/virtualCompanion/static/js/2.043c8bec.chunk.js.map",
+    "static/js/2.1e94b367.chunk.js": "/virtualCompanion/static/js/2.1e94b367.chunk.js",
+    "static/js/2.1e94b367.chunk.js.map": "/virtualCompanion/static/js/2.1e94b367.chunk.js.map",
     "index.html": "/virtualCompanion/index.html",
-    "precache-manifest.0334f7b7985f0b600587092236281356.js": "/virtualCompanion/precache-manifest.0334f7b7985f0b600587092236281356.js",
+    "precache-manifest.7c7727eec1ab2da970e6153acc31204f.js": "/virtualCompanion/precache-manifest.7c7727eec1ab2da970e6153acc31204f.js",
     "service-worker.js": "/virtualCompanion/service-worker.js",
-    "static/css/main.a4c33d27.chunk.css.map": "/virtualCompanion/static/css/main.a4c33d27.chunk.css.map",
-    "static/js/2.043c8bec.chunk.js.LICENSE.txt": "/virtualCompanion/static/js/2.043c8bec.chunk.js.LICENSE.txt",
+    "static/css/main.0b917559.chunk.css.map": "/virtualCompanion/static/css/main.0b917559.chunk.css.map",
+    "static/js/2.1e94b367.chunk.js.LICENSE.txt": "/virtualCompanion/static/js/2.1e94b367.chunk.js.LICENSE.txt",
     "static/media/New_Bird.glb": "/virtualCompanion/static/media/New_Bird.a5ca1e59.glb",
-    "static/media/stylesheet.css": "/virtualCompanion/static/media/warsawgothic-webfont.911a64f9.woff",
-    "static/media/gaugan.mp4": "/virtualCompanion/static/media/gaugan.7656d0aa.mp4"
+    "static/media/stylesheet.css": "/virtualCompanion/static/media/tenorsans-regular-webfont.ed0e3e19.woff",
+    "static/media/gaugan.mp4": "/virtualCompanion/static/media/gaugan.7656d0aa.mp4",
+    "static/media/pigeon.e68ccc38.svg": "/virtualCompanion/static/media/pigeon.e68ccc38.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.c02b6213.js",
-    "static/js/2.043c8bec.chunk.js",
-    "static/css/main.a4c33d27.chunk.css",
-    "static/js/main.1cecd61d.chunk.js"
+    "static/js/2.1e94b367.chunk.js",
+    "static/css/main.0b917559.chunk.css",
+    "static/js/main.fef67392.chunk.js"
   ]
 }
