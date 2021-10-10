@@ -73,6 +73,9 @@ class World extends React.Component {
 
     // Three.js Renderer
     this.rendererManager = new RendererManager(); 
+
+    // Resizer
+    window.addEventListener('resize', this.onWindowResize.bind(this));
   }
 
   componentDidMount() {
@@ -123,6 +126,15 @@ class World extends React.Component {
 
     // Register this function as a callback to every repaint from the browser.
     requestAnimationFrame(this.initializeRender.bind(this)); 
+  }
+
+  onWindowResize() {
+    if (this.cameraControl) {
+      let camera = this.cameraControl.getCamera(); 
+      camera.aspect = window.innerWidth / window.innerHeight; 
+      camera.updateProjectionMatrix(); 
+      this.rendererManager.updateSize(window.innerWidth, window.innerHeight);
+    }
   }
 
   // Instantiate pigeon geometry. 

@@ -29,6 +29,10 @@ class RendererManager {
     render(scene, camera) {
         this.renderer.render(scene, camera);
     }
+
+    updateSize(width, height) {
+        this.renderer.setSize(width, height); 
+    }
 } 
 
 // Keep a singleton instance of this - through App.js
