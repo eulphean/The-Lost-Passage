@@ -12,6 +12,7 @@ import World from './Interface/World.js'
 import ContentPanel from './Interface/ContentPanel.js';
 import Navigation from './Interface/Navigation.js'
 import EnterPanel from './Interface/EnterPanel.js';
+import threeOrbitControls from 'three-orbit-controls';
 
 
 const styles = {
@@ -102,10 +103,14 @@ class App extends React.Component {
 
     // Trigger scroll.
     this.contentPanelRef.current.scroll(panelTitle);
+
+    // Stop Renderer
+    this.worldRef.current.updateAnimation(false); 
   }
 
   onClickHomeButton() {
     this.worldRef.current.scrollTo(); 
+    this.worldRef.current.updateAnimation(true);
     setTimeout(() => {
       this.setState({
         showContentPanel: false

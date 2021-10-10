@@ -7,6 +7,10 @@
 
 import * as THREE from 'three'
 
+export let RendererParams = {
+    DrawCalls: 0
+}
+
 class RendererManager {
     constructor() {
         // Core renderer. 
@@ -32,6 +36,10 @@ class RendererManager {
 
     updateSize(width, height) {
         this.renderer.setSize(width, height); 
+    }
+
+    monitorDrawCalls() {
+        RendererParams.DrawCalls = this.renderer.info.render.calls;
     }
 } 
 

@@ -46,6 +46,9 @@ class World extends React.Component {
     super(props);
     this.state={};
 
+    // Animation flag. 
+    this.shouldAnimate = true; 
+
     // Reference to the components that need to be accesed. 
     this.worldRef = React.createRef(); 
     this.guiRef = React.createRef(); 
@@ -122,10 +125,14 @@ class World extends React.Component {
       this.rendererManager.render(this.scene, this.cameraControl.getCamera());   
       
       this.skyboxManager.update();   
+
+      this.rendererManager.monitorDrawCalls();
     this.fpsGraph.end();
 
-    // Register this function as a callback to every repaint from the browser.
-    requestAnimationFrame(this.initializeRender.bind(this)); 
+    if (this.shouldAnimate) {
+      // Register this function as a callback to every repaint from the browser.
+      requestAnimationFrame(this.initializeRender.bind(this)); 
+    }
   }
 
   onWindowResize() {
@@ -134,6 +141,15 @@ class World extends React.Component {
       camera.aspect = window.innerWidth / window.innerHeight; 
       camera.updateProjectionMatrix(); 
       this.rendererManager.updateSize(window.innerWidth, window.innerHeight);
+    }
+  }
+
+  updateAnimation(status) {
+    this.shouldAnimate = status; 
+    
+    // Start animating again in this state. 
+    if (status) {
+      this.initializeRender();
     }
   }
 

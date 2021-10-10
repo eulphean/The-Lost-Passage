@@ -18,6 +18,7 @@ import { PatternParams, PatternTypes, EllipseParams, RoseCurveParams } from '../
 import { AgentParams } from '../Environment/Agent.js';
 import { OrbitParams } from '../Managers/CameraControl.js'
 import { SkyboxParams } from '../Managers/SkyboxManager';
+import { RendererParams } from '../Managers/RendererManager';
 
 // Local params for the GUI. 
 // Presets is a dynamically populated prop (critical)
@@ -46,6 +47,8 @@ class ServerGui {
             label: 'FPS',
             lineCount: 2,
         });
+
+        this.gui.addMonitor(RendererParams, 'DrawCalls');
 
         // Orbit controls. 
         let f0 = this.gui.addFolder({ title: 'Orbit Controls', expanded: true });
