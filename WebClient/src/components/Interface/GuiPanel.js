@@ -36,25 +36,10 @@ class GuiPanel extends React.Component {
   componentDidMount() {
     let containerComponent = this.guiRef.current; 
     this.gui = new ServerGui(containerComponent); 
-    this.gui.subscribeShowPanel(this.onShowPanel.bind(this));
-    this.gui.subscribeSpawnAgents(this.onSpawnAgents.bind(this));
-    this.gui.subscribeShootPigeon(this.onShootPigeon.bind(this));
   }
 
   getFpsGraph() {
       return this.gui.fpsGraph; 
-  }
-
-  onShowPanel() {
-    this.props.onShowInfoPanel(); 
-  }
-
-  onSpawnAgents() {
-    this.props.onSpawnAgents();
-  }
-
-  onShootPigeon() {
-    this.props.onShootPigeon();
   }
 
   subscribeForPatternChange(callback) {

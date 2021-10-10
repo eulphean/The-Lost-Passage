@@ -6,11 +6,8 @@
 */
 
 import * as THREE from 'three'
-import { PatternParams } from './PatternManager';
 
-
-
-class RendererManager {
+class RaycastManager {
     constructor(shootPigeonCallback) {
         this.raycaster = new THREE.Raycaster();
         this.mouse = new THREE.Vector2(); 
@@ -44,4 +41,4 @@ class RendererManager {
 } 
 
 // Keep a singleton instance of this - through App.js
-export default RendererManager;
+export default RaycastManager;

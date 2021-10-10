@@ -22,7 +22,8 @@ import RaycastManager from '../Managers/RaycastManager.js'
 import GuiPanel from './GuiPanel.js'
 
 // Clouds video. 
-import clouds from '../../assets/gaugan.mp4'
+import gaugan from '../../assets/gaugan.mp4'
+import SkyboxManager from '../Managers/SkyboxManager.js'
 
 const styles = {
   container: {
@@ -61,14 +62,14 @@ class World extends React.Component {
     // Lights.
     this.lightingManager = new LightingManager(this.scene); 
 
+    // Create skybox. 
+    this.skyboxManager = new SkyboxManager(this.scene); 
+
     // Pigeons
     this.pigeonManager = new PigeonManager(); 
 
     // Raycaster. 
     this.raycastManager = new RaycastManager(this.onShootPigeon.bind(this)); 
-
-    // Instantiate terrain geometry.
-    // this.terrain = new Terrain(this.scene); 
 
     // Three.js Renderer
     this.rendererManager = new RendererManager(); 
@@ -83,24 +84,20 @@ class World extends React.Component {
     this.fpsGraph = this.guiRef.current.getFpsGraph(); 
     this.guiRef.current.subscribeForPatternChange(this.onPatternChanged.bind(this));
 
+    // Setup texture on the skybox now that the video component is mounted. 
+    this.skyboxManager.setupVideoTexture(this.videoRef);
+
     // This is the initial render. 
     // Initialize the recursive rendering call. 
     this.initializeRender(); 
-
-    this.addSkybox();
-    //this.addSkySphere();
   }
 
   // Component render. 
   render() {
     return (
       <div style={styles.container} ref={this.worldRef}>
-        <GuiPanel 
-          ref={this.guiRef} 
-          onSpawnAgents={this.onSpawnAgents.bind(this)}
-          onShootPigeon={this.onShootPigeon.bind(this)}
-        />
-        <video id={'video'} ref={this.videoRef} playsInline loop src={clouds} style={styles.video} />
+        <GuiPanel ref={this.guiRef} />
+        <video id={'video'} ref={this.videoRef} playsInline loop src={gaugan} style={styles.video} />
       </div>
     );
   }
@@ -108,37 +105,23 @@ class World extends React.Component {
   // CORE Three.js recursive render loop. 
   initializeRender() {
     this.fpsGraph.begin();
-      this.pigeonManager.update(); 
+      // Pass the bounding box to the pigeon manager for creating bounds for agents. 
+      let boundingBox = this.skyboxManager.getBoundingBox(); 
+      this.pigeonManager.update(boundingBox); 
+
       this.cameraControl.update();
       if (this.pigeonManager.target) {
         this.raycastManager.intersect(this.cameraControl.camera, this.pigeonManager.target.mesh); 
       }
+
       // This renders each frame. 
-      this.rendererManager.render(this.scene, this.cameraControl.getCamera());      
+      this.rendererManager.render(this.scene, this.cameraControl.getCamera());   
+      
+      this.skyboxManager.update();   
     this.fpsGraph.end();
 
     // Register this function as a callback to every repaint from the browser.
     requestAnimationFrame(this.initializeRender.bind(this)); 
-  }
-
-  addSkybox() {
-    // const texture = new THREE.TextureLoader().load(landscape);
-    const texture = new THREE.VideoTexture(this.videoRef.current);
-    // texture.wrapS = THREE.MirroredRepeatWrapping;
-    const geometry = new THREE.BoxGeometry(120, 70, 120);
-    const material = new THREE.MeshBasicMaterial( {side: THREE.BackSide, map: texture} );
-    const cube = new THREE.Mesh( geometry, material );
-    this.scene.add(cube);
-  }
-
-  addSkySphere() {
-    //const texture = new THREE.TextureLoader().load(landscape);   ;
-    const texture = new THREE.VideoTexture(this.videoRef.current);
-    const geometry = new THREE.SphereGeometry(100, 100, 100); 
-    const material = new THREE.MeshBasicMaterial( {side: THREE.BackSide, map: texture});
-    const sphere = new THREE.Mesh (geometry, material);
-
-    this.scene.add(sphere);
   }
 
   // Instantiate pigeon geometry. 
@@ -151,10 +134,6 @@ class World extends React.Component {
 
   onPatternChanged(newPatternType) {
     this.pigeonManager.setNewPatternType(newPatternType);
-  }
-
-  onSpawnAgents() {
-    this.pigeonManager.spawnPigeons(this.scene);
   }
 
   onShootPigeon() {
@@ -170,32 +149,3 @@ class World extends React.Component {
 }
 
 export default Radium(World);
-
-
-// const Raycaster = new THREE.Raycaster();
-// const mouse = new THREE.Vector2(); 
-
-// onMouseMove(event) {
-//   //mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-//   //mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-//   // console.log(mouse.x + ', ' + mouse.y);
-// }
-
-// onClick(event) {
-//   // mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-//   // mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-
-//   // Raycaster.setFromCamera(mouse, this.camera);
-
-//   // // calculate objects intersecting the picking ray
-//   // const intersects = Raycaster.intersectObject(this.terrain.getMesh(), true);
-//   // for (let i = 0; i < intersects.length; i ++) {
-//   //   //intersects[ i ].object.material.color.set( 0xff0000 );
-//   // }
-//   // console.log('Mouse Clicked');
-
-//   let a = this.gui.getSaveObject();
-//   console.log(a);
-// }
-// window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
-// //window.addEventListener('click', this.onClick.bind(this), true)

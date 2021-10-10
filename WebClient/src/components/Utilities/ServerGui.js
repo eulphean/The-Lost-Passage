@@ -17,6 +17,7 @@ import { TargetParams } from '../Managers/PigeonManager';
 import { PatternParams, PatternTypes, EllipseParams, RoseCurveParams } from '../Managers/PatternManager.js';
 import { AgentParams } from '../Environment/Agent.js';
 import { OrbitParams } from '../Managers/CameraControl.js'
+import { SkyboxParams } from '../Managers/SkyboxManager';
 
 // Local params for the GUI. 
 // Presets is a dynamically populated prop (critical)
@@ -89,18 +90,20 @@ class ServerGui {
         this.showPatternParams();
 
         let f2 = this.gui.addFolder({ title: 'Agent Params', expanded: true});
-        f2.addInput(AgentParams, 'AttractionForce', {label: 'AttractionForce', min: 0.5, max: 2, step: 0.05});
+        f2.addInput(AgentParams, 'AttractionForce', {label: 'Attraction Force', min: 0.5, max: 2, step: 0.05});
         f2.addInput(AgentParams, 'SmoothFactor', {label: 'Smooth Factor', min: 0.005, max: 0.1, step: 0.005});
         f2.addInput(AgentParams, 'SeperationForce', {label: 'Seperation Force', min: 0.5, max: 2, step: 0.1}); 
         f2.addInput(AgentParams, 'CohesionForce', {label: 'Cohesion Force', min: 0.1, max: 2, step: 0.1});
         f2.addInput(AgentParams, 'AlignmentForce', {label: 'Alignment Force', min: 0, max: 2, step: 0.1}); 
 
+        let f3 = this.gui.addFolder({ title: 'Skybox Params', expanded: true});
+        f3.addInput(SkyboxParams, 'ShowSkybox');
+        f3.addInput(SkyboxParams, 'ShowBoundingBox');
+        f3.addInput(SkyboxParams, 'BoundingBoxScalar', {min: -50, max: 0}).on('change', this.onBoundedBoxScalarChange.bind(this)); 
+
         // Save Preset button
         this.gui.addButton({title: 'Save Preset'}).on('click', this.onSavePreset.bind(this));       
-        this.gui.addButton({title: 'Delete Preset'}).on('click', this.onDeletePreset.bind(this));
-        this.gui.addButton({title: 'Show Panel'}).on('click', this.onShowPanel.bind(this)); 
-        this.gui.addButton({title: 'Spawn Agents'}).on('click', this.onSpawnAgents.bind(this));
-        this.gui.addButton({title: 'Shoot Pigeon'}).on('click', this.onShootPigeon.bind(this));
+        this.gui.addButton({title: 'Delete Preset'}).on('click', this.onDeletePreset.bind(this))
 
         // Read presets from the database. 
         Websocket.readAllPresets(this.onReceivePresets.bind(this)); 
@@ -267,28 +270,8 @@ class ServerGui {
         this.patternChangeUpdate = callback; 
     }
 
-    subscribeShowPanel(callback) {
-        this.onShowPanelCallback = callback; 
-    }
+    onBoundedBoxScalarChange(event) {
 
-    onShowPanel() {
-        this.onShowPanelCallback(); 
-    }  
-
-    subscribeSpawnAgents(callback) {
-        this.onSpawnAgentCallback = callback; 
-    }
-
-    onSpawnAgents() {
-        this.onSpawnAgentCallback(); 
-    }
-
-    subscribeShootPigeon(callback) {
-        this.onShootPigeonCallback = callback;
-    }
-
-    onShootPigeon(){
-        this.onShootPigeonCallback();
     }
 } 
 
