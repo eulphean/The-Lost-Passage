@@ -8,9 +8,19 @@
 import React from 'react'
 import Radium from 'radium'
 
+import { color, fontFamily, fontSize, padding } from '../Utilities/CommonStyles';
+
 const styles = {
     container: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
 
+    title: {
+        fontFamily: fontFamily.bebas,
+        fontSize: fontSize.gaia,
+        marginTop: padding.huge,
+        color: color.darkBlue
     }
 };
 
@@ -23,7 +33,11 @@ class About extends React.Component {
 
   render() {
     return (
-      <div>About Us</div>
+      <div style={styles.container}>
+        <div style={styles.title}>
+          ABOUT US
+        </div>   
+      </div>
     );
   }
 }

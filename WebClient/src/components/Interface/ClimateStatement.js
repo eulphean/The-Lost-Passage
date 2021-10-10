@@ -8,9 +8,19 @@
 import React from 'react'
 import Radium from 'radium'
 
+import { color, fontFamily, padding, fontSize } from '../Utilities/CommonStyles';
+
 const styles = {
     container: {
+      display: 'flex',
+      justifyContent: 'center'
+    },
 
+    title: {
+      fontFamily: fontFamily.bebas,
+      fontSize: fontSize.gaia,
+      marginTop: padding.huge,
+      color: color.darkBlue
     }
 };
 
@@ -23,7 +33,9 @@ class ClimateStatement extends React.Component {
 
   render() {
     return (
-      <div>Climate Statement</div>
+      <div style={styles.container}>
+        <div style={styles.title}>Climate Statement</div>
+      </div>
     );
   }
 }

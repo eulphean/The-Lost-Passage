@@ -12,6 +12,7 @@ import { PanelTitle } from './ContentPanel';
 import PassengerPigeons from './PassengerPigeons'
 import ClimateStatement from './ClimateStatement'
 import About from './About'
+import { color } from '../Utilities/CommonStyles';
 
 const styles = {
     container: {
@@ -21,11 +22,11 @@ const styles = {
     },
 
     colorA: {
-        backgroundColor: 'red'
+        backgroundColor: color.panel
     },
 
     colorB: {
-        backgroundColor: 'green'
+        backgroundColor: color.midGrey
     }
 };
 
