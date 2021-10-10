@@ -1,26 +1,30 @@
 {
   "files": {
     "main.css": "/virtualCompanion/static/css/main.0b917559.chunk.css",
-    "main.js": "/virtualCompanion/static/js/main.fef67392.chunk.js",
-    "main.js.map": "/virtualCompanion/static/js/main.fef67392.chunk.js.map",
+    "main.js": "/virtualCompanion/static/js/main.6e7e0ccb.chunk.js",
+    "main.js.map": "/virtualCompanion/static/js/main.6e7e0ccb.chunk.js.map",
     "runtime-main.js": "/virtualCompanion/static/js/runtime-main.c02b6213.js",
     "runtime-main.js.map": "/virtualCompanion/static/js/runtime-main.c02b6213.js.map",
-    "static/js/2.1e94b367.chunk.js": "/virtualCompanion/static/js/2.1e94b367.chunk.js",
-    "static/js/2.1e94b367.chunk.js.map": "/virtualCompanion/static/js/2.1e94b367.chunk.js.map",
+    "static/js/2.8bc85142.chunk.js": "/virtualCompanion/static/js/2.8bc85142.chunk.js",
+    "static/js/2.8bc85142.chunk.js.map": "/virtualCompanion/static/js/2.8bc85142.chunk.js.map",
     "index.html": "/virtualCompanion/index.html",
-    "precache-manifest.7c7727eec1ab2da970e6153acc31204f.js": "/virtualCompanion/precache-manifest.7c7727eec1ab2da970e6153acc31204f.js",
+    "precache-manifest.16cece484870f20131e113b8dc9fd433.js": "/virtualCompanion/precache-manifest.16cece484870f20131e113b8dc9fd433.js",
     "service-worker.js": "/virtualCompanion/service-worker.js",
     "static/css/main.0b917559.chunk.css.map": "/virtualCompanion/static/css/main.0b917559.chunk.css.map",
-    "static/js/2.1e94b367.chunk.js.LICENSE.txt": "/virtualCompanion/static/js/2.1e94b367.chunk.js.LICENSE.txt",
+    "static/js/2.8bc85142.chunk.js.LICENSE.txt": "/virtualCompanion/static/js/2.8bc85142.chunk.js.LICENSE.txt",
     "static/media/New_Bird.glb": "/virtualCompanion/static/media/New_Bird.a5ca1e59.glb",
+    "static/media/artahack.jpg": "/virtualCompanion/static/media/artahack.c3f57884.jpg",
+    "static/media/beFantastic.jpg": "/virtualCompanion/static/media/beFantastic.35baec89.jpg",
     "static/media/stylesheet.css": "/virtualCompanion/static/media/tenorsans-regular-webfont.ed0e3e19.woff",
+    "static/media/dara.jpg": "/virtualCompanion/static/media/dara.707220a6.jpg",
     "static/media/gaugan.mp4": "/virtualCompanion/static/media/gaugan.7656d0aa.mp4",
-    "static/media/pigeon.e68ccc38.svg": "/virtualCompanion/static/media/pigeon.e68ccc38.svg"
+    "static/media/pigeon.e68ccc38.svg": "/virtualCompanion/static/media/pigeon.e68ccc38.svg",
+    "static/media/supernormal.jpg": "/virtualCompanion/static/media/supernormal.331ffadb.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.c02b6213.js",
-    "static/js/2.1e94b367.chunk.js",
+    "static/js/2.8bc85142.chunk.js",
     "static/css/main.0b917559.chunk.css",
-    "static/js/main.fef67392.chunk.js"
+    "static/js/main.6e7e0ccb.chunk.js"
   ]
 }
