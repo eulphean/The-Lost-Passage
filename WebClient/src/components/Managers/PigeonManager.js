@@ -104,8 +104,9 @@ class PigeonManager {
     }
 
     shootPigeon() {
+        console.log('Shoot Pigeon');
         // Set one randome pigeon to be dead
-        let choseOne = MathUtils.randInt(0, this.pigeons.length - 1)
+        let choseOne = THREE.MathUtils.randInt(0, this.pigeons.length - 1)
         this.pigeons[choseOne].isAlive = false;
         
         // Gun shot will scare them away
@@ -116,11 +117,11 @@ class PigeonManager {
     recoverFromShock() {
         // Separation would decay overtime to recover from gun shot
         AgentParams.SeperationForce *= 0.999;
-        AgentParams.SeperationForce = MathUtils.clamp(AgentParams.SeperationForce, 1.2, 2);      
+        AgentParams.SeperationForce = THREE.MathUtils.clamp(AgentParams.SeperationForce, 1.2, 2);      
         
         // Agent would focus back on seeking target again
         AgentParams.AttractionForce *= 1.001;
-        AgentParams.AttractionForce = MathUtils.clamp(AgentParams.AttractionForce, 0.5, 2);
+        AgentParams.AttractionForce = THREE.MathUtils.clamp(AgentParams.AttractionForce, 0.5, 2);
     }
 } 
 

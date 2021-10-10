@@ -12,10 +12,10 @@ class RaycastManager {
         this.raycaster = new THREE.Raycaster();
         this.mouse = new THREE.Vector2(); 
 
-        this.callback = shootPigeonCallback;
+        this.shootPigeon = shootPigeonCallback;
         this.isIntersecting = false;  
 
-        // Listen for mouse events. 
+        // Listen for mouse events for raycaster.  
         window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
         window.addEventListener('click', this.onMouseClick.bind(this), false);
     }
@@ -27,15 +27,17 @@ class RaycastManager {
 
     intersect(camera, targetMesh) {
         this.raycaster.setFromCamera(this.mouse, camera);
+
+        // Do we intersect with the target mesh? 
         const objects = this.raycaster.intersectObject(targetMesh); 
-        if (objects.length > 0) {
-            this.isIntersecting = true;  
-        }
+        this.isIntersecting = objects.length > 0;
     }
 
     onMouseClick(event) {
         if (this.isIntersecting) {
-            this.callback();
+            this.shootPigeon();
+            // TODO: Add some cooldown period before we can actually
+            // shoot the pigeons again. 
         }
     }
 } 
