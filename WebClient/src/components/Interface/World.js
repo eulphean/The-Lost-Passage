@@ -16,6 +16,7 @@ import CameraControl from '../Managers/CameraControl.js'
 import LightingManager from '../Managers/LightingManager.js'
 import RendererManager from '../Managers/RendererManager.js'
 import PigeonManager from '../Managers/PigeonManager.js'
+import RaycastManager from '../Managers/RaycastManager.js'
 
 // Interface components. 
 import GuiPanel from './GuiPanel.js'
@@ -63,6 +64,9 @@ class World extends React.Component {
     // Pigeons
     this.pigeonManager = new PigeonManager(); 
 
+    // Raycaster. 
+    this.raycastManager = new RaycastManager(this.onShootPigeon.bind(this)); 
+
     // Instantiate terrain geometry.
     // this.terrain = new Terrain(this.scene); 
 
@@ -106,6 +110,9 @@ class World extends React.Component {
     this.fpsGraph.begin();
       this.pigeonManager.update(); 
       this.cameraControl.update();
+      if (this.pigeonManager.target) {
+        this.raycastManager.intersect(this.cameraControl.camera, this.pigeonManager.target.mesh); 
+      }
       // This renders each frame. 
       this.rendererManager.render(this.scene, this.cameraControl.getCamera());      
     this.fpsGraph.end();
