@@ -13,16 +13,41 @@ import { color, fontFamily, padding, fontSize } from '../Utilities/CommonStyles'
 const styles = {
     container: {
       display: 'flex',
-      justifyContent: 'center'
+      flexDirection: 'row'  
     },
 
+    videoCanvas: {
+      backgroundColor: color.midGrey,
+      width: 'calc(100%/2)',
+      height: '800px'
+    },
+
+    content: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      width: 'calc(100%/2)'
+    },
+    
     title: {
+      letterSpacing: 5,
       fontFamily: fontFamily.bebas,
-      fontSize: fontSize.gaia,
-      marginTop: padding.huge,
+      fontSize: fontSize.extraHuge,
+      marginTop: padding.veryBig,
       color: color.darkBlue
+    },
+
+    info: {
+      letterSpacing: 3,
+      lineSpacing: 2,
+      fontFamily: fontFamily.tenor,
+      fontSize: fontSize.big,
+      color: color.darkBlue,
+      padding: padding.veryBig
     }
 };
+
+const content = "It is obvious, that the organization of the treatment results in a complete compliance with The Facility of Environmental Flexibility (Hubert Agee in The Book of the Emergency Planning) It's a well-known fact that the major accomplishments, such as the continuing setting doctrine, the flexible production planning, the ability bias or the predictable behavior may share attitudes on the major outcomes. The situation is quite a successful matter. To be honest, the continuing hierarchy doctrine and growth opportunities of it are quite high.It's a well-known fact that the major accomplishments, such as the continuing setting doctrine, the flexible production planning, the ability bias or the predictable behavior may share attitudes on the major outcomes.Its a well-known fact that the major accomplishments, such as the...."
 
 class ClimateStatement extends React.Component {
   constructor(props) {
@@ -34,7 +59,15 @@ class ClimateStatement extends React.Component {
   render() {
     return (
       <div style={styles.container}>
-        <div style={styles.title}>Climate Statement</div>
+        <div style={styles.content}>
+          <div style={styles.title}>
+            CLIMATE STATEMENT
+          </div>
+          <div style={styles.info}>
+            {content}
+          </div>
+        </div>
+        <div style={styles.videoCanvas}></div>
       </div>
     );
   }

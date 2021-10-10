@@ -18,15 +18,7 @@ const styles = {
     container: {
         position: 'relative',
         width: '100vw',
-        height: '1000px'
-    },
-
-    colorA: {
-        backgroundColor: color.panel
-    },
-
-    colorB: {
-        backgroundColor: color.midGrey
+        backgroundColor: color.lightBlue
     }
 };
 
@@ -40,10 +32,9 @@ class SectionPanel extends React.Component {
   }
 
   render() {
-    let containerStyles = this.props.panelNum === 0 ? [styles.container, styles.colorA] : [styles.container, styles.colorB]; 
     let panel = this.getPanel(); 
     return (
-      <div style={containerStyles} ref={this.containerRef}>
+      <div style={styles.container} ref={this.containerRef}>
         {panel}
       </div>
     );

@@ -58,7 +58,7 @@ const styles = {
       bottom: padding.big,
       fontSize: fontSize.small,
       padding: padding.verySmall,
-      backgroundColor: color.lightBlue,
+      backgroundColor: color.darkBlue,
       width: fontSize.gaia,
       height: fontSize.gaia,
       borderRadius: fontSize.extraMassive,
