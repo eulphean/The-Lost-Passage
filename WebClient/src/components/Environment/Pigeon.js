@@ -67,7 +67,7 @@ export default class Pigeon extends Agent {
 
             if (this.isAlive){
                 // Behaviors. 
-                this.updateBehaviour(nAgents);  
+                this.updateBehaviour(nAgents);
                 
                 // Agents that are within the box will be pushed back when it's too close to the boarder
                 if (boundingBox.containsPoint(this.position)) {
@@ -91,7 +91,7 @@ export default class Pigeon extends Agent {
                     for (let i = 0; i <= 2; i++) {
                         this.tempForce = Math.exp(1.5 - Math.abs(this.diffVec.getComponent(i)));
                         this.vDesired.setComponent(i, this.tempForce * Math.sign(this.diffVec.getComponent(i)));
-            }
+                    }
 
                     // Accumulate steering forces
                     this.fSteer.add(this.vDesired);
@@ -106,7 +106,7 @@ export default class Pigeon extends Agent {
                 this.animationMixer.update(delta * this.acceleration.lengthSq() * 0.15);
             }
 
-            if (!this.isAlive && this.position.y < 0){
+            if (!this.isAlive && this.position.y < boundingBox.min.y){
                 // Don't update dead agents if they are already on the ground
                 return  
             }
