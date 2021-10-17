@@ -47,7 +47,7 @@ class PigeonManager {
         this.patternManager.setTargetPattern(currentPatternType); 
     }
 
-    update() {
+    update(boundingBox) {
         // Do any pigeons exist? 
         if (this.pigeons.length > 0) {
             // Don't do anything until we have a valid target position. 
@@ -71,7 +71,7 @@ class PigeonManager {
                     p.setTarget(patternPos); 
                     // Find and update the location of neighboring agents
                     nAgents = this.octreeManager.getNeighbours(p.position); 
-                    p.update(delta, nAgents);
+                    p.update(delta, nAgents, boundingBox);
                 });
             }
             

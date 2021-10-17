@@ -22,9 +22,13 @@ export default class Agent {
         this.fSteer = new THREE.Vector3(0, 0, 0);
         this.vDesired = new THREE.Vector3(0, 0, 0); 
         
-        // Helper vectors. 
+        // Helper vectors, values
         this.sumVec = new THREE.Vector3(0, 0, 0);
         this.diffVec = new THREE.Vector3(0, 0, 0); 
+        this.borderX = 0;
+        this.borderY = 0;
+        this.borderZ = 0;
+        this.tempForce = 0;
 
         // Force and speeds. 
         this.maxSpeed = Utility.getRandomNum(0.03, 0.5); 
