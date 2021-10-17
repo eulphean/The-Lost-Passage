@@ -19,7 +19,7 @@ const Load_Time = 0; // 4 seconds for now. // Change it back once we are ready.
 const TopMessage = "\"The avarice and thoughtlessness of humankind led to the extinction of this species.\"";
 const BottomMessage = "\"May we gather the strength to confront the reality of our climate condition.\"";
 const LeftMessage = "\"Its disappearance is nearly unfathomable. Still can't fully get my mind around it.\"";
-const RightMessage = "\"No matter how abundant something is - if we're not careful, we can lose it.\"";
+const RightMessage = "\"No matter how abundant something is - if one's not careful, one can lose it.\"";
 
 
 const styles = {
@@ -42,10 +42,18 @@ const styles = {
 
     title: {
         fontFamily: fontFamily.bebas,
-        fontSize: fontSize.extraInsane,
-        letterSpacing: 6,
+        fontSize: fontSize.massive,
+        textAlign: 'center',
+        maxWidth: '200px',
+        letterSpacing: 5,
         opacity: 1,
         color: color.darkBlue,
+
+        '@media (min-width: 900px)': {  
+          fontSize: fontSize.extraInsane,
+          maxWidth: '100%',
+          letterSpacing: 6,
+        }
     },
 
     loadContainer: {
@@ -74,17 +82,22 @@ const styles = {
     button: {
         fontFamily: fontFamily.mont,
         color: color.darkBlue,
-        fontSize: fontSize.extraBig,
+        fontSize: fontSize.lessBig,
         borderStyle: 'solid',
         borderColor: color.darkBlue,
         borderWidth: '4px',
         marginTop: padding.small,
-        paddingTop: padding.small,
-        paddingBottom: padding.small,
-        paddingLeft: padding.big,
-        paddingRight: padding.big,
+        padding: padding.verySmall,
         letterSpacing: '5px',
-        cursor: 'crosshair'
+        cursor: 'crosshair',
+
+        '@media (min-width: 900px)': {  
+          fontSize: fontSize.extraBig,
+          paddingTop: padding.small,
+          paddingBottom: padding.small,
+          paddingLeft: padding.big,
+          paddingRight: padding.big,
+        }
     },
 
     hover: {
@@ -95,35 +108,101 @@ const styles = {
     topMessage: {
       position: 'absolute',
       color: color.darkBlue, 
-      fontSize: fontSize.lessBig,
+      fontSize: fontSize.lessSmall,
+      textAlign: 'center',
+      paddingLeft: padding.verySmall,
+      paddingRight: padding.verySmall,
       fontFamily: fontFamily.tenor,
-      top: '30px'
+      top: '15px',
+
+      '@media (min-width: 900px)': {  
+        fontSize: fontSize.extraBig,
+        top: '30px',
+        paddingTop: padding.small,
+        paddingBottom: padding.small,
+        paddingLeft: padding.big,
+        paddingRight: padding.big,
+      }
+
     },
 
     leftMessage: {
       position: 'absolute',
+      textAlign: 'center',
+      maxWidth: '300px',
+      left: '-40%',
       color: color.darkBlue, 
-      fontSize: fontSize.lessBig,
+      fontSize: fontSize.verySmall,
       fontFamily: fontFamily.tenor,
-      left: '10%',
-      transform: 'rotate(-90deg)'
+      transform: 'rotate(-90deg)',
+
+      '@media (min-width: 360px)': {
+        left: '-35%'
+      },
+
+      
+      '@media (min-width: 411px)': {
+        left: '-30%'
+      },
+
+
+      '@media (min-width: 900px)': {  
+        fontSize: fontSize.lessBig,
+        left: '10%',
+        paddingTop: padding.small,
+        paddingBottom: padding.small,
+        paddingLeft: padding.big,
+        paddingRight: padding.big,
+      }
     },
 
     rightMessage: {
       position: 'absolute',
-      color: color.darkBlue, 
-      fontSize: fontSize.lessBig,
+      right: '-40%',
+      textAlign: 'center',
+      maxWidth: '300px',
+      fontSize: fontSize.verySmall,
       fontFamily: fontFamily.tenor,
-      right: '12%',
-      transform: 'rotate(90deg)'
+      color: color.darkBlue, 
+      transform: 'rotate(90deg)',
+
+      '@media (min-width: 360px)': {
+        right: '-35%'
+      },
+
+      
+      '@media (min-width: 411px)': {
+        right: '-30%'
+      },
+
+      '@media (min-width: 900px)': {  
+        fontSize: fontSize.lessBig,
+        right: '12%',
+        paddingTop: padding.small,
+        paddingBottom: padding.small,
+        paddingLeft: padding.big,
+        paddingRight: padding.big,
+      }
     },
 
     bottomMessage: {
       position: 'absolute',
       color: color.darkBlue, 
-      fontSize: fontSize.lessBig,
+      fontSize: fontSize.lessSmall,
       fontFamily: fontFamily.tenor,
-      bottom: '30px'
+      paddingLeft: padding.big,
+      paddingRight: padding.big,
+      textAlign: 'center',
+      bottom: '15px',
+
+      '@media (min-width: 900px)': {  
+        fontSize: fontSize.lessBig,
+        bottom: '30px',
+        paddingTop: padding.small,
+        paddingBottom: padding.small,
+        paddingLeft: padding.big,
+        paddingRight: padding.big,
+      }
     }
 };
 

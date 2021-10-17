@@ -9,7 +9,7 @@
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import Agent, { AgentParams } from '../Environment/Agent.js'
-import model from '../../models/New_Bird.glb'; 
+import model from '../../models/pigeon_back.glb'; 
 import * as Utility from '../Utilities/Utility';
 
 const loader = new GLTFLoader(); 
@@ -40,7 +40,7 @@ export default class Pigeon extends Agent {
             this.agentScale = this.parent.scale
             this.agentAnimations = gltf.animations; 
 
-            this.agentScale.set(0.5, 0.5, 0.5); 
+            this.agentScale.set(0.025, 0.025, 0.025); 
 
             // Setup animation. 
             this.animationMixer = new THREE.AnimationMixer(this.parent); 
@@ -103,7 +103,7 @@ export default class Pigeon extends Agent {
 
             if (this.isAlive) {
                 // Animating flipping wings
-                this.animationMixer.update(delta * this.acceleration.lengthSq() * 0.15);
+                this.animationMixer.update(delta); //  * this.acceleration.lengthSq() * 0.15
             }
 
             if (!this.isAlive && this.position.y < boundingBox.min.y){

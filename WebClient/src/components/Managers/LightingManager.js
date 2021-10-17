@@ -15,9 +15,9 @@ class LightingManager {
         //this.scene.add(ambientLight);
         
         var directionalLight = new THREE.DirectionalLight(0xffffff);
-        directionalLight.intensity = 1.0;
-        directionalLight.position.set(0, 100, 0).normalize();
-        //scene.add(directionalLight);	
+        directionalLight.intensity = 2.0;
+        directionalLight.position.set(0, 100, 100).normalize();
+        scene.add(directionalLight);	
     }
 } 
 
