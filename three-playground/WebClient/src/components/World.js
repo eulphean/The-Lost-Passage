@@ -8,6 +8,9 @@ import Stats from 'stats.js'
 import vertex from '../shaders/test/vertex.glsl'
 import fragment from '../shaders/test/fragment.glsl'
 
+console.log(vertex);
+console.log(fragment);
+
 const OrbitControls = oc(THREE);  
 
 const styles = {
@@ -94,11 +97,11 @@ class World extends React.Component {
 
   setupScene() {
     const geometry = new THREE.PlaneBufferGeometry(1, 1);
-    // const material = new THREE.MeshBasicMaterial({ color: 'red'});
-    const material = new THREE.ShaderMaterial({
-      vertexShader: vertex,
-      fragmentShader: fragment
-    }); 
+    const material = new THREE.MeshBasicMaterial({ color: 'red'});
+    // const material = new THREE.ShaderMaterial({
+    //   vertexShader: vertex,
+    //   fragmentShader: fragment
+    // }); 
 
     const mesh = new THREE.Mesh(geometry, material);
     this.scene.add(mesh);
