@@ -8,9 +8,6 @@ import Stats from 'stats.js'
 import vertex from '../shaders/test/vertex.glsl'
 import fragment from '../shaders/test/fragment.glsl'
 
-console.log(vertex);
-console.log(fragment);
-
 const OrbitControls = oc(THREE);  
 
 const styles = {
@@ -57,6 +54,8 @@ class World extends React.Component {
 
     this.clock = new THREE.Clock();
 
+    this.material = ''; 
+
     this.setupScene(); 
   }
 
@@ -96,21 +95,49 @@ class World extends React.Component {
   }
 
   setupScene() {
-    const geometry = new THREE.PlaneBufferGeometry(1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: 'red'});
-    // const material = new THREE.ShaderMaterial({
-    //   vertexShader: vertex,
-    //   fragmentShader: fragment
-    // }); 
+    const geometry = new THREE.PlaneBufferGeometry(2, 2);
+    const vertexCount = geometry.attributes.position.count;
 
-    const mesh = new THREE.Mesh(geometry, material);
+    const colors = new Float32Array(vertexCount * 3); 
+    for (let i = 0; i < colors.length; i++) {
+      colors[i] = Math.random(); 
+    }
+
+    // Add a new attribute to the Plane geometry and access it within 
+    // the shader. 
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3)); 
+
+    // const material = new THREE.MeshBasicMaterial({ color: 'red'});
+    this.material = new THREE.ShaderMaterial({
+      vertexShader: vertex,
+      fragmentShader: fragment,
+      defines: {
+        USE_COLOR: true
+      },
+      uniforms: {
+        uTime: { value: 0 }
+      },
+      wireframe: false
+    }); 
+
+    const mesh = new THREE.Mesh(geometry, this.material);
     this.scene.add(mesh);
+  }
+
+  update() {
+    if (this.material  !== '') {
+      // Make sure the uniform.value is updated here, else the unifrom 
+      // is not receiving the updated value.
+      this.material.uniforms.uTime.value = this.clock.getElapsedTime();
+      console.log(this.clock.getElapsedTime())
+    }
   }
 
   initThreeRender() {
     // Render loop. 
     this.stats.begin();
     this.controls.update();
+    this.update(); 
     this.renderer.render(this.scene, this.camera);
     this.stats.end();
 
