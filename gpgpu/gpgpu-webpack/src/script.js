@@ -2,6 +2,7 @@ import './style.css'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { GPUComputationRenderer } from 'three/examples/jsm/misc/GPUComputationRenderer.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import fragmentShaderPosition from './shaders/gpgpu/fragmentShaderPosition.glsl'
@@ -10,15 +11,13 @@ import fragmentShaderVelocity from './shaders/gpgpu/fragmentShaderVelocity.glsl'
 const birdPath = 'models/pigeon_back.glb';
 
 /* TEXTURE WIDTH FOR SIMULATION */
-const WIDTH = 10;
+const WIDTH = 50;
+
+// MAX BIRDS
 const BIRDS = WIDTH * WIDTH;
 
-/* BAKE ANIMATION INTO TEXTURE and CREATE GEOMETRY FROM BASE MODEL */
-const BirdGeometry = new THREE.BufferGeometry();
-let textureAnimation, durationAnimation, birdMesh, materialShader, vertexPerBird;
-
-function nextPowerOf2( n ) {
-    return Math.pow( 2, Math.ceil( Math.log( n ) / Math.log( 2 ) ) );
+function nextPowerOf2(n) {
+    return Math.pow(2, Math.ceil( Math.log( n ) / Math.log( 2 ) ) );
 }
 
 Math.lerp = function ( value1, value2, amount ) {
@@ -26,57 +25,82 @@ Math.lerp = function ( value1, value2, amount ) {
     return value1 + ( value2 - value1 ) * amount;
 };
 
-const colors = [ 0xccFFFF, 0xffdeff ];
-const sizes = [ 0.2, 0.1 ];
+/* BAKE ANIMATION INTO TEXTURE and CREATE GEOMETRY FROM BASE MODEL */
+const BirdGeometry = new THREE.BufferGeometry();
+let textureAnimation, durationAnimation, birdMesh, materialShader, vertexPerBird;
+
+const colors = [0xccFFFF, 0xffdeff ];
+const sizes = [0.2, 0.1];
 const selectModel = 0;
-new GLTFLoader().load(birdPath, function ( gltf ) {
+new GLTFLoader().load(birdPath, function (gltf) {
+    // Animation 
     const animations = gltf.animations;
-    durationAnimation = Math.round(animations[ 0 ].duration * 60);
-    const birdGeo = gltf.scene.children[ 0 ].geometry;
-    const morphAttributes = birdGeo.morphAttributes.position;
-    const tHeight = nextPowerOf2( durationAnimation );
-    const tWidth = nextPowerOf2( birdGeo.getAttribute( 'position' ).count );
-    vertexPerBird = birdGeo.getAttribute( 'position' ).count;
-    const tData = new Float32Array( 3 * tWidth * tHeight );
+    durationAnimation = Math.round(animations[0].duration * 60);
+
+    // console.log(animations)
+    // console.log(durationAnimation);
+
+    // Geometry
+    const birdGeo = gltf.scene.children[0].geometry;
+    // console.log(birdGeo);
+
+    // All the morph positions. There are 8 targets for this geometry
+    // Each position contains the actual positions of each vertex. 
+    const morphAttributes = birdGeo.morphAttributes.position;    
+    // console.log(morphAttributes);
+
+    vertexPerBird = birdGeo.getAttribute('position').count;
+
+    // Prepare animation texture. 
+    const tHeight = nextPowerOf2(durationAnimation);
+    const tWidth = nextPowerOf2(vertexPerBird);
+    // Every vertex has (x, y, z) coords so mult by 3. 
+    const tData = new Float32Array(3 * tWidth * tHeight); 
 
     for ( let i = 0; i < tWidth; i ++ ) {
-
         for ( let j = 0; j < tHeight; j ++ ) {
-
             const offset = j * tWidth * 3;
 
-            const curMorph = Math.floor( j / durationAnimation * morphAttributes.length );
-            const nextMorph = ( Math.floor( j / durationAnimation * morphAttributes.length ) + 1 ) % morphAttributes.length;
-            const lerpAmount = j / durationAnimation * morphAttributes.length % 1;
+            const curMorph = Math.floor(j/durationAnimation * morphAttributes.length);
+            const nextMorph = (curMorph + 1) % morphAttributes.length;
+            const lerpAmount = j/durationAnimation * morphAttributes.length % 1;
 
-            if ( j < durationAnimation ) {
+            // Only fill animation data up till duration of animation. 
+            if (j < durationAnimation) {
+                // d0, d1 are actual vertex positions in the morphAttributes
+                let d0, d1; 
 
-                let d0, d1;
+                // For the duration of the animation, we calculate how the transition
+                // between the morph positions at each duration and store it in tData
+                // tData contains the vertex position at each duration of an animation 
+                // for a single bird. 
+                d0 = morphAttributes[curMorph].array[i * 3];
+                d1 = morphAttributes[nextMorph].array[i * 3];
 
-                d0 = morphAttributes[ curMorph ].array[ i * 3 ];
-                d1 = morphAttributes[ nextMorph ].array[ i * 3 ];
-
-                if ( d0 !== undefined && d1 !== undefined ) tData[ offset + i * 3 ] = Math.lerp( d0, d1, lerpAmount );
+                if (d0 !== undefined && d1 !== undefined) 
+                    tData[offset + i * 3] = Math.lerp(d0, d1, lerpAmount);
 
                 d0 = morphAttributes[ curMorph ].array[ i * 3 + 1 ];
                 d1 = morphAttributes[ nextMorph ].array[ i * 3 + 1 ];
 
-                if ( d0 !== undefined && d1 !== undefined ) tData[ offset + i * 3 + 1 ] = Math.lerp( d0, d1, lerpAmount );
+                if (d0 !== undefined && d1 !== undefined) 
+                    tData[offset + i * 3 + 1] = Math.lerp(d0, d1, lerpAmount);
 
-                d0 = morphAttributes[ curMorph ].array[ i * 3 + 2 ];
-                d1 = morphAttributes[ nextMorph ].array[ i * 3 + 2 ];
+                d0 = morphAttributes[curMorph].array[i * 3 + 2];
+                d1 = morphAttributes[nextMorph].array[i * 3 + 2];
 
-                if ( d0 !== undefined && d1 !== undefined ) tData[ offset + i * 3 + 2 ] = Math.lerp( d0, d1, lerpAmount );
-
+                if (d0 !== undefined && d1 !== undefined) 
+                    tData[offset + i * 3 + 2] = Math.lerp(d0, d1, lerpAmount);
             }
-
         }
-
     }
 
-    textureAnimation = new THREE.DataTexture( tData, tWidth, tHeight, THREE.RGBFormat, THREE.FloatType );
-    textureAnimation.needsUpdate = true;
+    // Here we define our Data texture based on the tData that we just prepared. 
+    // DataTexture is inherited from Texture (this is how a texture is internally stored in Three.js)
+    textureAnimation = new THREE.DataTexture(tData, tWidth, tHeight, THREE.RGBFormat, THREE.FloatType);
+    // textureAnimation.needsUpdate = false; // Don't need this since texture is not updating
 
+    // Prepare the BUFFER GEOMETRY. 
     const vertices = [], color = [], reference = [], seeds = [], indices = [];
     const totalVertices = birdGeo.getAttribute( 'position' ).count * BIRDS * 3;
 
@@ -102,7 +126,6 @@ new GLTFLoader().load(birdPath, function ( gltf ) {
 
     let r = Math.random();
     for ( let i = 0; i < birdGeo.getAttribute( 'position' ).count * BIRDS; i ++ ) {
-
         const bIndex = i % ( birdGeo.getAttribute( 'position' ).count );
         const bird = Math.floor( i / birdGeo.getAttribute( 'position' ).count );
         if ( bIndex == 0 ) r = Math.random();
@@ -111,14 +134,11 @@ new GLTFLoader().load(birdPath, function ( gltf ) {
         const y = ~ ~ ( j / WIDTH ) / WIDTH;
         reference.push( x, y, bIndex / tWidth, durationAnimation / tHeight );
         seeds.push( bird, r, Math.random(), Math.random() );
-
     }
 
     for ( let i = 0; i < birdGeo.index.array.length * BIRDS; i ++ ) {
-
         const offset = Math.floor( i / birdGeo.index.array.length ) * ( birdGeo.getAttribute( 'position' ).count );
         indices.push( birdGeo.index.array[ i % birdGeo.index.array.length ] + offset );
-
     }
 
     BirdGeometry.setAttribute( 'position', new THREE.BufferAttribute( new Float32Array( vertices ), 3 ) );
@@ -129,10 +149,31 @@ new GLTFLoader().load(birdPath, function ( gltf ) {
 
     BirdGeometry.setIndex( indices );
 
+    // Model and animation is ready and set. 
+    // Time to initialize things. 
     init();
     animate();
-
 } );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let container, stats;
 let camera, scene, renderer;
@@ -152,18 +193,21 @@ let positionUniforms;
 let velocityUniforms;
 
 function init() {
-    container = document.createElement( 'div' );
-    document.body.appendChild( container );
+    container = document.createElement('div');
+    document.body.appendChild(container);
 
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 3000 );
     camera.position.z = 350;
+
+    // Controls
+    const controls = new OrbitControls(camera, container)
+    controls.enableDamping = true
 
     scene = new THREE.Scene();
     scene.background = new THREE.Color( colors[ selectModel ] );
     // scene.fog = new THREE.Fog( colors[ selectModel ], 100, 1000 );
 
     // LIGHTS
-
     const hemiLight = new THREE.HemisphereLight( colors[ selectModel ], 0xffffff, 1.6 );
     hemiLight.color.setHSL( 0.6, 1, 0.6 );
     hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
@@ -195,14 +239,12 @@ function init() {
     const gui = new GUI();
 
     const effectController = {
-
         separation: 20.0,
         alignment: 20.0,
         cohesion: 20.0,
         freedom: 0.75,
         size: sizes[ selectModel ],
         count: BIRDS
-
     };
 
     const valuesChanger = function () {
@@ -226,17 +268,13 @@ function init() {
     gui.close();
 
     initBirds( effectController );
-
 }
 
 function initComputeRenderer() {
-
-    gpuCompute = new GPUComputationRenderer( WIDTH, WIDTH, renderer );
+    gpuCompute = new GPUComputationRenderer(WIDTH, WIDTH, renderer );
 
     if ( isSafari() ) {
-
-        gpuCompute.setDataType( THREE.HalfFloatType );
-
+        gpuCompute.setDataType(THREE.HalfFloatType);
     }
 
     const dtPosition = gpuCompute.createTexture();
@@ -372,9 +410,7 @@ function initBirds( effectController ) {
 }
 
 function fillPositionTexture( texture ) {
-
     const theArray = texture.image.data;
-
     for ( let k = 0, kl = theArray.length; k < kl; k += 4 ) {
 
         const x = Math.random() * BOUNDS - BOUNDS_HALF;
@@ -385,17 +421,12 @@ function fillPositionTexture( texture ) {
         theArray[ k + 1 ] = y;
         theArray[ k + 2 ] = z;
         theArray[ k + 3 ] = 1;
-
     }
-
 }
 
 function fillVelocityTexture( texture ) {
-
     const theArray = texture.image.data;
-
     for ( let k = 0, kl = theArray.length; k < kl; k += 4 ) {
-
         const x = Math.random() - 0.5;
         const y = Math.random() - 0.5;
         const z = Math.random() - 0.5;
@@ -404,13 +435,10 @@ function fillVelocityTexture( texture ) {
         theArray[ k + 1 ] = y * 10;
         theArray[ k + 2 ] = z * 10;
         theArray[ k + 3 ] = 1;
-
     }
-
 }
 
 function onWindowResize() {
-
     windowHalfX = window.innerWidth / 2;
     windowHalfY = window.innerHeight / 2;
 
@@ -418,31 +446,23 @@ function onWindowResize() {
     camera.updateProjectionMatrix();
 
     renderer.setSize( window.innerWidth, window.innerHeight );
-
 }
 
 function onPointerMove( event ) {
-
     if ( event.isPrimary === false ) return;
-
     mouseX = event.clientX - windowHalfX;
     mouseY = event.clientY - windowHalfY;
-
 }
 
 //
 
 function animate() {
-
     requestAnimationFrame( animate );
-
     render();
     stats.update();
-
 }
 
 function render() {
-
     const now = performance.now();
     let delta = ( now - last ) / 1000;
 
