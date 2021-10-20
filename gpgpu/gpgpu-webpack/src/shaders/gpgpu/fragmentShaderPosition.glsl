@@ -3,7 +3,7 @@
     
     // This influence how quick the pigeon advances to the position. 
     // Maybe bring this in from the GUI. 
-    float posInfluence = 5.0; 
+    float posInfluence = 15.0; 
 
     void main()	{
         // Calculate texture coordinates from pixel coordinates (gl_FragColor)

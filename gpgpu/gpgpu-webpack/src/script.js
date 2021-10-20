@@ -11,7 +11,7 @@ import fragmentShaderVelocity from './shaders/gpgpu/fragmentShaderVelocity.glsl'
 const birdPath = 'models/pigeon_back.glb';
 
 /* TEXTURE WIDTH FOR SIMULATION */
-const WIDTH = 50;
+const WIDTH = 40;
 
 // MAX BIRDS
 const BIRDS = WIDTH * WIDTH;
@@ -27,7 +27,7 @@ Math.lerp = function ( value1, value2, amount ) {
 
 /* BAKE ANIMATION INTO TEXTURE and CREATE GEOMETRY FROM BASE MODEL */
 const BirdGeometry = new THREE.BufferGeometry();
-let textureAnimation, durationAnimation, birdMesh, materialShader, vertexPerBird;
+let textureAnimation, durationAnimation, birdMesh, materialShader, vertexPerBird, indicesPerBird;
 
 const colors = [0xccFFFF, 0xffdeff];
 const sizes = [0.2, 0.1];
@@ -50,6 +50,7 @@ new GLTFLoader().load(birdPath, function (gltf) {
     // console.log(morphAttributes);
 
     vertexPerBird = birdGeo.getAttribute('position').count;
+    indicesPerBird = birdGeo.index.array.length; 
 
     // Prepare animation texture. 
     const tHeight = nextPowerOf2(durationAnimation);
@@ -146,9 +147,9 @@ new GLTFLoader().load(birdPath, function (gltf) {
     // We need to push the indices for each bird that is getting added to this geometry. 
     // Incoming geometry has an index array that represents something realted to the verteices 
     // of the triangles that are added to the geometry. 
-    for (let i = 0; i <birdGeo.index.array.length * BIRDS; i++) {
-        const offset = Math.floor(i / birdGeo.index.array.length) * vertexPerBird;
-        indices.push(birdGeo.index.array[i % birdGeo.index.array.length] + offset);
+    for (let i = 0; i <indicesPerBird * BIRDS; i++) {
+        const offset = Math.floor(i / indicesPerBird) * vertexPerBird * 3; // CRITICAL FIX: Contribute back to Three.js
+        indices.push(birdGeo.index.array[i % indicesPerBird] + offset);
     }
 
     BirdGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
@@ -158,6 +159,8 @@ new GLTFLoader().load(birdPath, function (gltf) {
     BirdGeometry.setAttribute('reference', new THREE.BufferAttribute(new Float32Array(reference), 4));
     BirdGeometry.setAttribute('seeds', new THREE.BufferAttribute(new Float32Array(seeds), 4));
     BirdGeometry.setIndex(indices);
+
+    console.log(BirdGeometry);
     
     // BUFFER GEOMETRY is prepared. 
     // ANIMATION is baked into texture. 
@@ -193,7 +196,7 @@ function init() {
     document.body.appendChild(container);
 
     // Camera
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 3000);
+    camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 3000);
     camera.position.z = 350;
 
     // Controls
@@ -259,7 +262,7 @@ function init() {
             materialShader.uniforms["size"].value = effectController.size;
 
         // Draw range culls the vertices that shouldn't be rendererd. 
-        BirdGeometry.setDrawRange(0, vertexPerBird * effectController.count);
+        BirdGeometry.setDrawRange(0, effectController.count * indicesPerBird); // CRITICAL FIX: Contribute back to Three.js
     };
 
     // Bind the uniforms or buffer geometry to UI inputs. 
@@ -303,8 +306,8 @@ function initComputeRenderer() {
 
     // Set the dependencies between variables and their data textures will be available between each other. 
     // For example in fragmentShaderVelocity, the dataTexture for position is available. 
-    gpuCompute.setVariableDependencies( velocityVariable, [ positionVariable, velocityVariable ] );
-    gpuCompute.setVariableDependencies( positionVariable, [ positionVariable, velocityVariable ] );
+    gpuCompute.setVariableDependencies(velocityVariable, [positionVariable, velocityVariable]);
+    gpuCompute.setVariableDependencies(positionVariable, [positionVariable, velocityVariable]);
 
     // Retrieve uniforms from ShaderMaterial, so it can be populated with custom uniforms. 
     positionUniforms = positionVariable.material.uniforms;
