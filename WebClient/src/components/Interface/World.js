@@ -68,14 +68,14 @@ class World extends React.Component {
     // Create skybox. 
     this.skyboxManager = new SkyboxManager(this.scene); 
 
-    // Pigeons
-    this.pigeonManager = new PigeonManager(); 
-
     // Raycaster. 
     this.raycastManager = new RaycastManager(this.onShootPigeon.bind(this)); 
 
     // Three.js Renderer
     this.rendererManager = new RendererManager(); 
+
+    // Pigeons
+    this.pigeonManager = new PigeonManager(this.rendererManager.renderer, this.scene); 
 
     // Resizer
     window.addEventListener('resize', this.onWindowResize.bind(this));
@@ -112,14 +112,15 @@ class World extends React.Component {
     this.fpsGraph.begin();
       // Pass the bounding box to the pigeon manager for creating bounds for agents. 
       let boundingBox = this.skyboxManager.getBoundingBox(); 
-      this.pigeonManager.update(boundingBox); 
+      //this.pigeonManager.update(boundingBox); 
+      this.pigeonManager.update();
 
       this.cameraControl.update();
 
       // Target exists? 
-      if (this.pigeonManager.target) {
-        this.raycastManager.intersect(this.cameraControl.camera, this.pigeonManager.target.mesh); 
-      }
+      // if (this.pigeonManager.target) {
+      //   this.raycastManager.intersect(this.cameraControl.camera, this.pigeonManager.target.mesh); 
+      // }
 
       // This renders each frame. 
       this.rendererManager.render(this.scene, this.cameraControl.getCamera());   
@@ -158,7 +159,7 @@ class World extends React.Component {
     this.videoRef.current.play();
     let currentPatternType = this.guiRef.current.getCurPatternType();  
     // Setup the pigeons when world is mounted. 
-    this.pigeonManager.setup(this.scene, currentPatternType);
+    // this.pigeonManager.setup(this.scene, currentPatternType);
   }
 
   onPatternChanged(newPatternType) {
@@ -166,7 +167,7 @@ class World extends React.Component {
   }
 
   onShootPigeon() {
-    this.pigeonManager.shootPigeon();
+    //this.pigeonManager.shootPigeon();
   }
 
   scrollTo() {

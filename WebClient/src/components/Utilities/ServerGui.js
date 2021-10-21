@@ -15,7 +15,7 @@ import Websocket from './Websocket';
 
 import { TargetParams } from '../Managers/PigeonManager';
 import { PatternParams, PatternTypes, EllipseParams, RoseCurveParams } from '../Managers/PatternManager.js';
-import { AgentParams } from '../Environment/Agent.js';
+import { PigeonParams } from '../Managers/PigeonManager';
 import { OrbitParams } from '../Managers/CameraControl.js'
 import { SkyboxParams } from '../Managers/SkyboxManager';
 import { RendererParams } from '../Managers/RendererManager';
@@ -92,12 +92,13 @@ class ServerGui {
         // Show the params based on the current pattern selected.
         this.showPatternParams();
 
-        let f2 = this.gui.addFolder({ title: 'Agent Params', expanded: true});
-        f2.addInput(AgentParams, 'AttractionForce', {label: 'Attraction Force', min: 0.5, max: 2, step: 0.05});
-        f2.addInput(AgentParams, 'SmoothFactor', {label: 'Smooth Factor', min: 0.005, max: 0.1, step: 0.005});
-        f2.addInput(AgentParams, 'SeperationForce', {label: 'Seperation Force', min: 0.5, max: 2, step: 0.1}); 
-        f2.addInput(AgentParams, 'CohesionForce', {label: 'Cohesion Force', min: 0.1, max: 2, step: 0.1});
-        f2.addInput(AgentParams, 'AlignmentForce', {label: 'Alignment Force', min: 0, max: 2, step: 0.1}); 
+        let f2 = this.gui.addFolder({ title: 'Pigeon Params', expanded: true});
+        f2.addInput(PigeonParams, 'Size', {label: 'Pigeon Size', min: 0, max: 1, step: 0.01}); 
+        // f2.addInput(AgentParams, 'AttractionForce', {label: 'Attraction Force', min: 0.5, max: 2, step: 0.05});
+        // f2.addInput(AgentParams, 'SmoothFactor', {label: 'Smooth Factor', min: 0.005, max: 0.1, step: 0.005});
+        // f2.addInput(AgentParams, 'SeperationForce', {label: 'Seperation Force', min: 0.5, max: 2, step: 0.1}); 
+        // f2.addInput(AgentParams, 'CohesionForce', {label: 'Cohesion Force', min: 0.1, max: 2, step: 0.1});
+        // f2.addInput(AgentParams, 'AlignmentForce', {label: 'Alignment Force', min: 0, max: 2, step: 0.1}); 
 
         let f3 = this.gui.addFolder({ title: 'Skybox Params', expanded: true});
         f3.addInput(SkyboxParams, 'ShowSkybox');
@@ -149,7 +150,7 @@ class ServerGui {
             this.buildPatternTypeOptions(); 
             this.disposePatterns();
             this.buildPatterns(); 
-            this.showPatternParams(); 
+            this.showPatternParams();
         }
     }
 
