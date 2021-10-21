@@ -71,7 +71,7 @@ new GLTFLoader().load(birdPath, function (gltf) {
                 // d0, d1 are actual vertex positions in the morphAttributes
                 let d0, d1; 
 
-                // For the duration of the animation, we calculate how the transition
+                // For the duration of the animation, we calculate the transition
                 // between the morph positions at each duration and store it in tData
                 // tData contains the vertex position at each duration of an animation 
                 // for a single bird. 
@@ -123,7 +123,7 @@ new GLTFLoader().load(birdPath, function (gltf) {
     // Prepare color and vertices attribute for the buffer. 
     // This buffer geometry is a collection of all the vertices 
     // of birds that are in the scene. So it's a single geometry that will be
-    // renderered per frame. 
+    // renderered per frame. Thus, Draw Call = 1
     for (let i = 0; i < totalVertices; i ++ ) {
         const bIndex = i % (vertexPerBird * 3);
         vertices.push(birdGeo.getAttribute('position').array[bIndex]);
@@ -131,7 +131,9 @@ new GLTFLoader().load(birdPath, function (gltf) {
     }
 
     // Seeds & References are for Animation of each bird. 
-    // It's some strange arithmetic that I don't understand. 
+    // It's some strange arithmetic that I don't understand.
+    // But it's necessary to store the index of each frame in the animation. 
+    // It's solid and we don't have to touch it at all.
     let r = Math.random();
     for (let i = 0; i < vertexPerBird * BIRDS; i ++) {
         const bIndex = i % (vertexPerBird);
@@ -145,7 +147,7 @@ new GLTFLoader().load(birdPath, function (gltf) {
     }
 
     // We need to push the indices for each bird that is getting added to this geometry. 
-    // Incoming geometry has an index array that represents something realted to the verteices 
+    // Incoming geometry has an index array that represents something realted to the vertices 
     // of the triangles that are added to the geometry. 
     for (let i = 0; i <indicesPerBird * BIRDS; i++) {
         const offset = Math.floor(i / indicesPerBird) * vertexPerBird * 3; // CRITICAL FIX: Contribute back to Three.js
@@ -153,7 +155,7 @@ new GLTFLoader().load(birdPath, function (gltf) {
     }
 
     BirdGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
-    // Don't need this - we are not doing anything with it. 
+    // Don't need this - we are not doing anything with it in the shader for now. 
     // BirdGeometry.setAttribute('birdColor', new THREE.BufferAttribute( new Uint16Array( color ), 3,true)); 
     BirdGeometry.setAttribute('color', new THREE.BufferAttribute(new Uint16Array(color), 3, true));
     BirdGeometry.setAttribute('reference', new THREE.BufferAttribute(new Float32Array(reference), 4));
@@ -181,7 +183,7 @@ let windowHalfY = window.innerHeight / 2;
 // Also on when the boids are disturbed. 
 const BOUNDS = 10, BOUNDS_HALF = BOUNDS / 2;
 
-let last = performance.now();
+// Clock we need to use this in our render. 
 let clock = new THREE.Clock(); 
 
 let gpuCompute;
