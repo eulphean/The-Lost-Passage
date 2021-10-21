@@ -87,7 +87,7 @@ class GPURenderer {
         this.velocityUniforms["delta"].value = delta;
         this.velocityUniforms["time"].value = now;
 
-        this.updateUniforms();
+        this.updateParams();
 
         // Compute velocity and position shaders and 
         // populate the vel and pos textures with new values.
@@ -139,7 +139,7 @@ class GPURenderer {
         return this.gpuCompute.getCurrentRenderTarget(this.velocityVariable).texture;
     }
 
-    updateUniforms() {
+    updateParams() {
         this.velocityUniforms['separationDistance'].value = PigeonParams.Seperation; 
         this.velocityUniforms['alignmentDistance'].value = PigeonParams.Alignment;
         this.velocityUniforms['cohesionDistance'].value = PigeonParams.Cohesion;

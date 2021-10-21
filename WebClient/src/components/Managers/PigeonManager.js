@@ -18,12 +18,14 @@ export let TargetParams = {
     ShowTarget: true
 }
 
+// PARAMS shared between GPURenderer 
+// and PigeonManager. 
 export let PigeonParams = {
-    Size: 0.2,
     Seperation: 20.0,
     Alignment: 20.0,
     Cohesion: 20.0,
     Freedom: 0.75,
+    Size: 0.2,
     Count: BIRDS
 }
 
@@ -62,7 +64,7 @@ class PigeonManager {
             this.pigeonShader.uniforms["time"].value = now / 1000;
             this.pigeonShader.uniforms["delta"].value = delta;
 
-            // Bind pigeon parameters.
+            // Bing pigeon size.
             this.pigeonShader.uniforms['size'].value = PigeonParams.Size; 
 
             // Extract the data textures for Position and Velocity from GPURenderer and set it to the uniforms
@@ -182,7 +184,9 @@ class PigeonManager {
 
 export default PigeonManager;
 
-
+// UNUSED METHODS RIGHT NOW.
+// NEED TO BRING ALL THIS BACK!!
+// HOW, WHEN???
 // setup(scene, currentPatternType) {
 //     console.log('Pigeon Manager Pattern: ' + currentPatternType);
     
