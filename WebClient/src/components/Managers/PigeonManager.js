@@ -24,7 +24,7 @@ export let PigeonParams = {
     Alignment: 20.0,
     Cohesion: 20.0,
     Freedom: 0.75,
-    count: BIRDS
+    Count: BIRDS
 }
 
 class PigeonManager {
@@ -62,19 +62,17 @@ class PigeonManager {
             this.pigeonShader.uniforms["time"].value = now / 1000;
             this.pigeonShader.uniforms["delta"].value = delta;
 
-               // Extract the data textures for Position and Velocity from GPURenderer and set it to the uniforms
+            // Bind pigeon parameters.
+            this.pigeonShader.uniforms['size'].value = PigeonParams.Size; 
+
+            // Extract the data textures for Position and Velocity from GPURenderer and set it to the uniforms
             // of the bird's material to set the new location of the vertices in the BufferGeometry. 
             this.pigeonShader.uniforms["texturePosition"].value = this.gpuRenderer.getPositionRenderTarget();
             this.pigeonShader.uniforms["textureVelocity"].value = this.gpuRenderer.getVelocityRenderTarget();
         }
 
-        // Bind pigeon size. 
-        if (this.pigeonShader) {
-            this.pigeonShader.uniforms['size'].value = PigeonParams.size; 
-        }
-
         // Bing pigeon count. 
-        this.pigeon.setDrawRange(PigeonParams.count); 
+        this.pigeon.setDrawRange(PigeonParams.Count); 
     }
 
     initPigeons(scene) {
@@ -102,7 +100,8 @@ class PigeonManager {
             // TextureAnimation is DataTexture for the animation that we prepared when loading our geometry. 
             shader.uniforms.textureAnimation = { value: this.pigeon.textureAnimation }; // Never have to update again.
             shader.uniforms.time = { value: 1.0 };
-            shader.uniforms.size = { value: PigeonParams.Size };
+
+            shader.uniforms.size = { value: 0.2 };
             shader.uniforms.delta = { value: 0.0 }; 
 
             // Replace token with token + insert. 

@@ -58,6 +58,7 @@ class World extends React.Component {
     
     // 3D scene object where everything is added. 
     this.scene = new THREE.Scene(); 
+    this.scene.background = new THREE.Color(0xffdeff);
 
     // Camera & Interactive controls module. 
     this.cameraControl = new CameraControl(); 
@@ -74,7 +75,7 @@ class World extends React.Component {
     // Three.js Renderer
     this.rendererManager = new RendererManager(); 
 
-    // Pigeons
+    // // Pigeons
     this.pigeonManager = new PigeonManager(this.rendererManager.renderer, this.scene); 
 
     // Resizer
@@ -111,16 +112,18 @@ class World extends React.Component {
   initializeRender() {
     this.fpsGraph.begin();
       // Pass the bounding box to the pigeon manager for creating bounds for agents. 
-      let boundingBox = this.skyboxManager.getBoundingBox(); 
+      //let boundingBox = this.skyboxManager.getBoundingBox(); 
       //this.pigeonManager.update(boundingBox); 
-      this.pigeonManager.update();
-
+      if (this.pigeonManager) {
+        this.pigeonManager.update();
+      }
+      
       this.cameraControl.update();
 
       // Target exists? 
-      // if (this.pigeonManager.target) {
-      //   this.raycastManager.intersect(this.cameraControl.camera, this.pigeonManager.target.mesh); 
-      // }
+      if (this.pigeonManager.target) {
+        this.raycastManager.intersect(this.cameraControl.camera, this.pigeonManager.target.mesh); 
+      }
 
       // This renders each frame. 
       this.rendererManager.render(this.scene, this.cameraControl.getCamera());   
@@ -130,7 +133,7 @@ class World extends React.Component {
       this.rendererManager.monitorDrawCalls();
     this.fpsGraph.end();
 
-    if (this.shouldAnimate) {
+    if (true) {
       // Register this function as a callback to every repaint from the browser.
       requestAnimationFrame(this.initializeRender.bind(this)); 
     }

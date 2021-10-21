@@ -22,10 +22,10 @@ class CameraControl {
     constructor() {
         // Camera Setup
         // (FOV, AspectRatio, Near Clipping, Far Clipping)
-        this.camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.05, 20000);
-        this.camera.position.set(0, 0, 65); 
+        this.camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.05, 20000);
+        this.camera.position.set(0, 0, 350); 
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
-        this.camera.frustumCulled = true; 
+        this.camera.frustumCulled = false; 
 
         this.controls = new OrbitControls(this.camera); 
     }

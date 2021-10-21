@@ -14,12 +14,11 @@ import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRe
 import fragmentShaderPosition from '../../shaders/fragmentShaderPosition.glsl'
 import fragmentShaderVelocity from '../../shaders/fragmentShaderVelocity.glsl'
 
-const BOUNDS = 10;
+const BOUNDS = 100;
 const BOUNDS_HALF = BOUNDS / 2; 
 
 class GPURenderer {
     constructor(renderer) {
-        this.clock = new THREE.Clock();
         this.gpuCompute = new GPUComputationRenderer(WIDTH, WIDTH, renderer); 
         
         // Textures for position and velocity computations. 
@@ -57,10 +56,10 @@ class GPURenderer {
         this.velocityUniforms["time"] = { value: 1.0 };
         this.velocityUniforms["delta"] = { value: 0.0 };
         this.velocityUniforms["testing"] = { value: 1.0 };
-        this.velocityUniforms["separationDistance"] = { value: PigeonParams.seperation };
-        this.velocityUniforms["alignmentDistance"] = { value: PigeonParams.alignment };
-        this.velocityUniforms["cohesionDistance"] = { value: PigeonParams.cohesion };
-        this.velocityUniforms["freedomFactor"] = { value: 0.75 };
+        this.velocityUniforms["separationDistance"] = { value: PigeonParams.Seperation };
+        this.velocityUniforms["alignmentDistance"] = { value: PigeonParams.Alignment };
+        this.velocityUniforms["cohesionDistance"] = { value: PigeonParams.Cohesion };
+        this.velocityUniforms["freedomFactor"] = { value: PigeonParams.Freedom };
         this.velocityUniforms["predator"] = { value: new THREE.Vector3() };
         
         // Velocity variable.
@@ -141,10 +140,10 @@ class GPURenderer {
     }
 
     updateUniforms() {
-        this.velocityUniforms['separationDistance'].value = PigeonParams.seperation; 
-        this.velocityUniforms['alignmentDistance'].value = PigeonParams.alignment;
-        this.velocityUniforms['cohesionDistance'].value = PigeonParams.cohesion;
-        this.velocityUniforms['freedomFactor'].value = PigeonParams.freedom;
+        this.velocityUniforms['separationDistance'].value = PigeonParams.Seperation; 
+        this.velocityUniforms['alignmentDistance'].value = PigeonParams.Alignment;
+        this.velocityUniforms['cohesionDistance'].value = PigeonParams.Cohesion;
+        this.velocityUniforms['freedomFactor'].value = PigeonParams.Freedom;
     }
 }
 
