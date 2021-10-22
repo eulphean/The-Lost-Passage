@@ -60,6 +60,7 @@ class GPURenderer {
         this.velocityUniforms["alignmentDistance"] = { value: PigeonParams.Alignment };
         this.velocityUniforms["cohesionDistance"] = { value: PigeonParams.Cohesion };
         this.velocityUniforms["freedomFactor"] = { value: PigeonParams.Freedom };
+        this.velocityUniforms["targetPosition"] = { value: new THREE.Vector3() };
         this.velocityUniforms["predator"] = { value: new THREE.Vector3() };
         
         // Velocity variable.
@@ -80,14 +81,17 @@ class GPURenderer {
         }
     } 
 
-    update(delta, now) {
-        // GPGPU shader uniform values that are changing every frame. 
+    update(delta, now, targetPosition) {
+        // GPGPU shader uniform values that are changing on every frame. 
         this.positionUniforms["delta"].value = delta; 
         this.positionUniforms["time"].value = now;
         this.velocityUniforms["delta"].value = delta;
         this.velocityUniforms["time"].value = now;
-
-        this.updateParams();
+        this.velocityUniforms['separationDistance'].value = PigeonParams.Seperation; 
+        this.velocityUniforms['alignmentDistance'].value = PigeonParams.Alignment;
+        this.velocityUniforms['cohesionDistance'].value = PigeonParams.Cohesion;
+        this.velocityUniforms['freedomFactor'].value = PigeonParams.Freedom;
+        this.velocityUniforms["targetPosition"].value.set(targetPosition.x, targetPosition.y, targetPosition.z);
 
         // Compute velocity and position shaders and 
         // populate the vel and pos textures with new values.
@@ -124,9 +128,9 @@ class GPURenderer {
             const y = Math.random() - 0.5;
             const z = Math.random() - 0.5;
 
-            theArray[k + 0] = x * 0.5;
-            theArray[k + 1] = y * 0.5;
-            theArray[k + 2] = z * 0.5;
+            theArray[k + 0] = x * 0.1;
+            theArray[k + 1] = y * 0.1;
+            theArray[k + 2] = z * 0.1;
             theArray[k + 3] = 1;
         }
     }
@@ -137,13 +141,6 @@ class GPURenderer {
 
     getVelocityRenderTarget() {
         return this.gpuCompute.getCurrentRenderTarget(this.velocityVariable).texture;
-    }
-
-    updateParams() {
-        this.velocityUniforms['separationDistance'].value = PigeonParams.Seperation; 
-        this.velocityUniforms['alignmentDistance'].value = PigeonParams.Alignment;
-        this.velocityUniforms['cohesionDistance'].value = PigeonParams.Cohesion;
-        this.velocityUniforms['freedomFactor'].value = PigeonParams.Freedom;
     }
 }
 

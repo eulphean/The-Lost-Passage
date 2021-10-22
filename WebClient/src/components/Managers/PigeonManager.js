@@ -1,4 +1,4 @@
-    /*
+/*
   Name: PigeonManager.js
   Author: Amay Kataria
   Date: 09/26/2021
@@ -44,37 +44,49 @@ class PigeonManager {
         // Shader to set the uniforms on.
         this.pigeonShader = ''; 
 
+        // Create the target object that the pigeons are following. 
+        this.target = new Target(scene);
+
         // Clock, required for animation of the agents. 
         this.clock = new THREE.Clock(); 
     }
 
+    setupTarget(curPatternType) {
+        // Create the target pattern.
+        this.patternManager.setTargetPattern(curPatternType); 
+    }
+
     update() {
-        // let patternPos = this.patternManager.update();
-        // this.target.setVector(patternPos);
-        // this.target.setVisibility(TargetParams.ShowTarget);
+        // Update target.
+        let targetPosition = this.patternManager.update();
 
-        let delta = this.clock.getDelta();
-        let now = this.clock.oldTime;
+        // If we have a valid target position, begin updating.
+        if (targetPosition) {
+            this.target.setVector(targetPosition);
+            this.target.setVisibility(TargetParams.ShowTarget);
+                
+            let delta = this.clock.getDelta();
+            let now = this.clock.oldTime;
 
-        // Computer GPU values. 
-        this.gpuRenderer.update(delta, now); 
+            // Computer GPU values. 
+            this.gpuRenderer.update(delta, now, targetPosition); 
+            // Bird material's uniform value that is changing every frame. 
+            if (this.pigeonShader) {
+                this.pigeonShader.uniforms["time"].value = now / 1000;
+                this.pigeonShader.uniforms["delta"].value = delta;
 
-        // Bird material's uniform value that is changing every frame. 
-        if (this.pigeonShader) {
-            this.pigeonShader.uniforms["time"].value = now / 1000;
-            this.pigeonShader.uniforms["delta"].value = delta;
+                // Bing pigeon size.
+                this.pigeonShader.uniforms['size'].value = PigeonParams.Size; 
 
-            // Bing pigeon size.
-            this.pigeonShader.uniforms['size'].value = PigeonParams.Size; 
+                // Extract the data textures for Position and Velocity from GPURenderer and set it to the uniforms
+                // of the bird's material to set the new location of the vertices in the BufferGeometry. 
+                this.pigeonShader.uniforms["texturePosition"].value = this.gpuRenderer.getPositionRenderTarget();
+                this.pigeonShader.uniforms["textureVelocity"].value = this.gpuRenderer.getVelocityRenderTarget();
+            }
 
-            // Extract the data textures for Position and Velocity from GPURenderer and set it to the uniforms
-            // of the bird's material to set the new location of the vertices in the BufferGeometry. 
-            this.pigeonShader.uniforms["texturePosition"].value = this.gpuRenderer.getPositionRenderTarget();
-            this.pigeonShader.uniforms["textureVelocity"].value = this.gpuRenderer.getVelocityRenderTarget();
+            // Bind pigeon count.
+            this.pigeon.setDrawRange(PigeonParams.Count); 
         }
-
-        // Bing pigeon count. 
-        this.pigeon.setDrawRange(PigeonParams.Count); 
     }
 
     initPigeons(scene) {

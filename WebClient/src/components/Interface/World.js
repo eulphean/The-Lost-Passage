@@ -161,8 +161,7 @@ class World extends React.Component {
   beginWorld() {
     this.videoRef.current.play();
     let currentPatternType = this.guiRef.current.getCurPatternType();  
-    // Setup the pigeons when world is mounted. 
-    // this.pigeonManager.setup(this.scene, currentPatternType);
+    this.pigeonManager.setupTarget(currentPatternType);
   }
 
   onPatternChanged(newPatternType) {

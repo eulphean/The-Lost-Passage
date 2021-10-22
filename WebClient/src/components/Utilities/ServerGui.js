@@ -72,8 +72,8 @@ class ServerGui {
         this.ellipseParamsFolder = this.patternFolder.addFolder({ title: 'Ellipse Pattern Params', expanded: true });
         this.ellipseParamsFolder.addInput(EllipseParams, 'Origin');
         this.ellipseParamsFolder.addInput(EllipseParams, 'Radii', {
-            x: { min: 0, max: 50 },
-            y: { min: 0, max: 50 }
+            x: { min: 0, max: 100 },
+            y: { min: 0, max: 100 }
         });
         this.ellipseParamsFolder.addInput(EllipseParams, 'Amplitude', { min: 0, max: 10 });
         this.ellipseParamsFolder.addInput(EllipseParams, 'Speed', { min: 0, max: 2 });
@@ -81,7 +81,7 @@ class ServerGui {
 
         this.roseCurveParamsFolder = this.patternFolder.addFolder({ title: 'Rose-Curve Pattern Params', expanded: true });
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Origin');
-        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Radius', { min: 1, max: 50 });
+        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Radius', { min: 1, max: 100 });
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Phase', { min: 0, max: 10 });
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'NumPetals', { min: 1, max: 10, step: 1 });
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Amplitude', { min: 0, max: 10 });
@@ -98,7 +98,7 @@ class ServerGui {
         f2.addInput(PigeonParams, 'Alignment', {label: 'Alignment', min: 0, max: 100, step: 1}); 
         f2.addInput(PigeonParams, 'Cohesion', {label: 'Cohesion', min: 0, max: 100, step: 1}); 
         f2.addInput(PigeonParams, 'Freedom', {label: 'Freedom', min: 0, max: 1, step: 0.01}); 
-        f2.addInput(PigeonParams, 'Count', {label: 'Count', min: 0, max: PigeonParams.Count, step: 0.01}); 
+        f2.addInput(PigeonParams, 'Count', {label: 'Count', min: 0, max: PigeonParams.Count, step: 1}); 
         // f2.addInput(AgentParams, 'AttractionForce', {label: 'Attraction Force', min: 0.5, max: 2, step: 0.05});
         // f2.addInput(AgentParams, 'SmoothFactor', {label: 'Smooth Factor', min: 0.005, max: 0.1, step: 0.005});
         // f2.addInput(AgentParams, 'SeperationForce', {label: 'Seperation Force', min: 0.5, max: 2, step: 0.1}); 

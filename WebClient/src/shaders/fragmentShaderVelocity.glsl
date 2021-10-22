@@ -1,11 +1,19 @@
+/*
+  Name: fragmentShaderVelocity.js
+  Author: Amay Kataria
+  Date: 10/21/2021
+  Description: Core shader responsible for everything related to how to the velocity of each pigeon in the flock changes. 
+*/
+
 uniform float time;
-uniform float testing;
-uniform float delta; // about 0.016
-uniform float separationDistance; // 20
-uniform float alignmentDistance; // 40
-uniform float cohesionDistance; //
+uniform float delta;
+uniform float separationDistance; 
+uniform float alignmentDistance;
+uniform float cohesionDistance;
 uniform float freedomFactor;
+uniform vec3 targetPosition; 
 uniform vec3 predator;
+uniform float testing;
 
 // Resolution is passed by default from GPUComputationRenderer
 // That is WIDTH x WIDTH, with which we initialized it. 
@@ -22,10 +30,11 @@ float zoneRadiusSquared = 1600.0;
 float separationThresh = 0.45;
 float alignmentThresh = 0.65;
 
+// Currently not getting used.
 const float UPPER_BOUNDS = BOUNDS;
 const float LOWER_BOUNDS = -UPPER_BOUNDS;
 
-const float SPEED_LIMIT = 5.0;
+const float SPEED_LIMIT = 8.0;
 
 // A simple random function. 
 float rand(vec2 co){
@@ -60,23 +69,25 @@ void main() {
     float percent;
 
     vec3 velocity = selfVelocity;
-
     float limit = SPEED_LIMIT;
 
-    dir = predator * UPPER_BOUNDS - selfPosition;
-    dir.z = 0.;
+    // PREDATOR LOGIC is when we are passing mouse coordinates. 
+    // RIGHT NOW WE ARE DISABLING THAT, MAYBE WE DO PASS IT 
+    // THAT BASICALLY CAUSES DISTURBANCES IN THE FLOCK..
+    dir = targetPosition - selfPosition;
+    // dir.z = 0.;
     // dir.z *= 0.6;
     dist = length(dir);
     distSquared = dist * dist;
 
-    float preyRadius = 150.0;
+    float preyRadius = 100.0;
     float preyRadiusSq = preyRadius * preyRadius;
 
     // move birds away from predator
-    if ( dist < preyRadius ) {
-        f = ( distSquared / preyRadiusSq - 1.0 ) * delta * 100.;
+    if (dist < preyRadius ) {
+        f = (distSquared / preyRadiusSq - 1.0) * delta * 150.;
         velocity += normalize(dir) * f;
-        limit += 5.0;
+        // limit += 5.0;
     }
 
     // if (testing == 0.0) {}
@@ -84,12 +95,11 @@ void main() {
 
     // Attract flocks to the center
     // Could this be our target??
-    vec3 central = vec3(0., 0., 0.);
-    dir = selfPosition - central;
+    dir = selfPosition - targetPosition;
     dist = length(dir);
     
     dir.y *= 2.5;
-    velocity -= normalize( dir ) * delta * 5.;
+    velocity -= normalize(dir) * delta * 50.;
 
     // Compare the position and velocity of current bird with every
     // other bird in the system. This gives shader a O(n2) complexity. 
@@ -140,7 +150,7 @@ void main() {
     }
 
     // this make tends to fly around than down or up
-    // if (velocity.y > 0.) velocity.y *= (1. - 0.2 * delta);
+    if (velocity.y > 0.) velocity.y *= (1. - 0.2 * delta);
 
     // Speed Limits
     if (length(velocity) > limit ) {
