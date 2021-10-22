@@ -69,21 +69,21 @@ void main() {
 
     vec3 velocity = selfVelocity;
 
-    // PREDATOR LOGIC is when we are passing mouse coordinates. 
-    // RIGHT NOW WE ARE DISABLING THAT, MAYBE WE DO PASS IT 
-    // THAT BASICALLY CAUSES DISTURBANCES IN THE FLOCK..
+    // PREDATOR is basically our target point only right now. 
+    // THIS COULD BE MOUSE COORDINATES THAT COULD disturb the flock. 
+    // Originally that's what it was but I've disabled it for now. 
     dir = targetPosition - selfPosition;
     // dir.z = 0.;
     // dir.z *= 0.6;
     dist = length(dir);
     distSquared = dist * dist;
 
-    float preyRadius = 0.0;
+    float preyRadius = 15.0;
     float preyRadiusSq = preyRadius * preyRadius;
 
     // move birds away from predator
     if (dist < preyRadius ) {
-        f = (distSquared / preyRadiusSq - 1.0) * delta * 50.;
+        f = (distSquared / preyRadiusSq - 1.0) * delta * 75.;
         velocity += normalize(dir) * f;
         // limit += 5.0;
     }
