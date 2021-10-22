@@ -61,6 +61,7 @@ class GPURenderer {
         this.velocityUniforms["cohesionDistance"] = { value: PigeonParams.Cohesion };
         this.velocityUniforms["freedomFactor"] = { value: PigeonParams.Freedom };
         this.velocityUniforms["targetPosition"] = { value: new THREE.Vector3() };
+        this.velocityUniforms["maxSpeed"] = { value: PigeonParams.MaxSpeed };
         this.velocityUniforms["predator"] = { value: new THREE.Vector3() };
         
         // Velocity variable.
@@ -91,7 +92,8 @@ class GPURenderer {
         this.velocityUniforms['alignmentDistance'].value = PigeonParams.Alignment;
         this.velocityUniforms['cohesionDistance'].value = PigeonParams.Cohesion;
         this.velocityUniforms['freedomFactor'].value = PigeonParams.Freedom;
-        this.velocityUniforms["targetPosition"].value.set(targetPosition.x, targetPosition.y, targetPosition.z);
+        this.velocityUniforms['targetPosition'].value.set(targetPosition.x, targetPosition.y, targetPosition.z);
+        this.velocityUniforms['maxSpeed'].value = PigeonParams.MaxSpeed; 
 
         // Compute velocity and position shaders and 
         // populate the vel and pos textures with new values.

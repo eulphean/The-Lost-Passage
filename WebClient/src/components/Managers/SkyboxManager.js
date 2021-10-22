@@ -10,6 +10,7 @@ import * as THREE from 'three'
 // Create some parameters here for the User Interface. 
 
 export let SkyboxParams = {
+
     ShowSkybox: true,
     ShowBoundingBox: true,
     BoundingBoxScalar: 0 // Control the size of the bounding box using this scalar. 
@@ -17,7 +18,7 @@ export let SkyboxParams = {
 
 class SkyboxManager {
     constructor(scene) {
-        const geometry = new THREE.BoxGeometry(120, 70, 120);
+        const geometry = new THREE.BoxGeometry(400, 400, 400);
         const material = new THREE.MeshBasicMaterial({side: THREE.BackSide});
 
         // Reuse this variable in other parts. 

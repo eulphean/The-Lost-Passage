@@ -12,6 +12,7 @@ uniform float alignmentDistance;
 uniform float cohesionDistance;
 uniform float freedomFactor;
 uniform vec3 targetPosition; 
+uniform float maxSpeed; 
 uniform vec3 predator;
 uniform float testing;
 
@@ -33,8 +34,6 @@ float alignmentThresh = 0.65;
 // Currently not getting used.
 const float UPPER_BOUNDS = BOUNDS;
 const float LOWER_BOUNDS = -UPPER_BOUNDS;
-
-const float SPEED_LIMIT = 8.0;
 
 // A simple random function. 
 float rand(vec2 co){
@@ -69,7 +68,6 @@ void main() {
     float percent;
 
     vec3 velocity = selfVelocity;
-    float limit = SPEED_LIMIT;
 
     // PREDATOR LOGIC is when we are passing mouse coordinates. 
     // RIGHT NOW WE ARE DISABLING THAT, MAYBE WE DO PASS IT 
@@ -80,12 +78,12 @@ void main() {
     dist = length(dir);
     distSquared = dist * dist;
 
-    float preyRadius = 100.0;
+    float preyRadius = 0.0;
     float preyRadiusSq = preyRadius * preyRadius;
 
     // move birds away from predator
     if (dist < preyRadius ) {
-        f = (distSquared / preyRadiusSq - 1.0) * delta * 150.;
+        f = (distSquared / preyRadiusSq - 1.0) * delta * 50.;
         velocity += normalize(dir) * f;
         // limit += 5.0;
     }
@@ -153,8 +151,8 @@ void main() {
     if (velocity.y > 0.) velocity.y *= (1. - 0.2 * delta);
 
     // Speed Limits
-    if (length(velocity) > limit ) {
-        velocity = normalize(velocity) * limit;
+    if (length(velocity) > maxSpeed ) {
+        velocity = normalize(velocity) * maxSpeed;
     }
 
     // Output a velocity that is stored in the texture. 
