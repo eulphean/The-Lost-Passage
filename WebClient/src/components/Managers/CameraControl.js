@@ -30,8 +30,13 @@ class CameraControl {
         this.controls = new OrbitControls(this.camera); 
     }
 
-    update() {
-        this.updateControls();
+    update(scene, mouse, zoom) {
+        this.camera.position.x += ( mouse.x - this.camera.position.x ) * .05;
+        this.camera.position.y += ( - mouse.y - this.camera.position.y ) * .05;
+        this.camera.position.z = zoom;
+
+        this.camera.lookAt( scene.position );
+        // this.updateControls();
     }
 
     updateControls() {

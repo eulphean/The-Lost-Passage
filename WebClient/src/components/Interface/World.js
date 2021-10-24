@@ -57,6 +57,8 @@ class World extends React.Component {
   constructor(props) {
     super(props);
     this.state={};
+    this.mouse = new THREE.Vector2(0, 0);
+    this.zoom = 150;
 
     // Animation flag. 
     this.shouldAnimate = true; 
@@ -101,6 +103,7 @@ class World extends React.Component {
 
     // Subscribe to events. 
     window.addEventListener('resize', this.onWindowResize.bind(this));
+<<<<<<< HEAD
     document.addEventListener('visibilitychange', event => {
       if (document.hidden) {
         this.updateAnimationStatus(false); 
@@ -108,6 +111,12 @@ class World extends React.Component {
         this.updateAnimationStatus(true);
       }
     }); 
+=======
+    
+    // Mouse activites
+    window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
+    window.addEventListener('wheel', this.onMouseWheel.bind(this), false);
+>>>>>>> Map cursor position to the camera position
   }
 
   componentDidMount() {
@@ -173,7 +182,7 @@ class World extends React.Component {
         this.pigeonManager.update(boundingBox);
       }
       
-      this.cameraControl.update();
+      this.cameraControl.update(this.scene, this.mouse, this.zoom);
 
       // This renders each frame. 
       this.rendererManager.render(this.scene, this.cameraControl.getCamera());   
@@ -182,6 +191,17 @@ class World extends React.Component {
 
       this.rendererManager.monitorDrawCalls();
     this.fpsGraph.end();
+  }
+
+  onMouseMove(event) {
+    this.mouse.x = (event.clientX - window.innerWidth / 2) * 2;
+    this.mouse.y = (event.clientY - window.innerHeight / 2) * 2;
+  }
+
+  onMouseWheel(event) {
+      this.zoom += event.deltaY * 0.1;
+      // Constrain the zoom within the reasonable range
+      this.zoom = Math.min(Math.max(100, this.zoom), 1000);
   }
 
   onWindowResize() {
