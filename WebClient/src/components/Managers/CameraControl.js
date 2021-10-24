@@ -27,7 +27,7 @@ class CameraControl {
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
         this.camera.frustumCulled = false; 
 
-        this.controls = new OrbitControls(this.camera); 
+        // this.controls = new OrbitControls(this.camera); 
     }
 
     update(scene, mouse, zoom) {
