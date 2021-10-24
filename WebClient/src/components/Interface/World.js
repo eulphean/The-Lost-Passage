@@ -203,6 +203,17 @@ class World extends React.Component {
       this.zoom = Math.min(Math.max(100, this.zoom), 1000);
   }
 
+  onMouseMove(event) {
+    this.mouse.x = (event.clientX - window.innerWidth / 2) * 2;
+    this.mouse.y = (event.clientY - window.innerHeight / 2) * 2;
+  }
+
+  onMouseWheel(event) {
+      this.zoom += event.deltaY * 0.1;
+      // Constrain the zoom within the reasonable range
+      this.zoom = Math.min(Math.max(100, this.zoom), 1000);
+  }
+
   onWindowResize() {
     if (this.cameraControl) {
       let camera = this.cameraControl.getCamera(); 
