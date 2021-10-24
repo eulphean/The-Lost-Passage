@@ -103,7 +103,6 @@ class World extends React.Component {
 
     // Subscribe to events. 
     window.addEventListener('resize', this.onWindowResize.bind(this));
-<<<<<<< HEAD
     document.addEventListener('visibilitychange', event => {
       if (document.hidden) {
         this.updateAnimationStatus(false); 
@@ -111,12 +110,10 @@ class World extends React.Component {
         this.updateAnimationStatus(true);
       }
     }); 
-=======
     
     // Mouse activites
     window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
     window.addEventListener('wheel', this.onMouseWheel.bind(this), false);
->>>>>>> Map cursor position to the camera position
   }
 
   componentDidMount() {
