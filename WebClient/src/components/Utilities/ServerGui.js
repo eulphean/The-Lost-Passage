@@ -94,11 +94,12 @@ class ServerGui {
 
         let f2 = this.gui.addFolder({ title: 'Pigeon Params', expanded: true});
         f2.addInput(PigeonParams, 'Size', {label: 'Size', min: 0, max: 1, step: 0.01}); 
-        f2.addInput(PigeonParams, 'Seperation', {label: 'Seperation', min: 0, max: 100, step: 1}); 
-        f2.addInput(PigeonParams, 'Alignment', {label: 'Alignment', min: 0, max: 100, step: 1}); 
-        f2.addInput(PigeonParams, 'Cohesion', {label: 'Cohesion', min: 0, max: 100, step: 1}); 
-        f2.addInput(PigeonParams, 'Freedom', {label: 'Freedom', min: 0, max: 1, step: 0.01}); 
-        f2.addInput(PigeonParams, 'MaxSpeed', {label: 'MaxSpeed', min: 1, max: 20, step: 0.1});
+        f2.addInput(PigeonParams, 'Attraction', {label: 'Attraction Force', min: 0, max: 100, step: 1}); 
+        f2.addInput(PigeonParams, 'Seperation', {label: 'Seperation Force', min: 0, max: 100, step: 1}); 
+        f2.addInput(PigeonParams, 'Alignment', {label: 'Alignment Force', min: 0, max: 100, step: 1}); 
+        f2.addInput(PigeonParams, 'Cohesion', {label: 'Cohesion Force', min: 0, max: 100, step: 1}); 
+        f2.addInput(PigeonParams, 'MaxSpeed', {label: 'Max Agent Speed', min: 1, max: 200, step: 0.1});
+        f2.addInput(PigeonParams, 'SpeedLerp', {label: 'Speed Lerp', min: 0, max: 1, step: 0.1});
         f2.addInput(PigeonParams, 'Count', {label: 'Count', min: 0, max: PigeonParams.Count, step: 1}); 
         
         // f2.addInput(AgentParams, 'AttractionForce', {label: 'Attraction Force', min: 0.5, max: 2, step: 0.05});

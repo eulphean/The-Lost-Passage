@@ -47,26 +47,29 @@ class GPURenderer {
         this.velocityUniforms = this.velocityVariable.material.uniforms;
 
         // Position uniforms. 
-        // Add any uniforms to adjust position right here. 
-        this.positionUniforms["time"] = {value: 0.0};
-        this.positionUniforms["delta"] = {value: 0.0};
+        // TIME
+        this.positionUniforms["uTime"] = {value: 0.0};
+        this.positionUniforms["uDelta"] = {value: 0.0};
 
         // Velocity uniforms. 
-        // Add any uniforms to adjust velocity right here. 
-        this.velocityUniforms["time"] = { value: 1.0 };
-        this.velocityUniforms["delta"] = { value: 0.0 };
-        this.velocityUniforms["testing"] = { value: 1.0 };
-        this.velocityUniforms["separationDistance"] = { value: PigeonParams.Seperation };
-        this.velocityUniforms["alignmentDistance"] = { value: PigeonParams.Alignment };
-        this.velocityUniforms["cohesionDistance"] = { value: PigeonParams.Cohesion };
-        this.velocityUniforms["freedomFactor"] = { value: PigeonParams.Freedom };
-        this.velocityUniforms["targetPosition"] = { value: new THREE.Vector3() };
-        this.velocityUniforms["maxSpeed"] = { value: PigeonParams.MaxSpeed };
-        this.velocityUniforms["predator"] = { value: new THREE.Vector3() };
+        // TIME 
+        this.velocityUniforms["uTime"] = { value: 1.0 };
+        this.velocityUniforms["uDelta"] = { value: 0.0 };
+
+        // FLOCK 
+        this.velocityUniforms["uAttractionForce"] = { value: PigeonParams.Attraction }
+        this.velocityUniforms["uSeperationForce"] = { value: PigeonParams.Seperation };
+        this.velocityUniforms["uAlignmentForce"] = { value: PigeonParams.Alignment };
+        this.velocityUniforms["uCohesionForce"] = { value: PigeonParams.Cohesion };
+
+        // TARGET
+        this.velocityUniforms["uTargetPosition"] = { value: new THREE.Vector3() };
+
+        // SPEED
+        this.velocityUniforms["uMaxAgentSpeed"] = { value: PigeonParams.MaxSpeed };
+        this.velocityUniforms["uSpeedLerp"] = { value: PigeonParams.SpeedLerp };
         
         // Velocity variable.
-        // Adding a define to use it in the shader. 
-        this.velocityVariable.material.defines.BOUNDS = BOUNDS.toFixed(2);
         this.velocityVariable.wrapS = THREE.RepeatWrapping;
         this.velocityVariable.wrapT = THREE.RepeatWrapping;
 
@@ -84,16 +87,25 @@ class GPURenderer {
 
     update(delta, now, targetPosition) {
         // GPGPU shader uniform values that are changing on every frame. 
-        this.positionUniforms["delta"].value = delta; 
-        this.positionUniforms["time"].value = now;
-        this.velocityUniforms["delta"].value = delta;
-        this.velocityUniforms["time"].value = now;
-        this.velocityUniforms['separationDistance'].value = PigeonParams.Seperation; 
-        this.velocityUniforms['alignmentDistance'].value = PigeonParams.Alignment;
-        this.velocityUniforms['cohesionDistance'].value = PigeonParams.Cohesion;
-        this.velocityUniforms['freedomFactor'].value = PigeonParams.Freedom;
-        this.velocityUniforms['targetPosition'].value.set(targetPosition.x, targetPosition.y, targetPosition.z);
-        this.velocityUniforms['maxSpeed'].value = PigeonParams.MaxSpeed; 
+
+        // TIME
+        this.positionUniforms["uDelta"].value = delta; 
+        this.positionUniforms["uTime"].value = now;
+        this.velocityUniforms["uDelta"].value = delta;
+        this.velocityUniforms["uTime"].value = now;
+
+        // FLOCK 
+        this.velocityUniforms["uAttractionForce"].value = PigeonParams.Attraction;
+        this.velocityUniforms['uSeperationForce'].value = PigeonParams.Seperation; 
+        this.velocityUniforms['uAlignmentForce'].value = PigeonParams.Alignment;
+        this.velocityUniforms['uCohesionForce'].value = PigeonParams.Cohesion;
+
+        // TARGET
+        this.velocityUniforms['uTargetPosition'].value.set(targetPosition.x, targetPosition.y, targetPosition.z);
+
+        // SPEED
+        this.velocityUniforms['uMaxAgentSpeed'].value = PigeonParams.MaxSpeed; 
+        this.velocityUniforms["uSpeedLerp"].value = PigeonParams.SpeedLerp;
 
         // Compute velocity and position shaders and 
         // populate the vel and pos textures with new values.

@@ -5,8 +5,8 @@
   Description: Core shader for updating the position of each pigeon in the flock. 
 */
 
-uniform float time;
-uniform float delta;
+uniform float uTime;
+uniform float uDelta;
 
 // This influence how quick the pigeon advances to the position. 
 // Maybe bring this in from the GUI. 
@@ -24,8 +24,9 @@ void main()	{
     vec3 velocity = texture2D(textureVelocity, uv).xyz;
 
     // By default we set this 
-    float phase = tempPos.w;
-    phase = mod((phase + delta + length( velocity.xz ) * delta * 3. + max(velocity.y, 0.0 ) * delta * 6.), 62.83);
+    // float phase = tempPos.w;
+    // phase = mod((phase + delta + length( velocity.xz ) * delta * 3. + max(velocity.y, 0.0 ) * delta * 6.), 62.83);
 
-    gl_FragColor = vec4(position + velocity * delta * posInfluence, phase);
+// position + velocity * delta * posInfluence
+    gl_FragColor = vec4(position + velocity * uDelta, 1.0);
 }
