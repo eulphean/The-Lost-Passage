@@ -36,7 +36,7 @@ class SkyboxManager {
         });
 
         // Reuse this variable in other parts.
-        const geometry = new THREE.BoxGeometry(400, 400, 400); 
+        const geometry = new THREE.BoxGeometry(4000, 400, 400); 
 
         // Material array is automatically arranged to the faces. 
         this.cubeMesh = new THREE.Mesh(geometry, materialArray);
