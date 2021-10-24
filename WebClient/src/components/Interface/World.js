@@ -247,7 +247,7 @@ class World extends React.Component {
   }
 
   onShootPigeon() {
-    //this.pigeonManager.shootPigeon();
+     //this.pigeonManager.shootPigeon();
   }
 
   scrollTo() {

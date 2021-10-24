@@ -16,7 +16,6 @@ class RaycastManager {
         this.isIntersecting = false;  
 
         // Listen for mouse events for raycaster.  
-        window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
         window.addEventListener('click', this.onMouseClick.bind(this), false);
     }
 
@@ -25,8 +24,8 @@ class RaycastManager {
         this.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
     }
 
-    intersect(camera, targetMesh) {
-        this.raycaster.setFromCamera(this.mouse, camera);
+    intersect(mouse, camera, targetMesh) {
+        this.raycaster.setFromCamera(mouse, camera);
 
         // Do we intersect with the target mesh? 
         const objects = this.raycaster.intersectObject(targetMesh); 
