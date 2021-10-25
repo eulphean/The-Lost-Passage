@@ -19,7 +19,7 @@ uniform float uSeperationForce;
 uniform float uAlignmentForce;
 uniform float uCohesionForce;
 uniform float uSpeedLerp;
-// uniform float uTargetRadius;
+uniform float uTargetRadius;
 
 // TARGET
 uniform vec3 uTargetPosition; 
@@ -169,21 +169,23 @@ void main() {
     // Adjust target position. 
     vec3 updatedTargetPos = updateTargetPosition();
 
-    // Final velocity update. 
+    // Cohesion, Seperation, Alignment
     vec3 newVelocity = updateBehavior(updatedTargetPos);
-    newVelocity = mix(newVelocity, selfVelocity, uSpeedLerp);
 
+    // Respond to the moving target. 
     vec3 dirToTarget = updatedTargetPos - selfPosition; 
     float distToTarget = length(dirToTarget);
-    float d = 200.0 + sin(uDelta * 0.1) * 200.0;
-    if (distToTarget < d) {
-        float f = (1.0 - (distToTarget / d)) *  uAttractionForce;
+    if (distToTarget < uTargetRadius) {
+        float f = (1.0 - (distToTarget / uTargetRadius)) *  uAttractionForce;
         newVelocity += normalize(dirToTarget) * f; 
     }
 
     if (length(newVelocity) > uMaxAgentSpeed) {
         newVelocity = normalize(newVelocity) * uMaxAgentSpeed;
     }
+
+    // Final velocity lerp.
+    newVelocity = mix(newVelocity, selfVelocity, uSpeedLerp);
 
     // Output a velocity that is stored in the texture. 
     gl_FragColor = vec4(newVelocity, 1.0);
