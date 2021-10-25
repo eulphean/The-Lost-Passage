@@ -14,9 +14,6 @@ import GPUPigeon from '../Environment/GPUPigeon.js';
 import { BIRDS } from '../Environment/GPUPigeon.js'
 import GPURenderer from './GPURenderer.js';
 
-export let TargetParams = {
-    ShowTarget: true
-}
 
 // Set this to true when everything has been loaded. 
 export let IsPigeonManagerReady = false; 
@@ -66,16 +63,15 @@ class PigeonManager {
 
     update() {
         if (IsPigeonManagerReady) {
-            // Update target.
             let targetPosition = this.patternManager.update();
 
             // If we have a valid target position, begin updating.
             if (targetPosition) {
-                this.target.setVector(targetPosition);
-                this.target.setVisibility(TargetParams.ShowTarget);
-                    
                 let delta = this.clock.getDelta();
                 let now = this.clock.oldTime;
+
+                // Update target. 
+                this.target.update(targetPosition, now);
 
                 // Computer GPU values. 
                 this.gpuRenderer.update(delta, now, targetPosition); 

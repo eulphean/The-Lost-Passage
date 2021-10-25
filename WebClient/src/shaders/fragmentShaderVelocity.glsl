@@ -19,10 +19,10 @@ uniform float uSeperationForce;
 uniform float uAlignmentForce;
 uniform float uCohesionForce;
 uniform float uSpeedLerp;
+// uniform float uTargetRadius;
 
 // TARGET
 uniform vec3 uTargetPosition; 
-// Add target size
 
 // SPEED
 uniform float uMaxAgentSpeed; 
@@ -105,7 +105,7 @@ vec3 updateBehavior(vec3 updatedTargetPos) {
     vec3 newVelocity; 
     for (float y = 0.0; y < height; y++) {
         for (float x = 0.0; x < width; x++) {
-            vec2 ref = vec2(x + 0.5, y + 0.5) / resolution.xy; 
+            vec2 ref = vec2(x, y) / resolution.xy; 
             vec3 neighborPos = texture2D(texturePosition, ref).xyz;
             vec3 neighborVel = texture2D(textureVelocity, ref).xyz; 
 
@@ -120,36 +120,35 @@ vec3 updateBehavior(vec3 updatedTargetPos) {
             // Is this Agent outside my zone radius? Pass then. 
             float distSquared = dist * dist;
             if (distSquared > zoneRadiusSquared) {
+                // /// Do something Just make the agent fly in the direction they are in.
+                // float f = ((distSquared / zoneRadiusSquared) - 1.0) * uDelta;
+                // newVelocity += normalize(dir) * f;
                 continue;
-            }
-
-            // How much in my zone is it? 
-            float neighborThresh = (distSquared / zoneRadiusSquared); 
-
-            // Within seperation threshold? 
-            // Move apart for comfort.
-            if (neighborThresh < seperationThresh) {
-                float f = (seperationThresh / neighborThresh - 1.0) * uDelta;
-                newVelocity -= normalize(dir) * (f);
-            } else if (neighborThresh < alignmentThresh) { // Within alignment threshold, align with neighbor. 
-                float threshDelta = alignmentThresh - seperationThresh; 
-                float adjustedThresh = (neighborThresh - seperationThresh) / threshDelta; 
-                float f = (0.5 - sin(adjustedThresh * PI) * 0.5) * uDelta; 
-                newVelocity += normalize(neighborVel) * f; 
             } else {
-                float threshDelta = 1.0 - alignmentThresh; 
-                float adjustedThresh; 
-                if (threshDelta == 0.0) {
-                    adjustedThresh = 1.0; 
+                // How much in my zone is it? 
+                float neighborThresh = (distSquared / zoneRadiusSquared); 
+
+                // Within seperation threshold? 
+                // Move apart for comfort.
+                if (neighborThresh < seperationThresh) {
+                    float f = (seperationThresh / neighborThresh - 1.0) * uDelta;
+                    newVelocity -= normalize(dir) * (f);
+                } else if (neighborThresh < alignmentThresh) { 
+                    // Within alignment threshold, align with neighbor. 
+                    float threshDelta = alignmentThresh - seperationThresh; 
+                    float adjustedThresh = (neighborThresh - seperationThresh) / threshDelta; 
+                    float f = (0.5 - cos(adjustedThresh * PI_2) * 0.5 + 0.5) * uDelta; 
+                    newVelocity += normalize(neighborVel) * f; 
                 } else {
-                    adjustedThresh = (neighborThresh - alignmentThresh) / threshDelta; 
+                    // Attraction / Cohesion - move closer.
+                    float threshDelta = 1.0 - alignmentThresh; 
+                    float adjustedThresh = (neighborThresh - alignmentThresh) / threshDelta;
+                    float f = (0.5 - (cos(adjustedThresh * PI_2) * -0.5 + 0.5)) * uDelta;
+                    newVelocity += normalize(dir) * f;
                 }
-                float f = (0.5 - (cos( adjustedThresh * PI_2) * (-0.5) + 0.5)) * uDelta;
-                newVelocity += normalize(dir) * f;
             }
         }
     }
-
     return newVelocity; 
 }
 
@@ -170,16 +169,20 @@ void main() {
     // Adjust target position. 
     vec3 updatedTargetPos = updateTargetPosition();
 
-    // Update agent behavior.
-    // updateBehavior(updatedTargetPos);
-
     // Final velocity update. 
-    // Clamp final velocity. 
     vec3 newVelocity = updateBehavior(updatedTargetPos);
     newVelocity = mix(newVelocity, selfVelocity, uSpeedLerp);
 
+    vec3 dirToTarget = updatedTargetPos - selfPosition; 
+    float distToTarget = length(dirToTarget);
+    float d = 200.0 + sin(uDelta * 0.1) * 200.0;
+    if (distToTarget < d) {
+        float f = (1.0 - (distToTarget / d)) *  uAttractionForce;
+        newVelocity += normalize(dirToTarget) * f; 
+    }
+
     if (length(newVelocity) > uMaxAgentSpeed) {
-        newVelocity = normalize(newVelocity) * 500.0;
+        newVelocity = normalize(newVelocity) * uMaxAgentSpeed;
     }
 
     // Output a velocity that is stored in the texture. 
@@ -192,3 +195,18 @@ void main() {
 
     // vec3 repelVel = repel(updatedTargetPos); 
     // newVelocity = newVelocity + repelVel; 
+
+                    // if (threshDelta == 0.0) {
+                //     adjustedThresh = 1.0; 
+                // } else {
+                //     adjustedThresh = (neighborThresh - alignmentThresh) / threshDelta; 
+                // }
+
+        // // Attract flocks to the center
+    // // Could this be our target??
+    // vec3 central = vec3(0., 0., 0.);
+    // vec3 dir = selfPosition - central;
+    // float dist = length(dir);
+    
+    // dir.y *= 2.5;
+    // newVelocity += normalize( dir ) * uDelta * 5.;

@@ -1,16 +1,30 @@
 import * as THREE from 'three';
 
+export let TargetParams = {
+    ShowTarget: true,
+    MaxTargetRadius: 100.0,
+    CurrentTargetRadius: 0
+}
+
 export default class Target {
     constructor(scene) {
-        let geometry = new THREE.SphereGeometry(5, 12, 12);
+        let geometry = new THREE.SphereGeometry(1, 12, 12);
         let material = new THREE.MeshLambertMaterial(); 
-        material.emissive = new THREE.Color('#ffffff');
+        material.emissive = new THREE.Color('#000000');
         material.wireframe = false;
-        material.transparent = false; 
-        // material.opacity = 0.5; 
+        material.transparent = true; 
+        material.opacity = 0.2; 
         this.mesh = new THREE.Mesh(geometry, material);
 
         scene.add(this.mesh);
+    }
+
+    update(targetPosition, now) {
+        this.setVector(targetPosition);
+        this.setVisibility(TargetParams.ShowTarget);
+        let scale = TargetParams.MaxTargetRadius + Math.sin(now * 0.001) * TargetParams.MaxTargetRadius / 3.0; 
+        this.mesh.scale.set(scale, scale, scale);
+        TargetParams.CurrentTargetRadius = scale; 
     }
 
     getVector() {

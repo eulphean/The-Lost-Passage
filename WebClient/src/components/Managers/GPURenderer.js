@@ -13,6 +13,7 @@ import { PigeonParams } from './PigeonManager.js';
 import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRenderer.js";
 import fragmentShaderPosition from '../../shaders/fragmentShaderPosition.glsl'
 import fragmentShaderVelocity from '../../shaders/fragmentShaderVelocity.glsl'
+import { TargetParams } from '../Environment/Target.js';
 
 // const BOUNDS = 100;
 // const BOUNDS_HALF = BOUNDS / 2; 
@@ -66,6 +67,7 @@ class GPURenderer {
 
         // TARGET
         this.velocityUniforms["uTargetPosition"] = { value: new THREE.Vector3() };
+        this.velocityUniforms['uTargetRadius'] = { value: TargetParams.CurrentTargetRadius };
 
         // SPEED
         this.velocityUniforms["uMaxAgentSpeed"] = { value: PigeonParams.MaxSpeed };
@@ -108,6 +110,7 @@ class GPURenderer {
 
         // TARGET
         this.velocityUniforms['uTargetPosition'].value.set(targetPosition.x, targetPosition.y, targetPosition.z);
+        this.velocityUniforms['uTargetRadius'].value = TargetParams.CurrentTargetRadius;
 
         // SPEED
         this.velocityUniforms['uMaxAgentSpeed'].value = PigeonParams.MaxSpeed; 
@@ -128,9 +131,9 @@ class GPURenderer {
             // const x = Math.random() * BOUNDS;
             // const y = Math.random() * BOUNDS;
             // const z = Math.random() * BOUNDS;
-            const x = Math.random();
-            const y = Math.random();
-            const z = Math.random();
+            const x = Math.random() - 0.5;
+            const y = Math.random() - 0.5;
+            const z = Math.random() - 0.5;
 
             // 4th. 
             theArray[k + 0] = x;
@@ -148,9 +151,9 @@ class GPURenderer {
             const y = Math.random() - 0.5;
             const z = Math.random() - 0.5;
 
-            theArray[k + 0] = x * 20.0;
-            theArray[k + 1] = y * 20.0;
-            theArray[k + 2] = z * 20.0;
+            theArray[k + 0] = x * 5.0;
+            theArray[k + 1] = y * 5.0;
+            theArray[k + 2] = z * 5.0;
             theArray[k + 3] = 1;
         }
     }

@@ -28,5 +28,5 @@ void main()	{
     phase = mod((phase + uDelta + length( velocity.xz ) * uDelta * 3. + max(velocity.y, 0.0 ) * uDelta * 6.), 62.83);
 
 // position + velocity * delta * posInfluence
-    gl_FragColor = vec4(position + velocity * uDelta, phase);
+    gl_FragColor = vec4(position + velocity * uDelta * 5.0, phase);
 }

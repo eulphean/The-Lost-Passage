@@ -13,7 +13,7 @@ import _ from 'lodash';
 
 import Websocket from './Websocket';
 
-import { TargetParams } from '../Managers/PigeonManager';
+import { TargetParams } from '../Environment/Target.js';
 import { PatternParams, PatternTypes, EllipseParams, RoseCurveParams } from '../Managers/PatternManager.js';
 import { PigeonParams } from '../Managers/PigeonManager';
 import { OrbitParams } from '../Managers/CameraControl.js'
@@ -64,6 +64,8 @@ class ServerGui {
         // World Parameters.
         let f1 = this.gui.addFolder({ title: 'Target Params', expanded: true });
         f1.addInput(TargetParams, 'ShowTarget', {label: 'Show Target'});
+        f1.addInput(TargetParams, 'MaxTargetRadius', {label: 'Max Target Radius', min: 50.0, max: 200.0}); 
+        f1.addMonitor(TargetParams, 'CurrentTargetRadius', {label: 'Current Target Radius'}); 
 
         // Pattern Parameters.
         this.patternFolder = this.gui.addFolder({ title: 'Pattern Params', expanded: true });
@@ -78,16 +80,16 @@ class ServerGui {
             x: { min: 0, max: 200 },
             y: { min: 0, max: 200 }
         });
-        this.ellipseParamsFolder.addInput(EllipseParams, 'Amplitude', { min: 0, max: 100 });
+        this.ellipseParamsFolder.addInput(EllipseParams, 'Amplitude', { min: 0, max: 300 });
         this.ellipseParamsFolder.addInput(EllipseParams, 'Speed', { min: 0, max: 2 });
         this.ellipseParamsFolder.addInput(EllipseParams, 'Direction'); 
 
         this.roseCurveParamsFolder = this.patternFolder.addFolder({ title: 'Rose-Curve Pattern Params', expanded: true });
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Origin');
-        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Radius', { min: 1, max: 200 });
+        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Radius', { min: 1, max: 300 });
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Phase', { min: 0, max: 10 });
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'NumPetals', { min: 1, max: 10, step: 1 });
-        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Amplitude', { min: 0, max: 100 });
+        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Amplitude', { min: 0, max: 300 });
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Sinusoidal');
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Direction');
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Speed', { min: 0, max: 2 });
@@ -102,7 +104,7 @@ class ServerGui {
         f2.addInput(PigeonParams, 'Alignment', {label: 'Alignment Force', min: 0, max: 100, step: 1}); 
         f2.addInput(PigeonParams, 'Cohesion', {label: 'Cohesion Force', min: 0, max: 100, step: 1}); 
         f2.addInput(PigeonParams, 'MaxSpeed', {label: 'Max Agent Speed', min: 1, max: 200, step: 0.1});
-        f2.addInput(PigeonParams, 'SpeedLerp', {label: 'Speed Lerp', min: 0, max: 1, step: 0.1});
+        f2.addInput(PigeonParams, 'SpeedLerp', {label: 'Speed Lerp', min: 0, max: 1, step: 0.01});
         f2.addInput(PigeonParams, 'Count', {label: 'Count', min: 0, max: PigeonParams.Count, step: 1}); 
         
         // f2.addInput(AgentParams, 'AttractionForce', {label: 'Attraction Force', min: 0.5, max: 2, step: 0.05});
