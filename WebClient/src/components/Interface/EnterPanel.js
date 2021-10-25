@@ -14,13 +14,26 @@ import { bounceOut, zoomIn } from 'react-animations'
 import { fontFamily, color, fontSize, padding } from '../Utilities/CommonStyles.js'
 import { ReactComponent as Pigeon } from '../../assets/pigeon.svg'
 
-const FLASH_DURATION = '0.0s';
-const Load_Time = 0; // 4 seconds for now. // Change it back once we are ready.
+const FLASH_DURATION = '2.0s';
+const Load_Time = 5.0; // 4 seconds for now. // Change it back once we are ready.
 const TopMessage = "\"The avarice and thoughtlessness of humankind led to the extinction of this species.\"";
 const BottomMessage = "\"May we gather the strength to confront the reality of our climate condition.\"";
 const LeftMessage = "\"Its disappearance is nearly unfathomable. Still can't fully get my mind around it.\"";
 const RightMessage = "\"No matter how abundant something is - if one's not careful, one can lose it.\"";
 
+const animation = {
+  pulse: Radium.keyframes({
+    '0%': {
+      transform: 'scale(0.5)'
+    },
+    '50%': {
+      transform: 'scale(1.1)',
+    },
+    '100%': {
+      transform: 'scale(0.5)',
+    }
+  })
+}
 
 const styles = {
     container: {
@@ -57,12 +70,25 @@ const styles = {
     },
 
     loadContainer: {
-        fontSize: fontSize.veryBig
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
+
+    svgContainer: {
+      fontSize: fontSize.veryBig,
+    },
+
+    loadTitle: {
+      fontFamily: fontFamily.mont,
+      fontSize: fontSize.small,
+      color: color.darkBlue,
+      marginTop: '-' + padding.big
     },
 
     svg: {
-      width: '90%',
-      height: '90%',
+      width: '80%',
+      height: '80%',
       fill: color.darkBlue
     },
 
@@ -72,9 +98,14 @@ const styles = {
       animationTimingFunction: 'ease-in-out'
     },
 
+    svgSimplePulse: {
+      animation: 'x 5s linear infinite',
+      animationName: animation.pulse
+    },
+  
     zoom: {
       animationName: Radium.keyframes(zoomIn, 'zoom'),
-      animationDuration: FLASH_DURATION,
+      animationDuration: '5.0s', // LOAD TIME...
       animationTimingFunction: 'ease-in-out',
       animationFillMode: 'forwards'
     },
@@ -123,7 +154,6 @@ const styles = {
         paddingLeft: padding.big,
         paddingRight: padding.big,
       }
-
     },
 
     leftMessage: {
@@ -234,9 +264,16 @@ class EnterPanel extends React.Component {
 
   getLoader() {
     return (
-      <div style={[styles.loadContainer, styles.zoom]} onAnimationEnd={this.hasFinishedLoading.bind(this)}>
+      <div style={styles.loadContainer}>
+        <div style={[styles.svgContainer, styles.svgSimplePulse]}>
         <Pigeon style={styles.svg} />
-      </div>); 
+       </div>
+       <div style={styles.loadTitle}>
+         Getting things ready...
+       </div>
+      </div>
+
+    );
   }
 
   getTitle() {
@@ -276,6 +313,20 @@ class EnterPanel extends React.Component {
     this.setState({
         isLoading: true
     });
+
+    // Start a timer to check with all components that are 
+    // loading things.. Has everything been initialized?
+    // If yes, then set isLoading = false. 
+    // This timer checks with all components every second to see 
+    // if everything has been loaded properly. 
+    // Repetetive timer. 
+
+    // Components that need to be checked. 
+    // ServerGUI - it has received all presets. 
+    // PigeonManager - it has created the pigeon and setup GPURenderer. 
+    // WORLD - That it has loaded all the videos and is ready to play. 
+    // That's it. 
+    // So each world should have a flag saying is ready. 
   }
 
   hasFinishedLoading() {

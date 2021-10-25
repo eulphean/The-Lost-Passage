@@ -18,6 +18,9 @@ export let TargetParams = {
     ShowTarget: true
 }
 
+// Set this to true when everything has been loaded. 
+export let IsReady = false; 
+
 // PARAMS shared between GPURenderer 
 // and PigeonManager. 
 export let PigeonParams = {
@@ -33,62 +36,72 @@ export let PigeonParams = {
 }
 
 class PigeonManager {
-    constructor(renderer, scene) {
+    constructor(scene) {
         // Manages the moving target for the flock. 
         this.patternManager = new PatternManager(); 
-
-        // Load model and setup geometry. 
-        // Once the pigeon is loaded, then initialize it and add to the scene.
-        this.pigeon = new GPUPigeon(this.initPigeons.bind(this, scene)); 
-
-        // Initialize GPUComputation.
-        this.gpuRenderer = new GPURenderer(renderer); 
-
-        // Shader to set the uniforms on.
-        this.pigeonShader = ''; 
 
         // Create the target object that the pigeons are following. 
         this.target = new Target(scene);
 
         // Clock, required for animation of the agents. 
         this.clock = new THREE.Clock(); 
-    }
 
+        // Shader to set the uniforms on.
+        this.pigeonShader = ''; 
+
+        // Flag to tell when we can actually update things. 
+        this.canUpdate = false; 
+    }
+    
     setupTarget(curPatternType) {
         // Create the target pattern.
         this.patternManager.setTargetPattern(curPatternType); 
+    }   
+
+    // Do this when we are doing the loading routine. 
+    setupPigeonGPU() {
+        // // Load model and setup geometry. 
+        // // Once the pigeon is loaded, then initialize it and add to the scene.
+        // this.pigeon = new GPUPigeon(this.initPigeons.bind(this, scene)); 
+
+        // // Initialize GPUComputation.
+        // this.gpuRenderer = new GPURenderer(renderer); 
+
+        // this.canUpdate = true; 
     }
 
     update() {
-        // Update target.
-        let targetPosition = this.patternManager.update();
+        if (this.canUpdate) {
+            // Update target.
+            let targetPosition = this.patternManager.update();
 
-        // If we have a valid target position, begin updating.
-        if (targetPosition) {
-            this.target.setVector(targetPosition);
-            this.target.setVisibility(TargetParams.ShowTarget);
-                
-            let delta = this.clock.getDelta();
-            let now = this.clock.oldTime;
+            // If we have a valid target position, begin updating.
+            if (targetPosition) {
+                this.target.setVector(targetPosition);
+                this.target.setVisibility(TargetParams.ShowTarget);
+                    
+                let delta = this.clock.getDelta();
+                let now = this.clock.oldTime;
 
-            // Computer GPU values. 
-            this.gpuRenderer.update(delta, now, targetPosition); 
-            // Bird material's uniform value that is changing every frame. 
-            if (this.pigeonShader) {
-                this.pigeonShader.uniforms["time"].value = now / 1000;
-                this.pigeonShader.uniforms["delta"].value = delta;
+                // Computer GPU values. 
+                this.gpuRenderer.update(delta, now, targetPosition); 
+                // Bird material's uniform value that is changing every frame. 
+                if (this.pigeonShader) {
+                    this.pigeonShader.uniforms["time"].value = now / 1000;
+                    this.pigeonShader.uniforms["delta"].value = delta;
 
-                // Bing pigeon size.
-                this.pigeonShader.uniforms['size'].value = PigeonParams.Size; 
+                    // Bing pigeon size.
+                    this.pigeonShader.uniforms['size'].value = PigeonParams.Size; 
 
-                // Extract the data textures for Position and Velocity from GPURenderer and set it to the uniforms
-                // of the bird's material to set the new location of the vertices in the BufferGeometry. 
-                this.pigeonShader.uniforms["texturePosition"].value = this.gpuRenderer.getPositionRenderTarget();
-                this.pigeonShader.uniforms["textureVelocity"].value = this.gpuRenderer.getVelocityRenderTarget();
+                    // Extract the data textures for Position and Velocity from GPURenderer and set it to the uniforms
+                    // of the bird's material to set the new location of the vertices in the BufferGeometry. 
+                    this.pigeonShader.uniforms["texturePosition"].value = this.gpuRenderer.getPositionRenderTarget();
+                    this.pigeonShader.uniforms["textureVelocity"].value = this.gpuRenderer.getVelocityRenderTarget();
+                }
+
+                // Bind pigeon count.
+                this.pigeon.setDrawRange(PigeonParams.Count); 
             }
-
-            // Bind pigeon count.
-            this.pigeon.setDrawRange(PigeonParams.Count); 
         }
     }
 

@@ -20,6 +20,9 @@ import { OrbitParams } from '../Managers/CameraControl.js'
 import { SkyboxParams } from '../Managers/SkyboxManager';
 import { RendererParams } from '../Managers/RendererManager';
 
+// Set this to true when all presets have been received by this. 
+export let IsReady = false; 
+
 // Local params for the GUI. 
 // Presets is a dynamically populated prop (critical)
 let GuiParams = {

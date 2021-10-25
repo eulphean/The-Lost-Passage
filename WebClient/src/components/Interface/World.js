@@ -25,6 +25,10 @@ import GuiPanel from './GuiPanel.js'
 import gaugan from '../../assets/gaugan.mp4'
 import SkyboxManager from '../Managers/SkyboxManager.js'
 
+// Set this flag to true when the world has loaded all the videos 
+// has created the three.js canvas.
+export let IsReady = false; 
+
 const styles = {
   container: {
     width: '100vw', 
@@ -76,7 +80,7 @@ class World extends React.Component {
     this.rendererManager = new RendererManager(); 
 
     // // Pigeons
-    this.pigeonManager = new PigeonManager(this.rendererManager.renderer, this.scene); 
+    this.pigeonManager = new PigeonManager(this.scene); 
 
     // Resizer
     window.addEventListener('resize', this.onWindowResize.bind(this));
@@ -161,7 +165,10 @@ class World extends React.Component {
   beginWorld() {
     this.videoRef.current.play();
     let currentPatternType = this.guiRef.current.getCurPatternType();  
-    this.pigeonManager.setupTarget(currentPatternType);
+    //this.pigeonManager.setupTarget(currentPatternType);
+
+    // Setup GPUPigeon and GPURenderer loading things. 
+    //this.pigeonManager.setupPigeonGPU();
   }
 
   onPatternChanged(newPatternType) {
