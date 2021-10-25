@@ -42,22 +42,15 @@ const float PI_2 = PI * 2.0;
 * GLOBAL VARIABLES 
 * Reused across the shader. 
 */
-vec3 acceleration;
+vec3 acceleration = vec3(0.0);
 vec3 selfPosition, selfVelocity; 
-
-/*
-* HELPER VARIABLES
-*/
-// float zoneRadius = 40.0;
-// float zoneRadiusSquared = 1600.0;
-// float separationThresh = 0.45;
-// float alignmentThresh = 0.65; 
 
 // A simple random function. 
 float rand(vec2 co){
     return fract(sin( dot( co.xy, vec2(12.9898,78.233) ) ) * 43758.5453);
 }
 
+// 2D rot matrix. 
 mat2 get2dRotateMatrix(float _angle) {
     return mat2(cos(_angle), - sin(_angle), sin(_angle), cos(_angle));
 }
@@ -76,6 +69,89 @@ void seek(vec3 targetPos) {
     acceleration = acceleration + vDesired; 
 }
 
+vec3 attract() {
+    vec3 vDesired = vec3(0.0) - selfPosition; 
+    vDesired = normalize(vDesired) * uAttractionForce; 
+    return vDesired; 
+}
+
+vec3 repel(vec3 targetPos) {
+    float preyRadius = 200.0;
+    float preyRadiusSq = preyRadius * preyRadius;
+
+    vec3 dir = targetPos - selfPosition; 
+    float dist = length(dir); 
+    float distSquared = dist * dist; 
+
+    // move birds away from predator
+    if (dist < preyRadius ) {
+        float f = (distSquared / preyRadiusSq - 1.0 ) * uDelta * 100.;
+        vec3 vDesired = normalize(dir) * f;
+        return vDesired;
+    } else {
+        return vec3(0.0); 
+    }
+}
+
+
+vec3 updateBehavior(vec3 updatedTargetPos) {   
+    float zoneRadius = uSeperationForce + uAlignmentForce + uCohesionForce;
+    float seperationThresh = uSeperationForce / zoneRadius;
+    float alignmentThresh = (uSeperationForce + uAlignmentForce) / zoneRadius;
+    float zoneRadiusSquared = zoneRadius * zoneRadius;
+
+    // Alignment, cohesion, seperation. 
+    vec3 neighborPos, neighborVel; 
+    vec3 newVelocity; 
+    for (float y = 0.0; y < height; y++) {
+        for (float x = 0.0; x < width; x++) {
+            vec2 ref = vec2(x + 0.5, y + 0.5) / resolution.xy; 
+            vec3 neighborPos = texture2D(texturePosition, ref).xyz;
+            vec3 neighborVel = texture2D(textureVelocity, ref).xyz; 
+
+            vec3 dir = neighborPos - selfPosition;
+            float dist = length(dir);
+
+            // Am I comparing to myself? Pass then. 
+            if (dist < 0.0001) { 
+                continue;
+            }
+
+            // Is this Agent outside my zone radius? Pass then. 
+            float distSquared = dist * dist;
+            if (distSquared > zoneRadiusSquared) {
+                continue;
+            }
+
+            // How much in my zone is it? 
+            float neighborThresh = (distSquared / zoneRadiusSquared); 
+
+            // Within seperation threshold? 
+            // Move apart for comfort.
+            if (neighborThresh < seperationThresh) {
+                float f = (seperationThresh / neighborThresh - 1.0) * uDelta;
+                newVelocity -= normalize(dir) * (f);
+            } else if (neighborThresh < alignmentThresh) { // Within alignment threshold, align with neighbor. 
+                float threshDelta = alignmentThresh - seperationThresh; 
+                float adjustedThresh = (neighborThresh - seperationThresh) / threshDelta; 
+                float f = (0.5 - sin(adjustedThresh * PI) * 0.5) * uDelta; 
+                newVelocity += normalize(neighborVel) * f; 
+            } else {
+                float threshDelta = 1.0 - alignmentThresh; 
+                float adjustedThresh; 
+                if (threshDelta == 0.0) {
+                    adjustedThresh = 1.0; 
+                } else {
+                    adjustedThresh = (neighborThresh - alignmentThresh) / threshDelta; 
+                }
+                float f = (0.5 - (cos( adjustedThresh * PI_2) * (-0.5) + 0.5)) * uDelta;
+                newVelocity += normalize(dir) * f;
+            }
+        }
+    }
+
+    return newVelocity; 
+}
 
 void main() {
     // gl_FragCoord are pixel coordinates, but we need textureCoordinates
@@ -94,127 +170,25 @@ void main() {
     // Adjust target position. 
     vec3 updatedTargetPos = updateTargetPosition();
 
-    // Seek target.
-    seek(updatedTargetPos); 
+    // Update agent behavior.
+    // updateBehavior(updatedTargetPos);
 
     // Final velocity update. 
     // Clamp final velocity. 
-    vec3 newVelocity = selfVelocity + acceleration; 
-    newVelocity = mix(newVelocity, selfVelocity, uSpeedLerp); 
+    vec3 newVelocity = updateBehavior(updatedTargetPos);
+    newVelocity = mix(newVelocity, selfVelocity, uSpeedLerp);
+
     if (length(newVelocity) > uMaxAgentSpeed) {
-        newVelocity = normalize(newVelocity) * uMaxAgentSpeed;
+        newVelocity = normalize(newVelocity) * 500.0;
     }
 
     // Output a velocity that is stored in the texture. 
     gl_FragColor = vec4(newVelocity, 1.0);
 }
 
+    // vec3 attractVel = attract(); 
+    // attractVel.y *= 50.0;
+    // newVelocity = newVelocity + attractVel;
 
-
-
-
-
-
-
-
-
-
-    // this make tends to fly around than down or up
-    // if (velocity.y > 0.) velocity.y *= (1. - 0.2 * delta);
-
-    // float dist, distSquared; 
-    // vec3 dir; // direction
-
-    // float f;
-    // float percent;
-
-    // vec3 velocity = selfVelocity;
-
-    // // PREDATOR is basically our target point only right now. 
-    // // THIS COULD BE MOUSE COORDINATES THAT COULD disturb the flock. 
-    // // Originally that's what it was but I've disabled it for now. 
-    // dir = targetPosition - selfPosition;
-    // // dir.z = 0.;
-    // // dir.z *= 0.6;
-    // dist = length(dir);
-    // distSquared = dist * dist;
-
-    // float preyRadius = 15.0;
-    // float preyRadiusSq = preyRadius * preyRadius;
-
-    // // move birds away from predator
-    // if (dist < preyRadius ) {
-    //     f = (distSquared / preyRadiusSq - 1.0) * delta * 75.;
-    //     velocity += normalize(dir) * f;
-    //     // limit += 5.0;
-    // }
-
-    // // Attract flocks to the center
-    // // Could this be our target??
-    // dir = selfPosition - targetPosition;
-    // dist = length(dir);
-    
-    // dir.y *= 2.5;
-    // velocity -= normalize(dir) * delta * 50.;
-
-    // Compare the position and velocity of current bird with every
-// other bird in the system. This gives shader a O(n2) complexity. 
-// It's not the best. Currently we use octree in Javascript side but
-// this is giving a really good performance, since this happens in parallel
-// across all the birds. Else, it would be O(n3), which would be worse. 
-// vec3 calcFlockVelocity(vec3 selfPosition, vec3 selfVelocity) {
-//     return vec3(0.0, 0.0, 0.0);
-//     // // Helper values. 
-//     // zoneRadius = separationDistance + alignmentDistance + cohesionDistance;
-//     // separationThresh = separationDistance / zoneRadius;
-//     // alignmentThresh = (separationDistance + alignmentDistance) / zoneRadius;
-//     // zoneRadiusSquared = zoneRadius * zoneRadius;
-
-//     // vec3 birdPosition, birdVelocity, newVelocity;
-//     // float f; 
-//     // for (float y = 0.0; y < height; y++ ) {
-//     //     for (float x = 0.0; x < width; x++ ) {
-//     //         vec2 ref = vec2(x + 0.5, y + 0.5) / resolution.xy;
-//     //         birdPosition = texture2D(texturePosition, ref).xyz;
-
-//     //         vec3 dir = birdPosition - selfPosition;
-//     //         float dist = length(dir);
-//     //         if (dist < 0.0001) { 
-//     //             continue;
-//     //         }
-
-//     //         float distSquared = dist * dist;
-//     //         if (distSquared > zoneRadiusSquared) {
-//     //             continue;
-//     //         }
-//     //         float percent = distSquared / zoneRadiusSquared;
-
-//     //         if (percent < separationThresh) { // low
-//     //             // Separation - Move apart for comfort
-//     //             f = (separationThresh / percent - 1.0) * delta;
-//     //             newVelocity -= normalize(dir) * f;
-//     //         } else if (percent < alignmentThresh) { // high
-//     //             // Alignment - fly the same direction
-//     //             float threshDelta = alignmentThresh - separationThresh;
-//     //             float adjustedPercent = (percent - separationThresh) / threshDelta;
-//     //             birdVelocity = texture2D(textureVelocity, ref).xyz;
-//     //             f = ( 0.5 - cos(adjustedPercent * PI_2) * 0.5 + 0.5 ) * delta;
-//     //             newVelocity += normalize(birdVelocity) * f;
-//     //         } else {
-//     //             // Attraction / Cohesion - move closer
-//     //             float threshDelta = 1.0 - alignmentThresh;
-//     //             float adjustedPercent;
-//     //             if (threshDelta == 0.) {
-//     //                 adjustedPercent = 1.;
-//     //             }
-//     //             else {
-//     //                 adjustedPercent = (percent - alignmentThresh) / threshDelta;
-//     //             }
-//     //             f = (0.5 - (cos( adjustedPercent * PI_2) * (-0.5) + 0.5)) * delta;
-//     //             newVelocity += normalize(dir) * f;
-//     //         }
-//     //     }
-//     // }
-
-//     // return newVelocity; 
-// }
+    // vec3 repelVel = repel(updatedTargetPos); 
+    // newVelocity = newVelocity + repelVel; 

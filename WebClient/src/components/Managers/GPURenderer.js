@@ -142,9 +142,9 @@ class GPURenderer {
             const y = Math.random() - 0.5;
             const z = Math.random() - 0.5;
 
-            theArray[k + 0] = x * 0.1;
-            theArray[k + 1] = y * 0.1;
-            theArray[k + 2] = z * 0.1;
+            theArray[k + 0] = x * 20.0;
+            theArray[k + 1] = y * 20.0;
+            theArray[k + 2] = z * 20.0;
             theArray[k + 3] = 1;
         }
     }

@@ -24,9 +24,9 @@ void main()	{
     vec3 velocity = texture2D(textureVelocity, uv).xyz;
 
     // By default we set this 
-    // float phase = tempPos.w;
-    // phase = mod((phase + delta + length( velocity.xz ) * delta * 3. + max(velocity.y, 0.0 ) * delta * 6.), 62.83);
+    float phase = tempPos.w;
+    phase = mod((phase + uDelta + length( velocity.xz ) * uDelta * 3. + max(velocity.y, 0.0 ) * uDelta * 6.), 62.83);
 
 // position + velocity * delta * posInfluence
-    gl_FragColor = vec4(position + velocity * uDelta, 1.0);
+    gl_FragColor = vec4(position + velocity * uDelta, phase);
 }

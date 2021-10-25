@@ -69,33 +69,33 @@ export default class Pigeon extends Agent {
                 // Behaviors. 
                 this.updateBehaviour(nAgents);
                 
-                // Agents that are within the box will be pushed back when it's too close to the boarder
-                if (boundingBox.containsPoint(this.position)) {
+                // // Agents that are within the box will be pushed back when it's too close to the boarder
+                // if (boundingBox.containsPoint(this.position)) {
                     
-                    // Which side of the border is the pigeon closer to
-                    this.borderX = Math.abs(boundingBox.max.x - this.position.x) < Math.abs(boundingBox.min.x - this.position.x) ? boundingBox.max.x: boundingBox.min.x
-                    this.borderY = Math.abs(boundingBox.max.y - this.position.y) < Math.abs(boundingBox.min.y - this.position.y) ? boundingBox.max.y: boundingBox.min.y
-                    this.borderZ = Math.abs(boundingBox.max.z - this.position.z) < Math.abs(boundingBox.min.z - this.position.z) ? boundingBox.max.z: boundingBox.min.z
+                //     // Which side of the border is the pigeon closer to
+                //     this.borderX = Math.abs(boundingBox.max.x - this.position.x) < Math.abs(boundingBox.min.x - this.position.x) ? boundingBox.max.x: boundingBox.min.x
+                //     this.borderY = Math.abs(boundingBox.max.y - this.position.y) < Math.abs(boundingBox.min.y - this.position.y) ? boundingBox.max.y: boundingBox.min.y
+                //     this.borderZ = Math.abs(boundingBox.max.z - this.position.z) < Math.abs(boundingBox.min.z - this.position.z) ? boundingBox.max.z: boundingBox.min.z
                     
-                    // Set a vector that points away from the edges 
-                    this.diffVec.set(this.position.x - this.borderX, this.position.y - this.borderY, this.position.z - this.borderZ);
+                //     // Set a vector that points away from the edges 
+                //     this.diffVec.set(this.position.x - this.borderX, this.position.y - this.borderY, this.position.z - this.borderZ);
 
-                    // Save the current box size in sumVec temporarily 
-                    boundingBox.getSize(this.sumVec);
+                //     // Save the current box size in sumVec temporarily 
+                //     boundingBox.getSize(this.sumVec);
 
-                    // Normalize the value according a portion of the boxsize 
-                    this.sumVec.divideScalar(10); 
-                    this.diffVec.divide(this.sumVec);
+                //     // Normalize the value according a portion of the boxsize 
+                //     this.sumVec.divideScalar(10); 
+                //     this.diffVec.divide(this.sumVec);
 
-                    // Scale up the value exponentially accoring to the normalized value
-                    for (let i = 0; i <= 2; i++) {
-                        this.tempForce = Math.exp(1.5 - Math.abs(this.diffVec.getComponent(i)));
-                        this.vDesired.setComponent(i, this.tempForce * Math.sign(this.diffVec.getComponent(i)));
-                    }
+                //     // Scale up the value exponentially accoring to the normalized value
+                //     for (let i = 0; i <= 2; i++) {
+                //         this.tempForce = Math.exp(1.5 - Math.abs(this.diffVec.getComponent(i)));
+                //         this.vDesired.setComponent(i, this.tempForce * Math.sign(this.diffVec.getComponent(i)));
+                //     }
 
-                    // Accumulate steering forces
-                    this.fSteer.add(this.vDesired);
-                } 
+                //     // Accumulate steering forces
+                //     this.fSteer.add(this.vDesired);
+                // } 
             }
 
             // Apply steering force

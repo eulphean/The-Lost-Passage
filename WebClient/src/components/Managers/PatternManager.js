@@ -46,7 +46,7 @@ class Pattern {
         this.originPos = patternObj.pos; 
         this.moveFactor = patternObj.move; 
         this.targetPos = new THREE.Vector3(0, 0, 0); // Agents follow this target. 
-        this.targetConst = new THREE.Vector3(100, 50, 70);
+        this.targetConst = new THREE.Vector3(0, 0, 0);
     }
 
     updateTheta(maxTheta) {
@@ -72,7 +72,8 @@ class Pattern {
     }
 
     getTargetPos() {
-        return this.targetPos; 
+        //return this.targetPos; 
+        return this.targetPos;
     }
 }
 

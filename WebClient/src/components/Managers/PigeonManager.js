@@ -193,7 +193,8 @@ class PigeonManager {
     }
 
     setNewPatternType(newPatternType) {
-        this.patternManager.setTargetPattern(newPatternType)
+        this.patternManager.setTargetPattern(newPatternType);
+        console.log('Setting pattern');
     }
 } 
 
