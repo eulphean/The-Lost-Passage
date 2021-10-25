@@ -31,7 +31,7 @@ class GPUPigeon {
 
     loadPigeon(onFinishedCallback) {
         let loader = new GLTFLoader(); 
-        loader.load(model, (gltf) => {
+        loader.loadAsync(model).then((gltf) => {
             // Animation 
             const animations = gltf.animations;
             this.durationAnimation = Math.round(animations[0].duration * 60);

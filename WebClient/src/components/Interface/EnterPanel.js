@@ -14,6 +14,10 @@ import { bounceOut, zoomIn } from 'react-animations'
 import { fontFamily, color, fontSize, padding } from '../Utilities/CommonStyles.js'
 import { ReactComponent as Pigeon } from '../../assets/pigeon.svg'
 
+import { IsGUIReady } from '../Utilities/ServerGui.js'
+import { IsPigeonManagerReady } from '../Managers/PigeonManager.js'
+import { IsWorldReady } from './World.js'
+
 const FLASH_DURATION = '2.0s';
 const Load_Time = 5.0; // 4 seconds for now. // Change it back once we are ready.
 const TopMessage = "\"The avarice and thoughtlessness of humankind led to the extinction of this species.\"";
@@ -307,26 +311,28 @@ class EnterPanel extends React.Component {
   }
 
   onEnter() {
-    // Setup the world. 
-    this.props.onEnterWorld(); 
-    
+    // Give a small delay, so this doesn't block the animation thread. 
+    setTimeout(() => {
+      this.props.onEnterWorld();
+    }, 50);
+
+    // Begin animation. 
     this.setState({
         isLoading: true
     });
 
-    // Start a timer to check with all components that are 
-    // loading things.. Has everything been initialized?
-    // If yes, then set isLoading = false. 
-    // This timer checks with all components every second to see 
-    // if everything has been loaded properly. 
-    // Repetetive timer. 
+    // Keep check if I'm ready. 
+    this.checkIfReady(); 
+  }
 
-    // Components that need to be checked. 
-    // ServerGUI - it has received all presets. 
-    // PigeonManager - it has created the pigeon and setup GPURenderer. 
-    // WORLD - That it has loaded all the videos and is ready to play. 
-    // That's it. 
-    // So each world should have a flag saying is ready. 
+  checkIfReady() {
+    setTimeout(() => {
+      if (IsGUIReady && IsPigeonManagerReady && IsWorldReady) {
+        this.hasFinishedLoading(); 
+      } else {
+        this.checkIfReady();
+      }
+    }, 10); 
   }
 
   hasFinishedLoading() {
@@ -334,6 +340,7 @@ class EnterPanel extends React.Component {
         isHidden: true
     }); 
 
+    console.log('Has Finished Loading');
     // Tel the world that load is complete. 
     this.props.onLoadComplete(); 
   }

@@ -21,7 +21,7 @@ import { SkyboxParams } from '../Managers/SkyboxManager';
 import { RendererParams } from '../Managers/RendererManager';
 
 // Set this to true when all presets have been received by this. 
-export let IsReady = false; 
+export let IsGUIReady = false; 
 
 // Local params for the GUI. 
 // Presets is a dynamically populated prop (critical)
@@ -162,6 +162,9 @@ class ServerGui {
             this.disposePatterns();
             this.buildPatterns(); 
             this.showPatternParams();
+
+            // All presets received and everything is built. 
+            IsGUIReady = true; 
         }
     }
 

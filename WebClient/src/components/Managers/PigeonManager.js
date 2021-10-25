@@ -19,7 +19,7 @@ export let TargetParams = {
 }
 
 // Set this to true when everything has been loaded. 
-export let IsReady = false; 
+export let IsPigeonManagerReady = false; 
 
 // PARAMS shared between GPURenderer 
 // and PigeonManager. 
@@ -49,8 +49,8 @@ class PigeonManager {
         // Shader to set the uniforms on.
         this.pigeonShader = ''; 
 
-        // Flag to tell when we can actually update things. 
-        this.canUpdate = false; 
+        // GPURenderer
+        this.gpuRenderer = '';
     }
     
     setupTarget(curPatternType) {
@@ -59,19 +59,13 @@ class PigeonManager {
     }   
 
     // Do this when we are doing the loading routine. 
-    setupPigeonGPU() {
-        // // Load model and setup geometry. 
-        // // Once the pigeon is loaded, then initialize it and add to the scene.
-        // this.pigeon = new GPUPigeon(this.initPigeons.bind(this, scene)); 
-
-        // // Initialize GPUComputation.
-        // this.gpuRenderer = new GPURenderer(renderer); 
-
-        // this.canUpdate = true; 
+    setupPigeonGPU(renderer, scene) {
+        // Initialize pigeon and set renderer etc. 
+        this.pigeon = new GPUPigeon(this.initPigeons.bind(this, renderer, scene)); 
     }
 
     update() {
-        if (this.canUpdate) {
+        if (IsPigeonManagerReady) {
             // Update target.
             let targetPosition = this.patternManager.update();
 
@@ -105,7 +99,7 @@ class PigeonManager {
         }
     }
 
-    initPigeons(scene) {
+    initPigeons(renderer, scene) {
         const geometry = this.pigeon.birdGeometry;
 
         // simple standard material, which we will override to animate all the geometry
@@ -203,6 +197,12 @@ class PigeonManager {
         birdMesh.receiveShadow = true;
         
         scene.add(birdMesh);
+
+        // Initialize GPUComputationRenderer
+        this.gpuRenderer = new GPURenderer(renderer); 
+
+        // All setup done, fire it away. 
+        IsPigeonManagerReady = true;
     }
 
     setNewPatternType(newPatternType) {

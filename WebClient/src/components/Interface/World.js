@@ -27,7 +27,7 @@ import SkyboxManager from '../Managers/SkyboxManager.js'
 
 // Set this flag to true when the world has loaded all the videos 
 // has created the three.js canvas.
-export let IsReady = false; 
+export let IsWorldReady = false; 
 
 const styles = {
   container: {
@@ -100,6 +100,10 @@ class World extends React.Component {
 
     // Initialize the recursive rendering call. 
     this.initializeRender(); 
+
+    // World is ready. Fire. 
+    // Should we check if the video is loaded? 
+    IsWorldReady = true; 
   }
 
   // Component render. 
@@ -165,10 +169,8 @@ class World extends React.Component {
   beginWorld() {
     this.videoRef.current.play();
     let currentPatternType = this.guiRef.current.getCurPatternType();  
-    //this.pigeonManager.setupTarget(currentPatternType);
-
-    // Setup GPUPigeon and GPURenderer loading things. 
-    //this.pigeonManager.setupPigeonGPU();
+    this.pigeonManager.setupTarget(currentPatternType);
+    this.pigeonManager.setupPigeonGPU(this.rendererManager.renderer, this.scene);
   }
 
   onPatternChanged(newPatternType) {
