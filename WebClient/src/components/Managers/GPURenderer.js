@@ -14,8 +14,10 @@ import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRe
 import fragmentShaderPosition from '../../shaders/fragmentShaderPosition.glsl'
 import fragmentShaderVelocity from '../../shaders/fragmentShaderVelocity.glsl'
 
-const BOUNDS = 100;
-const BOUNDS_HALF = BOUNDS / 2; 
+// const BOUNDS = 100;
+// const BOUNDS_HALF = BOUNDS / 2; 
+
+export let IsGPURendererReady = false; 
 
 class GPURenderer {
     constructor(renderer) {
@@ -83,6 +85,10 @@ class GPURenderer {
         if ( error !== null ) {
             console.error( error );
         }
+        
+        // GPU Renderer is ready. 
+        IsGPURendererReady = true;
+        console.log('GPU Renderer Ready.') 
     } 
 
     update(delta, now, targetPosition) {

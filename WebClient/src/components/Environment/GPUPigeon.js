@@ -132,7 +132,7 @@ class GPUPigeon {
             for (let i = 0; i < this.vertexPerBird * BIRDS; i ++) {
                 const bIndex = i % (this.vertexPerBird);
                 const bird = Math.floor(i / this.vertexPerBird);
-                if (bIndex == 0) r = Math.random();
+                if (bIndex === 0) r = Math.random();
                 const j = ~ ~ bird;
                 const x = (j % WIDTH) / WIDTH;
                 const y = ~ ~ (j / WIDTH) / WIDTH;

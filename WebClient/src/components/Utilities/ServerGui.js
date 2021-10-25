@@ -165,6 +165,7 @@ class ServerGui {
 
             // All presets received and everything is built. 
             IsGUIReady = true; 
+            console.log('GUI Ready');
         }
     }
 

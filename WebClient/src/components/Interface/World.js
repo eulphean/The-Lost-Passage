@@ -22,12 +22,16 @@ import RaycastManager from '../Managers/RaycastManager.js'
 import GuiPanel from './GuiPanel.js'
 
 // Clouds video. 
-import gaugan from '../../assets/gaugan.mp4'
-import SkyboxManager from '../Managers/SkyboxManager.js'
+import front from '../../assets/front.mp4'
+import back from '../../assets/back.mp4'
+import SkyboxManager, { IsSkyboxReady } from '../Managers/SkyboxManager.js'
 
 // Set this flag to true when the world has loaded all the videos 
 // has created the three.js canvas.
 export let IsWorldReady = false; 
+
+// NOTE: Change this when we have more videos loading. 
+const NUM_VIDEOS_LOADED = 2; 
 
 const styles = {
   container: {
@@ -58,7 +62,10 @@ class World extends React.Component {
     this.guiRef = React.createRef(); 
     this.navRef = React.createRef(); 
     this.panelRef = React.createRef(); 
-    this.videoRef = React.createRef();
+
+    // Video ref. 
+    this.frontVideoRef = React.createRef();
+    this.backVideoRef = React.createRef(); 
     
     // 3D scene object where everything is added. 
     this.scene = new THREE.Scene(); 
@@ -70,8 +77,8 @@ class World extends React.Component {
     // Lights.
     this.lightingManager = new LightingManager(this.scene); 
 
-    // Create skybox. 
-    this.skyboxManager = new SkyboxManager(this.scene); 
+    // Simple instance. Nothing happens here. 
+    this.skyboxManager = new SkyboxManager(); 
 
     // Raycaster. 
     this.raycastManager = new RaycastManager(this.onShootPigeon.bind(this)); 
@@ -81,6 +88,8 @@ class World extends React.Component {
 
     // // Pigeons
     this.pigeonManager = new PigeonManager(this.scene); 
+
+    this.videoLoadProgress = []; 
 
     // Resizer
     window.addEventListener('resize', this.onWindowResize.bind(this));
@@ -96,14 +105,12 @@ class World extends React.Component {
     this.guiRef.current.subscribeForPatternChange(this.onPatternChanged.bind(this));
 
     // Setup texture on the skybox now that the video component is mounted. 
-    this.skyboxManager.setupVideoTexture(this.videoRef);
+    this.skyboxManager.createSkybox(this.scene, this.frontVideoRef, this.backVideoRef);
 
     // Initialize the recursive rendering call. 
     this.initializeRender(); 
 
-    // World is ready. Fire. 
-    // Should we check if the video is loaded? 
-    IsWorldReady = true; 
+    this.checkIfReady(); 
   }
 
   // Component render. 
@@ -111,9 +118,23 @@ class World extends React.Component {
     return (
       <div style={styles.container} ref={this.worldRef}>
         <GuiPanel ref={this.guiRef} />
-        <video id={'video'} ref={this.videoRef} playsInline loop src={gaugan} style={styles.video} />
+        <video id={'front'} ref={this.frontVideoRef} playsInline loop src={front} style={styles.video} onCanPlay={this.onVideoLoaded.bind(this) } />
+        <video id={'back'} ref={this.backVideoRef} playsInline loop src={back} style={styles.video} />
       </div>
     );
+  }
+
+  onVideoLoaded() {
+    this.videoLoadProgress.push(true);
+    this.checkIfReady(); 
+  }
+
+  checkIfReady() {
+    // Make sure to change length of the videos here. 
+    if (this.videoLoadProgress.length === NUM_VIDEOS_LOADED && IsSkyboxReady) {
+      IsWorldReady = true; 
+      console.log('World Ready');
+    }
   }
 
   // CORE Three.js recursive render loop. 
@@ -167,10 +188,14 @@ class World extends React.Component {
 
   // Instantiate pigeon geometry. 
   beginWorld() {
-    this.videoRef.current.play();
     let currentPatternType = this.guiRef.current.getCurPatternType();  
     this.pigeonManager.setupTarget(currentPatternType);
+
     this.pigeonManager.setupPigeonGPU(this.rendererManager.renderer, this.scene);
+
+    // Start playing all the videos.
+    this.frontVideoRef.current.play();
+    this.backVideoRef.current.play();
   }
 
   onPatternChanged(newPatternType) {

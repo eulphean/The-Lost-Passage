@@ -12,7 +12,6 @@ import World from './Interface/World.js'
 import ContentPanel from './Interface/ContentPanel.js';
 import Navigation from './Interface/Navigation.js'
 import EnterPanel from './Interface/EnterPanel.js';
-import threeOrbitControls from 'three-orbit-controls';
 
 
 const styles = {

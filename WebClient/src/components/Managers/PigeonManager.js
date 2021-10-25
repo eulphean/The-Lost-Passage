@@ -203,6 +203,7 @@ class PigeonManager {
 
         // All setup done, fire it away. 
         IsPigeonManagerReady = true;
+        console.log('Pigeon Manager Ready'); 
     }
 
     setNewPatternType(newPatternType) {

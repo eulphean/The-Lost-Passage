@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import threeOrbitControls from 'three-orbit-controls';
 
 export default class Target {
     constructor(scene) {

@@ -19,7 +19,6 @@ import { IsPigeonManagerReady } from '../Managers/PigeonManager.js'
 import { IsWorldReady } from './World.js'
 
 const FLASH_DURATION = '2.0s';
-const Load_Time = 5.0; // 4 seconds for now. // Change it back once we are ready.
 const TopMessage = "\"The avarice and thoughtlessness of humankind led to the extinction of this species.\"";
 const BottomMessage = "\"May we gather the strength to confront the reality of our climate condition.\"";
 const LeftMessage = "\"Its disappearance is nearly unfathomable. Still can't fully get my mind around it.\"";

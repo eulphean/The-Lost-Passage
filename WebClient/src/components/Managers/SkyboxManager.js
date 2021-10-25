@@ -7,31 +7,47 @@
 
 import * as THREE from 'three'
 
-// Create some parameters here for the User Interface. 
-
+// User interface Params
 export let SkyboxParams = {
-
     ShowSkybox: true,
     ShowBoundingBox: true,
     BoundingBoxScalar: 0 // Control the size of the bounding box using this scalar. 
 }
 
+export let IsSkyboxReady = false; 
+
 class SkyboxManager {
-    constructor(scene) {
-        const geometry = new THREE.BoxGeometry(400, 400, 400);
-        const material = new THREE.MeshBasicMaterial({side: THREE.BackSide});
+    createSkybox(scene, frontVideoRef, backVideoRef) {
+        // Create video textures. 
+        const rightTexture = new THREE.VideoTexture(backVideoRef.current);
+        const leftTexture = new THREE.VideoTexture(backVideoRef.current);
+        const topTexture = new THREE.VideoTexture(frontVideoRef.current);
+        const bottomTexture = new THREE.VideoTexture(frontVideoRef.current);
+        const backTexture = new THREE.VideoTexture(backVideoRef.current);
+        const frontTexture = new THREE.VideoTexture(frontVideoRef.current);
+        
+        // [right, left, top, bottom, back, front] - DO NOT CHANGE THE ARRAY ORDER. 
+        let textureArray = [rightTexture, leftTexture, topTexture, bottomTexture, backTexture, frontTexture];
+        let materialArray = textureArray.map(t => {
+            return new THREE.MeshBasicMaterial({
+                map: t,
+                side: THREE.BackSide
+            }); 
+        });
 
-        // Reuse this variable in other parts. 
-        this.cubeMesh = new THREE.Mesh(geometry, material);
+        // Reuse this variable in other parts.
+        const geometry = new THREE.BoxGeometry(400, 400, 400); 
+
+        // Material array is automatically arranged to the faces. 
+        this.cubeMesh = new THREE.Mesh(geometry, materialArray);
         scene.add(this.cubeMesh);
-
+        
         this.createBoundingBox(scene); 
         this.lastBoundingBoxScalar = SkyboxParams.BoundingBoxScalar; 
-    }
 
-    setupVideoTexture(skyboxVideoRef) {
-        const texture = new THREE.VideoTexture(skyboxVideoRef.current);
-        this.cubeMesh.material.map = texture;
+        // Skybox is ready. 
+        IsSkyboxReady = true; 
+        console.log('Skybox Ready.')
     }
 
     createBoundingBox(scene) {
