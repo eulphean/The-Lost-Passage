@@ -77,17 +77,8 @@ vec3 boundingBoxCheck(vec3 newVelocity) {
 
     if (contains == true) {
         // Don't do anything
-
     } else {
-        // float borderX = abs(uBoundingBoxMax.x - selfPosition.x) < abs(uBoundingBoxMin.x - selfPosition.x) ? 
-        //     uBoundingBoxMax.x : uBoundingBoxMin.x; 
-
-        // float borderY = abs(uBoundingBoxMax.y - selfPosition.y) < abs(uBoundingBoxMin.y - selfPosition.y) ? 
-        //     uBoundingBoxMax.y : uBoundingBoxMin.y; 
-
-        // float borderZ = abs(uBoundingBoxMax.z - selfPosition.z) < abs(uBoundingBoxMin.z - selfPosition.z) ? 
-        //     uBoundingBoxMax.z : uBoundingBoxMin.z; 
-
+        // Reflect back towards center. 
         vec3 dir = vec3(0.) - selfPosition;
         newVelocity = normalize(dir) * uMaxAgentSpeed;
     }
@@ -95,7 +86,7 @@ vec3 boundingBoxCheck(vec3 newVelocity) {
     return newVelocity; 
 }
 
-vec3 updateBehavior(vec3 updatedTargetPos) {   
+vec3 updateBehavior() {   
     float zoneRadius = uSeperationForce + uAlignmentForce + uCohesionForce;
     float seperationThresh = uSeperationForce / zoneRadius;
     float alignmentThresh = (uSeperationForce + uAlignmentForce) / zoneRadius;
@@ -148,6 +139,7 @@ vec3 updateBehavior(vec3 updatedTargetPos) {
             }
         }
     }
+
     return newVelocity; 
 }
 
@@ -169,7 +161,8 @@ void main() {
     vec3 updatedTargetPos = updateTargetPosition();
 
     // Cohesion, Seperation, Alignment
-    vec3 newVelocity = updateBehavior(updatedTargetPos); 
+    vec3 newVelocity = updateBehavior(); 
+
     // Moving target response. 
     vec3 dirToTarget = updatedTargetPos - selfPosition; 
     float distToTarget = length(dirToTarget);
@@ -187,7 +180,7 @@ void main() {
     }
 
     // Final velocity lerp.
-    // newVelocity = mix(newVelocity, selfPosition, uDelta * 0.001);
+    newVelocity = mix(newVelocity, selfVelocity, uDelta * 0.001);
 
     // Output a velocity that is stored in the texture. 
     gl_FragColor = vec4(newVelocity, 1.0);

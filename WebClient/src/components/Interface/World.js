@@ -119,21 +119,23 @@ class World extends React.Component {
       <div style={styles.container} ref={this.worldRef}>
         <GuiPanel ref={this.guiRef} />
         <video id={'front'} ref={this.frontVideoRef} playsInline loop src={front} style={styles.video} onCanPlay={this.onVideoLoaded.bind(this) } />
-        <video id={'back'} ref={this.backVideoRef} playsInline loop src={back} style={styles.video} />
+        <video id={'back'} ref={this.backVideoRef} playsInline loop src={back} style={styles.video} onCanPlay={this.onVideoLoaded.bind(this) } />
       </div>
     );
   }
 
   onVideoLoaded() {
-    this.videoLoadProgress.push(true);
-    this.checkIfReady(); 
+    if (this.videoLoadProgress.length < NUM_VIDEOS_LOADED) {
+      this.videoLoadProgress.push(true);
+      this.checkIfReady(); 
+    }
   }
 
   checkIfReady() {
     // Make sure to change length of the videos here. 
     if (this.videoLoadProgress.length === NUM_VIDEOS_LOADED && IsSkyboxReady) {
       IsWorldReady = true; 
-      console.log('World Ready');
+      console.log('World Ready.');
     }
   }
 
@@ -187,14 +189,17 @@ class World extends React.Component {
 
   // Instantiate pigeon geometry. 
   beginWorld() {
-    let currentPatternType = this.guiRef.current.getCurPatternType();  
-    this.pigeonManager.setupTarget(currentPatternType);
-
-    this.pigeonManager.setupPigeonGPU(this.rendererManager.renderer, this.scene);
-
     // Start playing all the videos.
     this.frontVideoRef.current.play();
     this.backVideoRef.current.play();
+    console.log('Playing all videos.');
+
+    // Target setup.
+    let currentPatternType = this.guiRef.current.getCurPatternType();  
+    this.pigeonManager.setupTarget(currentPatternType);
+
+    // GPUPigeon and GPURenderer
+    this.pigeonManager.setupPigeonGPU(this.rendererManager.renderer, this.scene);
   }
 
   onPatternChanged(newPatternType) {
