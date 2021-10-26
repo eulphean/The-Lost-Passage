@@ -9,6 +9,7 @@
 import React from 'react'
 import Radium from 'radium'
 import * as THREE from 'three'
+import * as TWEEN from "@tweenjs/tween.js";
 
 // Utility components
 // import Terrain from '../Environment/Terrain.js'
@@ -58,7 +59,7 @@ class World extends React.Component {
     super(props);
     this.state={};
     this.mouse = new THREE.Vector2(0, 0);
-    this.zoom = 150;
+    this.zoom = 500;
 
     // Animation flag. 
     this.shouldAnimate = true; 
@@ -187,6 +188,8 @@ class World extends React.Component {
       this.skyboxManager.update();   
 
       this.rendererManager.monitorDrawCalls();
+
+      TWEEN.update();
     this.fpsGraph.end();
   }
 
@@ -237,9 +240,19 @@ class World extends React.Component {
     // Target setup.
     let currentPatternType = this.guiRef.current.getCurPatternType();  
     this.pigeonManager.setupTarget(currentPatternType);
+<<<<<<< HEAD
 
     // GPUPigeon and GPURenderer
     this.pigeonManager.setupPigeonGPU(this.rendererManager.renderer, this.scene);
+=======
+    
+    // Animate the camera zooming into the skybox 
+    let control = this.cameraControl
+    let tween = new TWEEN.Tween(control.camera.position)
+        .to({x:0, y:0, z:this.zoom}, 5000)
+        .easing( TWEEN.Easing.Back.Out )
+        .onComplete(function () {control.animationStopped = true;}).start()
+>>>>>>> Animate camera into skybox
   }
 
   onPatternChanged(newPatternType) {

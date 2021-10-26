@@ -22,18 +22,23 @@ class CameraControl {
     constructor() {
         // Camera Setup
         // (FOV, AspectRatio, Near Clipping, Far Clipping)
-        this.camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.05, 20000);
-        this.camera.position.set(0, 0, 500); 
+        this.camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.05, 20000);
+        this.camera.position.set(10000, 10000, 500); 
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
         this.camera.frustumCulled = false; 
 
         // this.controls = new OrbitControls(this.camera); 
+        this.animationStopped = false;
     }
 
     update(scene, mouse, zoom) {
-        this.camera.position.x += ( mouse.x - this.camera.position.x ) * .05;
-        this.camera.position.y += ( - mouse.y - this.camera.position.y ) * .05;
-        this.camera.position.z = zoom;
+        
+        // Once the camera animation stopped, return the control back to user
+        if (this.animationStopped){
+            this.camera.position.x += ( mouse.x - this.camera.position.x ) * .05;
+            this.camera.position.y += ( - mouse.y - this.camera.position.y ) * .05;
+            this.camera.position.z = zoom;
+        }
 
         this.camera.lookAt( scene.position );
         // this.updateControls();
