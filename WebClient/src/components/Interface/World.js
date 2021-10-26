@@ -141,18 +141,17 @@ class World extends React.Component {
   initializeRender() {
     this.fpsGraph.begin();
       // Pass the bounding box to the pigeon manager for creating bounds for agents. 
-      //let boundingBox = this.skyboxManager.getBoundingBox(); 
-      //this.pigeonManager.update(boundingBox); 
       if (this.pigeonManager) {
-        this.pigeonManager.update();
+        let boundingBox = this.skyboxManager.getBoundingBox(); 
+        this.pigeonManager.update(boundingBox);
       }
       
       this.cameraControl.update();
 
-      // Target exists? 
-      if (this.pigeonManager.target) {
-        this.raycastManager.intersect(this.cameraControl.camera, this.pigeonManager.target.mesh); 
-      }
+      // // Target exists? 
+      // if (this.pigeonManager.target) {
+      //   this.raycastManager.intersect(this.cameraControl.camera, this.pigeonManager.target.mesh); 
+      // }
 
       // This renders each frame. 
       this.rendererManager.render(this.scene, this.cameraControl.getCamera());   

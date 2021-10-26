@@ -72,6 +72,10 @@ class GPURenderer {
         // SPEED
         this.velocityUniforms["uMaxAgentSpeed"] = { value: PigeonParams.MaxSpeed };
         this.velocityUniforms["uSpeedLerp"] = { value: PigeonParams.SpeedLerp };
+
+        // BOUNDING BOX
+        this.velocityUniforms["uBoundingBoxMin"] = { value: new THREE.Vector3() };
+        this.velocityUniforms["uBoundingBoxMax"] = { value: new THREE.Vector3() };
         
         // Velocity variable.
         this.velocityVariable.wrapS = THREE.RepeatWrapping;
@@ -93,7 +97,7 @@ class GPURenderer {
         console.log('GPU Renderer Ready.') 
     } 
 
-    update(delta, now, targetPosition) {
+    update(delta, now, targetPosition, boundingBox) {
         // GPGPU shader uniform values that are changing on every frame. 
 
         // TIME
@@ -115,6 +119,10 @@ class GPURenderer {
         // SPEED
         this.velocityUniforms['uMaxAgentSpeed'].value = PigeonParams.MaxSpeed; 
         this.velocityUniforms["uSpeedLerp"].value = PigeonParams.SpeedLerp;
+
+        // BOUNDING BOX
+        this.velocityUniforms["uBoundingBoxMin"].value.set(boundingBox.min.x, boundingBox.min.y, boundingBox.min.z);
+        this.velocityUniforms["uBoundingBoxMax"].value.set(boundingBox.max.x, boundingBox.max.y, boundingBox.max.z); 
 
         // Compute velocity and position shaders and 
         // populate the vel and pos textures with new values.

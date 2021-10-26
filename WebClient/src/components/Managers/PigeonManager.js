@@ -61,7 +61,7 @@ class PigeonManager {
         this.pigeon = new GPUPigeon(this.initPigeons.bind(this, renderer, scene)); 
     }
 
-    update() {
+    update(boundingBox) {
         if (IsPigeonManagerReady) {
             let targetPosition = this.patternManager.update();
 
@@ -74,7 +74,7 @@ class PigeonManager {
                 this.target.update(targetPosition, now);
 
                 // Computer GPU values. 
-                this.gpuRenderer.update(delta, now, targetPosition); 
+                this.gpuRenderer.update(delta, now, targetPosition, boundingBox); 
                 // Bird material's uniform value that is changing every frame. 
                 if (this.pigeonShader) {
                     this.pigeonShader.uniforms["time"].value = now / 1000;

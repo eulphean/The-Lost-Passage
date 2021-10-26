@@ -19,13 +19,17 @@ uniform float uSeperationForce;
 uniform float uAlignmentForce;
 uniform float uCohesionForce;
 uniform float uSpeedLerp;
-uniform float uTargetRadius;
 
 // TARGET
 uniform vec3 uTargetPosition; 
+uniform float uTargetRadius;
 
 // SPEED
 uniform float uMaxAgentSpeed; 
+
+// BOUNDING BOX
+uniform vec3 uBoundingBoxMin; 
+uniform vec3 uBoundingBoxMax; 
 
 // Resolution is passed by default from GPUComputationRenderer
 // That is WIDTH x WIDTH, with which we initialized it. 
@@ -62,47 +66,45 @@ vec3 updateTargetPosition() {
     return newTargetPosition; 
 }
 
-void seek(vec3 targetPos) {
-    vec3 vDesired = targetPos - selfPosition; 
-    vDesired = normalize(vDesired) * uAttractionForce; 
-    // Update acceleration.
-    acceleration = acceleration + vDesired; 
+bool containsPoint(vec3 point) {
+    return point.x < uBoundingBoxMin.x || point.x > uBoundingBoxMax.x ||
+			point.y < uBoundingBoxMin.y || point.y > uBoundingBoxMax.y ||
+			point.z < uBoundingBoxMin.z || point.z > uBoundingBoxMax.z ? false : true;
 }
 
-vec3 attract() {
-    vec3 vDesired = vec3(0.0) - selfPosition; 
-    vDesired = normalize(vDesired) * uAttractionForce; 
-    return vDesired; 
-}
+vec3 boundingBoxCheck(vec3 newVelocity) {
+    bool contains = containsPoint(selfPosition);
 
-vec3 repel(vec3 targetPos) {
-    float preyRadius = 200.0;
-    float preyRadiusSq = preyRadius * preyRadius;
+    if (contains == true) {
+        // Don't do anything
 
-    vec3 dir = targetPos - selfPosition; 
-    float dist = length(dir); 
-    float distSquared = dist * dist; 
-
-    // move birds away from predator
-    if (dist < preyRadius ) {
-        float f = (distSquared / preyRadiusSq - 1.0 ) * uDelta * 100.;
-        vec3 vDesired = normalize(dir) * f;
-        return vDesired;
     } else {
-        return vec3(0.0); 
-    }
-}
+        // float borderX = abs(uBoundingBoxMax.x - selfPosition.x) < abs(uBoundingBoxMin.x - selfPosition.x) ? 
+        //     uBoundingBoxMax.x : uBoundingBoxMin.x; 
 
+        // float borderY = abs(uBoundingBoxMax.y - selfPosition.y) < abs(uBoundingBoxMin.y - selfPosition.y) ? 
+        //     uBoundingBoxMax.y : uBoundingBoxMin.y; 
+
+        // float borderZ = abs(uBoundingBoxMax.z - selfPosition.z) < abs(uBoundingBoxMin.z - selfPosition.z) ? 
+        //     uBoundingBoxMax.z : uBoundingBoxMin.z; 
+
+        vec3 dir = vec3(0.) - selfPosition;
+        newVelocity = normalize(dir) * uMaxAgentSpeed;
+    }
+
+    return newVelocity; 
+}
 
 vec3 updateBehavior(vec3 updatedTargetPos) {   
     float zoneRadius = uSeperationForce + uAlignmentForce + uCohesionForce;
     float seperationThresh = uSeperationForce / zoneRadius;
     float alignmentThresh = (uSeperationForce + uAlignmentForce) / zoneRadius;
+    float cohesionThresh = 1.0 - alignmentThresh; 
     float zoneRadiusSquared = zoneRadius * zoneRadius;
 
     // Alignment, cohesion, seperation. 
     vec3 neighborPos, neighborVel; 
-    vec3 newVelocity; 
+    vec3 newVelocity = selfVelocity; 
     for (float y = 0.0; y < height; y++) {
         for (float x = 0.0; x < width; x++) {
             vec2 ref = vec2(x, y) / resolution.xy; 
@@ -120,9 +122,6 @@ vec3 updateBehavior(vec3 updatedTargetPos) {
             // Is this Agent outside my zone radius? Pass then. 
             float distSquared = dist * dist;
             if (distSquared > zoneRadiusSquared) {
-                // /// Do something Just make the agent fly in the direction they are in.
-                // float f = ((distSquared / zoneRadiusSquared) - 1.0) * uDelta;
-                // newVelocity += normalize(dir) * f;
                 continue;
             } else {
                 // How much in my zone is it? 
@@ -139,9 +138,9 @@ vec3 updateBehavior(vec3 updatedTargetPos) {
                     float adjustedThresh = (neighborThresh - seperationThresh) / threshDelta; 
                     float f = (0.5 - cos(adjustedThresh * PI_2) * 0.5 + 0.5) * uDelta; 
                     newVelocity += normalize(neighborVel) * f; 
-                } else {
+                } else if (neighborThresh < cohesionThresh) {
                     // Attraction / Cohesion - move closer.
-                    float threshDelta = 1.0 - alignmentThresh; 
+                    float threshDelta = cohesionThresh - alignmentThresh; 
                     float adjustedThresh = (neighborThresh - alignmentThresh) / threshDelta;
                     float f = (0.5 - (cos(adjustedThresh * PI_2) * -0.5 + 0.5)) * uDelta;
                     newVelocity += normalize(dir) * f;
@@ -170,9 +169,8 @@ void main() {
     vec3 updatedTargetPos = updateTargetPosition();
 
     // Cohesion, Seperation, Alignment
-    vec3 newVelocity = updateBehavior(updatedTargetPos);
-
-    // Respond to the moving target. 
+    vec3 newVelocity = updateBehavior(updatedTargetPos); 
+    // Moving target response. 
     vec3 dirToTarget = updatedTargetPos - selfPosition; 
     float distToTarget = length(dirToTarget);
     if (distToTarget < uTargetRadius) {
@@ -180,12 +178,16 @@ void main() {
         newVelocity += normalize(dirToTarget) * f; 
     }
 
+    // Check if agent is in bounding box. 
+    newVelocity = boundingBoxCheck(newVelocity); 
+
+    // Clamp velocity. 
     if (length(newVelocity) > uMaxAgentSpeed) {
         newVelocity = normalize(newVelocity) * uMaxAgentSpeed;
     }
 
     // Final velocity lerp.
-    newVelocity = mix(newVelocity, selfVelocity, uSpeedLerp);
+    // newVelocity = mix(newVelocity, selfPosition, uDelta * 0.001);
 
     // Output a velocity that is stored in the texture. 
     gl_FragColor = vec4(newVelocity, 1.0);
@@ -212,3 +214,34 @@ void main() {
     
     // dir.y *= 2.5;
     // newVelocity += normalize( dir ) * uDelta * 5.;
+
+//     void seek(vec3 targetPos) {
+//     vec3 vDesired = targetPos - selfPosition; 
+//     vDesired = normalize(vDesired) * uAttractionForce; 
+//     // Update acceleration.
+//     acceleration = acceleration + vDesired; 
+// }
+
+// vec3 attract() {
+//     vec3 vDesired = vec3(0.0) - selfPosition; 
+//     vDesired = normalize(vDesired) * uAttractionForce; 
+//     return vDesired; 
+// }
+
+// vec3 repel(vec3 targetPos) {
+//     float preyRadius = 200.0;
+//     float preyRadiusSq = preyRadius * preyRadius;
+
+//     vec3 dir = targetPos - selfPosition; 
+//     float dist = length(dir); 
+//     float distSquared = dist * dist; 
+
+//     // move birds away from predator
+//     if (dist < preyRadius ) {
+//         float f = (distSquared / preyRadiusSq - 1.0 ) * uDelta * 100.;
+//         vec3 vDesired = normalize(dir) * f;
+//         return vDesired;
+//     } else {
+//         return vec3(0.0); 
+//     }
+// }
