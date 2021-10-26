@@ -92,6 +92,9 @@ class App extends React.Component {
       showEnterPanel: false,
       showNavPanel: true
     });
+
+    // Begin zoom into the world. 
+    this.worldRef.current.enterWorld(); 
   }
     
   onClickNavTitle(panelTitle) {
