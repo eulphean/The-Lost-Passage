@@ -1,29 +1,33 @@
 {
   "files": {
     "main.css": "/virtualCompanion/static/css/main.2acf4edb.chunk.css",
-    "main.js": "/virtualCompanion/static/js/main.094ac3df.chunk.js",
-    "main.js.map": "/virtualCompanion/static/js/main.094ac3df.chunk.js.map",
+    "main.js": "/virtualCompanion/static/js/main.c51c0334.chunk.js",
+    "main.js.map": "/virtualCompanion/static/js/main.c51c0334.chunk.js.map",
     "runtime-main.js": "/virtualCompanion/static/js/runtime-main.b862abf8.js",
     "runtime-main.js.map": "/virtualCompanion/static/js/runtime-main.b862abf8.js.map",
-    "static/js/2.a3f61eac.chunk.js": "/virtualCompanion/static/js/2.a3f61eac.chunk.js",
-    "static/js/2.a3f61eac.chunk.js.map": "/virtualCompanion/static/js/2.a3f61eac.chunk.js.map",
+    "static/js/2.e94f78a3.chunk.js": "/virtualCompanion/static/js/2.e94f78a3.chunk.js",
+    "static/js/2.e94f78a3.chunk.js.map": "/virtualCompanion/static/js/2.e94f78a3.chunk.js.map",
     "index.html": "/virtualCompanion/index.html",
     "static/css/main.2acf4edb.chunk.css.map": "/virtualCompanion/static/css/main.2acf4edb.chunk.css.map",
-    "static/js/2.a3f61eac.chunk.js.LICENSE.txt": "/virtualCompanion/static/js/2.a3f61eac.chunk.js.LICENSE.txt",
+    "static/js/2.e94f78a3.chunk.js.LICENSE.txt": "/virtualCompanion/static/js/2.e94f78a3.chunk.js.LICENSE.txt",
     "static/media/artahack.afc70d6b.jpg": "/virtualCompanion/static/media/artahack.afc70d6b.jpg",
-    "static/media/back.a3e46589.mp4": "/virtualCompanion/static/media/back.a3e46589.mp4",
+    "static/media/back.4ecafa9e.mp4": "/virtualCompanion/static/media/back.4ecafa9e.mp4",
     "static/media/beFantastic.5719ed1c.jpg": "/virtualCompanion/static/media/beFantastic.5719ed1c.jpg",
     "static/media/stylesheet.css": "/virtualCompanion/static/media/tenorsans-regular-webfont.c333f777.woff",
+    "static/media/bottom.a29ea400.mp4": "/virtualCompanion/static/media/bottom.a29ea400.mp4",
     "static/media/dara.5d8346a9.jpg": "/virtualCompanion/static/media/dara.5d8346a9.jpg",
-    "static/media/front.8b3dea59.mp4": "/virtualCompanion/static/media/front.8b3dea59.mp4",
+    "static/media/front.b8b47d5c.mp4": "/virtualCompanion/static/media/front.b8b47d5c.mp4",
+    "static/media/left.3f0b9e35.mp4": "/virtualCompanion/static/media/left.3f0b9e35.mp4",
     "static/media/pigeon.97401798.svg": "/virtualCompanion/static/media/pigeon.97401798.svg",
     "static/media/pigeon_back.0a8e5722.glb": "/virtualCompanion/static/media/pigeon_back.0a8e5722.glb",
-    "static/media/supernormal.04eff6ee.jpg": "/virtualCompanion/static/media/supernormal.04eff6ee.jpg"
+    "static/media/right.05bf51bd.mp4": "/virtualCompanion/static/media/right.05bf51bd.mp4",
+    "static/media/supernormal.04eff6ee.jpg": "/virtualCompanion/static/media/supernormal.04eff6ee.jpg",
+    "static/media/top.7fc2b771.mp4": "/virtualCompanion/static/media/top.7fc2b771.mp4"
   },
   "entrypoints": [
     "static/js/runtime-main.b862abf8.js",
-    "static/js/2.a3f61eac.chunk.js",
+    "static/js/2.e94f78a3.chunk.js",
     "static/css/main.2acf4edb.chunk.css",
-    "static/js/main.094ac3df.chunk.js"
+    "static/js/main.c51c0334.chunk.js"
   ]
 }
