@@ -188,7 +188,6 @@ class World extends React.Component {
       this.skyboxManager.update();   
 
       this.rendererManager.monitorDrawCalls();
-
       TWEEN.update();
     this.fpsGraph.end();
   }
@@ -240,9 +239,16 @@ class World extends React.Component {
     // Target setup.
     let currentPatternType = this.guiRef.current.getCurPatternType();  
     this.pigeonManager.setupTarget(currentPatternType);
-
+    
     // GPUPigeon and GPURenderer
     this.pigeonManager.setupPigeonGPU(this.rendererManager.renderer, this.scene);
+
+    // Animate the camera zooming into the skybox 
+    let control = this.cameraControl
+    let tween = new TWEEN.Tween(control.camera.position)
+        .to({x:0, y:0, z:this.zoom}, 5000)
+        .easing( TWEEN.Easing.Back.Out )
+        .onComplete(function () {control.animationStopped = true;}).start()
   }
 
   onPatternChanged(newPatternType) {
