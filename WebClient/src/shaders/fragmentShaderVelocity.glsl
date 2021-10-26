@@ -179,62 +179,8 @@ void main() {
         newVelocity = normalize(newVelocity) * uMaxAgentSpeed;
     }
 
-    // Final velocity lerp.
     newVelocity = mix(newVelocity, selfVelocity, uDelta * 0.001);
 
     // Output a velocity that is stored in the texture. 
     gl_FragColor = vec4(newVelocity, 1.0);
 }
-
-    // vec3 attractVel = attract(); 
-    // attractVel.y *= 50.0;
-    // newVelocity = newVelocity + attractVel;
-
-    // vec3 repelVel = repel(updatedTargetPos); 
-    // newVelocity = newVelocity + repelVel; 
-
-                    // if (threshDelta == 0.0) {
-                //     adjustedThresh = 1.0; 
-                // } else {
-                //     adjustedThresh = (neighborThresh - alignmentThresh) / threshDelta; 
-                // }
-
-        // // Attract flocks to the center
-    // // Could this be our target??
-    // vec3 central = vec3(0., 0., 0.);
-    // vec3 dir = selfPosition - central;
-    // float dist = length(dir);
-    
-    // dir.y *= 2.5;
-    // newVelocity += normalize( dir ) * uDelta * 5.;
-
-//     void seek(vec3 targetPos) {
-//     vec3 vDesired = targetPos - selfPosition; 
-//     vDesired = normalize(vDesired) * uAttractionForce; 
-//     // Update acceleration.
-//     acceleration = acceleration + vDesired; 
-// }
-
-// vec3 attract() {
-//     vec3 vDesired = vec3(0.0) - selfPosition; 
-//     vDesired = normalize(vDesired) * uAttractionForce; 
-//     return vDesired; 
-// }
-
-// vec3 repel(vec3 targetPos) {
-//     float preyRadius = 200.0;
-//     float preyRadiusSq = preyRadius * preyRadius;
-
-//     vec3 dir = targetPos - selfPosition; 
-//     float dist = length(dir); 
-//     float distSquared = dist * dist; 
-
-//     // move birds away from predator
-//     if (dist < preyRadius ) {
-//         float f = (distSquared / preyRadiusSq - 1.0 ) * uDelta * 100.;
-//         vec3 vDesired = normalize(dir) * f;
-//         return vDesired;
-//     } else {
-//         return vec3(0.0); 
-//     }
-// }

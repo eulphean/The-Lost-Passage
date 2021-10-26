@@ -51,8 +51,9 @@ class GPURenderer {
 
         // Position uniforms. 
         // TIME
-        this.positionUniforms["uTime"] = {value: 0.0};
-        this.positionUniforms["uDelta"] = {value: 0.0};
+        this.positionUniforms["uTime"] = { value: 0.0 };
+        this.positionUniforms["uDelta"] = { value: 0.0 };
+        this.positionUniforms["uReset"] = { value: false };
 
         // Velocity uniforms. 
         // TIME 
@@ -98,7 +99,10 @@ class GPURenderer {
     } 
 
     update(delta, now, targetPosition, boundingBox) {
-        // GPGPU shader uniform values that are changing on every frame. 
+        // GPGPU shader uniform values that are changing on every frame.
+
+        // RESET
+        this.positionUniforms["uReset"].value = this.reset;
 
         // TIME
         this.positionUniforms["uDelta"].value = delta; 
@@ -127,6 +131,12 @@ class GPURenderer {
         // Compute velocity and position shaders and 
         // populate the vel and pos textures with new values.
         this.gpuCompute.compute();
+
+        // Make sure it's not resetting again 
+        // until actually reset. 
+        if (this.reset) {
+            this.reset = false;
+        }
     }
 
     // Starting positions. 
@@ -172,6 +182,10 @@ class GPURenderer {
 
     getVelocityRenderTarget() {
         return this.gpuCompute.getCurrentRenderTarget(this.velocityVariable).texture;
+    }
+
+    resetPigeons() {
+        this.reset = true; 
     }
 }
 

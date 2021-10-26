@@ -95,6 +95,12 @@ class PigeonManager {
         }
     }
 
+    resetPigeons() {
+        if (this.gpuRenderer) {
+            this.gpuRenderer.resetPigeons();
+        }
+    }
+
     initPigeons(renderer, scene) {
         const geometry = this.pigeon.birdGeometry;
 

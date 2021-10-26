@@ -17,12 +17,12 @@ export let SkyboxParams = {
 export let IsSkyboxReady = false; 
 
 class SkyboxManager {
-    createSkybox(scene, frontVideoRef, backVideoRef) {
+    createSkybox(scene, frontVideoRef, backVideoRef, leftVideoRef, rightVideoRef, topVideoRef, bottomVideoRef) {
         // Create video textures. 
-        const rightTexture = new THREE.VideoTexture(backVideoRef.current);
-        const leftTexture = new THREE.VideoTexture(backVideoRef.current);
-        const topTexture = new THREE.VideoTexture(frontVideoRef.current);
-        const bottomTexture = new THREE.VideoTexture(frontVideoRef.current);
+        const rightTexture = new THREE.VideoTexture(rightVideoRef.current);
+        const leftTexture = new THREE.VideoTexture(leftVideoRef.current);
+        const topTexture = new THREE.VideoTexture(topVideoRef.current);
+        const bottomTexture = new THREE.VideoTexture(bottomVideoRef.current);
         const backTexture = new THREE.VideoTexture(backVideoRef.current);
         const frontTexture = new THREE.VideoTexture(frontVideoRef.current);
         

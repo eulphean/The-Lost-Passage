@@ -104,12 +104,12 @@ class App extends React.Component {
     this.contentPanelRef.current.scroll(panelTitle);
 
     // Stop Renderer
-    this.worldRef.current.updateAnimation(false); 
+    this.worldRef.current.updateAnimationStatus(false); 
   }
 
   onClickHomeButton() {
     this.worldRef.current.scrollTo(); 
-    this.worldRef.current.updateAnimation(true);
+    this.worldRef.current.updateAnimationStatus(true);
     setTimeout(() => {
       this.setState({
         showContentPanel: false
