@@ -203,17 +203,6 @@ class World extends React.Component {
       this.zoom = Math.min(Math.max(100, this.zoom), 1000);
   }
 
-  onMouseMove(event) {
-    this.mouse.x = (event.clientX - window.innerWidth / 2) * 2;
-    this.mouse.y = (event.clientY - window.innerHeight / 2) * 2;
-  }
-
-  onMouseWheel(event) {
-      this.zoom += event.deltaY * 0.1;
-      // Constrain the zoom within the reasonable range
-      this.zoom = Math.min(Math.max(100, this.zoom), 1000);
-  }
-
   onWindowResize() {
     if (this.cameraControl) {
       let camera = this.cameraControl.getCamera(); 
@@ -250,6 +239,7 @@ class World extends React.Component {
     // Target setup.
     let currentPatternType = this.guiRef.current.getCurPatternType();  
     this.pigeonManager.setupTarget(currentPatternType);
+<<<<<<< HEAD
 
     // GPUPigeon and GPURenderer
     this.pigeonManager.setupPigeonGPU(this.rendererManager.renderer, this.scene);
@@ -262,6 +252,15 @@ class World extends React.Component {
         .to({x:0, y:0, z:this.zoom}, 5000)
         .easing(TWEEN.Easing.Back.Out)
         .onComplete(() => control.animationStopped = true).start()
+=======
+    
+    // Animate the camera zooming into the skybox 
+    let control = this.cameraControl
+    let tween = new TWEEN.Tween(control.camera.position)
+        .to({x:0, y:0, z:this.zoom}, 5000)
+        .easing( TWEEN.Easing.Back.Out )
+        .onComplete(function () {control.animationStopped = true;}).start()
+>>>>>>> Animate camera into skybox
   }
 
   onPatternChanged(newPatternType) {
