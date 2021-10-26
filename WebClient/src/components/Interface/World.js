@@ -129,7 +129,7 @@ class World extends React.Component {
         this.bottomVideoRef);
 
     // Initialize the recursive rendering call. 
-    this.initializeRender(); 
+    this.rendererManager.setAnimationLoop(this.renderThree.bind(this)); 
 
     this.checkIfReady(); 
   }
@@ -165,7 +165,7 @@ class World extends React.Component {
   }
 
   // CORE Three.js recursive render loop. 
-  initializeRender() {
+  renderThree() {
     this.fpsGraph.begin();
       // Pass the bounding box to the pigeon manager for creating bounds for agents. 
       if (this.pigeonManager) {
@@ -175,11 +175,6 @@ class World extends React.Component {
       
       this.cameraControl.update();
 
-      // // Target exists? 
-      // if (this.pigeonManager.target) {
-      //   this.raycastManager.intersect(this.cameraControl.camera, this.pigeonManager.target.mesh); 
-      // }
-
       // This renders each frame. 
       this.rendererManager.render(this.scene, this.cameraControl.getCamera());   
       
@@ -187,11 +182,6 @@ class World extends React.Component {
 
       this.rendererManager.monitorDrawCalls();
     this.fpsGraph.end();
-
-    if (this.shouldAnimate) {
-      // Register this function as a callback to every repaint from the browser.
-      requestAnimationFrame(this.initializeRender.bind(this)); 
-    }
   }
 
   onWindowResize() {
@@ -206,13 +196,13 @@ class World extends React.Component {
   updateAnimationStatus(status) {  
     console.log('Animation Status: ' + status);
     this.shouldAnimate = status; 
-    
-    if (status === true) {
-      this.pigeonManager.resetPigeons();
-    }
-    // Start animating again in this state. 
+
     if (status) {
-      this.initializeRender();
+      this.rendererManager.setAnimationLoop(this.renderThree.bind(this));
+    } else {
+      // Pause
+      this.pigeonManager.pausePigeons();
+      this.rendererManager.setAnimationLoop(null);
     }
   }
 
@@ -252,3 +242,8 @@ class World extends React.Component {
 }
 
 export default Radium(World);
+
+      // // Target exists? 
+      // if (this.pigeonManager.target) {
+      //   this.raycastManager.intersect(this.cameraControl.camera, this.pigeonManager.target.mesh); 
+      // }

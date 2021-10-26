@@ -95,9 +95,9 @@ class PigeonManager {
         }
     }
 
-    resetPigeons() {
+    pausePigeons() {
         if (this.gpuRenderer) {
-            this.gpuRenderer.resetPigeons();
+            this.gpuRenderer.pausePigeons();
         }
     }
 

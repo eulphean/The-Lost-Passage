@@ -23,6 +23,10 @@ class RendererManager {
         this.renderer.outputEncoding = THREE.sRGBEncoding; 
     }
 
+    setAnimationLoop(animate) {
+        this.renderer.setAnimationLoop(animate);
+    }
+
     getDomElement() {
         return this.renderer.domElement; 
     }
