@@ -9,6 +9,7 @@ import React from 'react'
 import Radium from 'radium'
 
 import { color, fontFamily, padding, fontSize } from '../Utilities/CommonStyles';
+import pp from '../../assets/pigeon.mp4'
 
 const styles = {
     container: {
@@ -16,17 +17,16 @@ const styles = {
       flexDirection: 'row'    
     },
 
-    threeCanvas: {
-      backgroundColor: color.midGrey,
-      width: 'calc(100%/2)',
-      height: '800px'
+    ppVideo: {
+      width: '600px',
+      height: '600px'
     },
 
     content: {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      width: 'calc(100%/2)'
+      justifyContent: 'center'
     },
     
     title: {
@@ -58,7 +58,9 @@ class PassengerPigeons extends React.Component {
   render() {
     return (
       <div style={styles.container}>
-        <div style={styles.threeCanvas}></div>
+        <div style={styles.image}>
+          <video style={styles.ppVideo} autoPlay playsInline muted loop src={pp} />
+        </div>
         <div style={styles.content}>
           <div style={styles.title}>
             PASSENGER PIGEONS

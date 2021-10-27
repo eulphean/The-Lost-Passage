@@ -9,6 +9,7 @@ import React from 'react'
 import Radium from 'radium'
 
 import { color, fontFamily, padding, fontSize } from '../Utilities/CommonStyles';
+import gaugan from '../../assets/gaugan.mp4'
 
 const styles = {
     container: {
@@ -16,17 +17,17 @@ const styles = {
       flexDirection: 'row'  
     },
 
-    videoCanvas: {
-      backgroundColor: color.midGrey,
-      width: 'calc(100%/2)',
-      height: '800px'
+    
+    video: {
+      width: '600px',
+      height: '600px'
     },
 
     content: {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      width: 'calc(100%/2)'
+      justifyContent: 'center'
     },
     
     title: {
@@ -67,7 +68,9 @@ class ClimateStatement extends React.Component {
             {content}
           </div>
         </div>
-        <div style={styles.videoCanvas}></div>
+        <div style={styles.videoCanvas}>
+          <video style={styles.video} src={gaugan} playsInline loop autoPlay muted />
+        </div>
       </div>
     );
   }

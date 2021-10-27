@@ -18,10 +18,10 @@ import { IsGUIReady } from '../Utilities/ServerGui.js'
 import { IsPigeonManagerReady } from '../Managers/PigeonManager.js'
 import { IsWorldReady } from './World.js'
 
-const FLASH_DURATION = '2.0s';
-const TopMessage = "\"The avarice and thoughtlessness of humankind led to the extinction of this species.\"";
+const FLASH_DURATION = '1.5s';
+const TopMessage = "\"They existed in billions, but today they are lost and revered only in museums.\"";
 const BottomMessage = "\"May we gather the strength to confront the reality of our climate condition.\"";
-const LeftMessage = "\"Its disappearance is nearly unfathomable. Still can't fully get my mind around it.\"";
+const LeftMessage = "\"The avarice and thoughtlessness of humankind led to the extinction of this species.\"";
 const RightMessage = "\"No matter how abundant something is - if one's not careful, one can lose it.\"";
 
 const animation = {
@@ -150,7 +150,7 @@ const styles = {
       top: '15px',
 
       '@media (min-width: 900px)': {  
-        fontSize: fontSize.extraBig,
+        fontSize: fontSize.lessBig,
         top: '30px',
         paddingTop: padding.small,
         paddingBottom: padding.small,
@@ -181,6 +181,7 @@ const styles = {
 
       '@media (min-width: 900px)': {  
         fontSize: fontSize.lessBig,
+        maxWidth: '100%',
         left: '10%',
         paddingTop: padding.small,
         paddingBottom: padding.small,
@@ -211,6 +212,7 @@ const styles = {
       '@media (min-width: 900px)': {  
         fontSize: fontSize.lessBig,
         right: '12%',
+        maxWidth: '100%',
         paddingTop: padding.small,
         paddingBottom: padding.small,
         paddingLeft: padding.big,

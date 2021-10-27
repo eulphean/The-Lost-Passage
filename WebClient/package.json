@@ -2,7 +2,7 @@
   "name": "TheLostPassage",
   "version": "0.1.0",
   "private": false,
-  "homepage": "https://thelostpassage.art",
+  "homepage": "http://thelostpassage.art",
   "dependencies": {
     "@babel/core": "7.12.3",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
