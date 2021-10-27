@@ -1,8 +1,8 @@
 {
-  "name": "Virtual-Companion",
+  "name": "The Lost Passage",
   "version": "0.1.0",
   "private": false,
-  "homepage": "https://amaykataria.com/virtualCompanion/",
+  "homepage": "https://thelostpassage.art",
   "dependencies": {
     "@babel/core": "7.12.3",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
