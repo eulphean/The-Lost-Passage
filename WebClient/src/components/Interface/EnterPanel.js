@@ -13,7 +13,7 @@ import Radium from 'radium'
 import { bounceOut, zoomIn } from 'react-animations'
 import { fontFamily, color, fontSize, padding } from '../Utilities/CommonStyles.js'
 import { ReactComponent as Pigeon } from '../../assets/pigeon.svg'
-
+import Footer from './Footer.js'
 import { IsGUIReady } from '../Utilities/ServerGui.js'
 import { IsPigeonManagerReady } from '../Managers/PigeonManager.js'
 import { IsWorldReady } from './World.js'
@@ -44,12 +44,15 @@ const styles = {
         top: '0%',
         width: '100vw',
         height: '100vh',
-        backgroundColor: color.lightBlue,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        zIndex: 1
+        zIndex: 1,
+        background: '#e6e9ec',
+        background: '-moz-linear-gradient(top, #e6e9ec 0%, #f9fdff 100%)', /* FF3.6-15 */
+        background: '-webkit-linear-gradient(top, #e6e9ec 0%,#f9fdff 100%)', /* Chrome10-25,Safari5.1-6 */
+        background: 'linear-gradient(to bottom, #e6e9ec 0%,#f9fdff 100%)' /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     },
 
     hide: {
@@ -261,8 +264,9 @@ class EnterPanel extends React.Component {
     let messages = this.getMessages();
     return (
       <div style={containerStyle}>
-          {content}
-          {messages}
+        {content}
+        {messages}
+        <Footer />
       </div>
     );
   }

@@ -12,6 +12,20 @@ import { fontFamily, color, fontSize, padding } from '../Utilities/CommonStyles.
 import { PanelTitle } from './ContentPanel.js';
 import { ReactComponent as Pigeon } from '../../assets/pigeon.svg'
 
+const animation = {
+  color: Radium.keyframes({
+    '0%': {
+      backgroundColor: color.darkBlue
+    },
+    '50%': {
+      backgroundColor: color.purple,
+    },
+    '100%': {
+      backgroundColor: color.orange,
+    }
+  })
+}
+
 const styles = {
     container: {
         position: 'absolute',
@@ -65,6 +79,12 @@ const styles = {
       zIndex: 1
     },
 
+    colorFlick: {
+      animation: 'x 3s ease-in-out infinite',
+      animationName: animation.color,
+      animationDirection: 'alternate'
+    },
+
     homeHover: {
       backgroundColor: color.brown
     },
@@ -72,6 +92,7 @@ const styles = {
     svg: {
       width: '100%',
       height: '100%',
+      fill: 'white'
     }
 };
 
@@ -122,8 +143,8 @@ class Navigation extends React.Component {
   }
 
   getHomeButton() {
-    let buttonStyle = this.state.showHomeButton ? [styles.homeButton] : [styles.homeButton, styles.hidden];
-    buttonStyle = this.state.isHomeButtonHovering ? [buttonStyle, styles.homeHover] : buttonStyle; 
+    let buttonStyle = this.state.showHomeButton ? [styles.homeButton, styles.colorFlick] : [styles.homeButton, styles.hidden];
+    buttonStyle = this.state.isHomeButtonHovering ? [styles.homeButton, styles.homeHover] : buttonStyle; 
     return (
       <div style={buttonStyle}
           onClick={this.onHomeButtonClick.bind(this)}

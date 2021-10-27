@@ -20,7 +20,8 @@ const styles = {
     
     video: {
       width: '600px',
-      height: '600px'
+      height: '100%',
+      objectFit: 'fill'
     },
 
     content: {

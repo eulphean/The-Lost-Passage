@@ -17,8 +17,11 @@ import { color } from '../Utilities/CommonStyles';
 const styles = {
     container: {
         position: 'relative',
-        width: '100vw',
-        backgroundColor: color.lightBlue
+        width: '100%',
+        background: '#e6e9ec',
+        background: '-moz-linear-gradient(top, #e6e9ec 0%, #f9fdff 100%)', /* FF3.6-15 */
+        background: '-webkit-linear-gradient(top, #e6e9ec 0%,#f9fdff 100%)', /* Chrome10-25,Safari5.1-6 */
+        background: 'linear-gradient(to bottom, #e6e9ec 0%,#f9fdff 100%)' /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     }
 };
 

@@ -7,7 +7,9 @@ const color = {
     lightBlue: '#E6E9EC',
     darkBlue: '#67749C',
     midGrey: '#B2B6C2',
-    brown: '#91614B'
+    brown: '#91614B',
+    purple: '#5C5884',
+    orange: '#B5604C'
 };
 
 const fontSize = {

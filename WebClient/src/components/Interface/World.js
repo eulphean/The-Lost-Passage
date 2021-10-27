@@ -77,7 +77,7 @@ class World extends React.Component {
     
     // 3D scene object where everything is added. 
     this.scene = new THREE.Scene(); 
-    this.scene.background = new THREE.Color(0xffdeff);
+    this.scene.background = new THREE.Color('#F9FDFF');
 
     // Camera & Interactive controls module. 
     this.cameraControl = new CameraControl(); 
