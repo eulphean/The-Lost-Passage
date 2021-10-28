@@ -176,7 +176,7 @@ class About extends React.Component {
         <img src={yu} alt='yu' style={styles.photo} />
         <div style={styles.infoContainer}>
           <div style={styles.name}>Yu-Jeng Kuo</div>
-          <div style={styles.location}>Software Developer</div>
+          <div style={styles.location}>Software Engineer</div>
           <div style={styles.location}>Singapore</div>
         </div>
       </div>
