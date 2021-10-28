@@ -48,6 +48,10 @@ const float PI_2 = PI * 2.0;
 */
 vec3 acceleration = vec3(0.0);
 vec3 selfPosition, selfVelocity; 
+vec3 borders = vec3(0.0);
+vec3 vDesired = vec3(0.0);
+
+float tempForce = 0.0;
 
 // A simple random function. 
 float rand(vec2 co){
@@ -76,7 +80,27 @@ vec3 boundingBoxCheck(vec3 newVelocity) {
     bool contains = containsPoint(selfPosition);
 
     if (contains == true) {
-        // Don't do anything
+        // Which side of the border is the pigeon closer to
+        borders.x = abs(uBoundingBoxMax.x - selfPosition.x) < abs(uBoundingBoxMin.x - selfPosition.x) ? uBoundingBoxMax.x: uBoundingBoxMin.x;
+        borders.y = abs(uBoundingBoxMax.y - selfPosition.y) < abs(uBoundingBoxMin.y - selfPosition.y) ? uBoundingBoxMax.y: uBoundingBoxMin.y;
+        borders.z = abs(uBoundingBoxMax.z - selfPosition.z) < abs(uBoundingBoxMin.z - selfPosition.z) ? uBoundingBoxMax.z: uBoundingBoxMin.z;
+
+        // Set a vector that points away from the edges 
+        vec3 diffVec = selfPosition - borders;
+
+        // Save the current box size in sumVec temporarily 
+        vec3 boxSize = vec3(uBoundingBoxMax.x - uBoundingBoxMin.x, uBoundingBoxMax.y - uBoundingBoxMin.y, uBoundingBoxMax.z - uBoundingBoxMin.z);
+
+        // Normalize the value according a portion of the boxsize 
+        boxSize /= 10.0;
+        diffVec /= boxSize;
+
+        // Scale up the value exponentially accoring to the normalized value
+        for (int i = 0; i <= 2; i++) {
+            tempForce = exp(1.5 - abs(diffVec[i]));
+            vDesired[i] = tempForce * sign(diffVec[i]);
+        }
+        newVelocity += vDesired;
     } else {
         // Reflect back towards center. 
         vec3 dir = vec3(0.) - selfPosition;
