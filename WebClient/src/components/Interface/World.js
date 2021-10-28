@@ -193,14 +193,14 @@ class World extends React.Component {
   }
 
   onMouseMove(event) {
-    this.mouse.x = (event.clientX - window.innerWidth / 2) * 2;
-    this.mouse.y = (event.clientY - window.innerHeight / 2) * 2;
+    this.mouse.x = (event.clientX - window.innerWidth / 2) * 0.5;
+    this.mouse.y = (event.clientY - window.innerHeight / 2) * 1.5;
   }
 
   onMouseWheel(event) {
       this.zoom += event.deltaY * 0.1;
       // Constrain the zoom within the reasonable range
-      this.zoom = Math.min(Math.max(100, this.zoom), 1000);
+      this.zoom = Math.min(Math.max(100, this.zoom), 500);
   }
 
   onWindowResize() {
@@ -249,7 +249,7 @@ class World extends React.Component {
     let control = this.cameraControl;
     let tween = new TWEEN.Tween(control.camera.position)
         .to({x:0, y:0, z:this.zoom}, 5000)
-        .easing(TWEEN.Easing.Back.Out)
+        .easing(TWEEN.Easing.Quintic.Out)
         .onComplete(() => control.animationStopped = true).start()
   }
 
