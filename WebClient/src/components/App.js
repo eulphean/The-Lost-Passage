@@ -49,7 +49,10 @@ class App extends React.Component {
     let contentPanel = this.getContentPanel();
     return (
       <div style={styles.container}>
-        <World ref={this.worldRef} />
+        <World 
+          ref={this.worldRef} 
+          onInitialCameraAnimationDone={this.onInitialCameraAnimationDone.bind(this)}
+        />
         {navPanel}
         {enterPanel}
         {contentPanel}
@@ -89,12 +92,17 @@ class App extends React.Component {
 
   onLoadComplete() {
     this.setState({
-      showEnterPanel: false,
-      showNavPanel: true
+      showEnterPanel: false
     });
 
     // Begin zoom into the world. 
     this.worldRef.current.enterWorld(); 
+  }
+
+  onInitialCameraAnimationDone() {
+    this.setState({
+      showNavPanel: true
+    }); 
   }
     
   onClickNavTitle(panelTitle) {

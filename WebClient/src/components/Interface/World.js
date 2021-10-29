@@ -256,11 +256,13 @@ class World extends React.Component {
     // Animate the camera zooming into the skybox. 
     let control = this.cameraControl;
     let tween = new TWEEN.Tween(control.camera.position)
-        .to({x:0, y:0, z:this.zoom}, 5000)
+        .to({x:0, y:0, z:this.zoom}, 4000)
         .easing(TWEEN.Easing.Cubic.Out)
         .onComplete(() => {
           // Animation has finished. 
           control.animationStopped = true;
+          // Now, show the nav panel.
+          this.props.onInitialCameraAnimationDone(); 
         }).start()
   }
 

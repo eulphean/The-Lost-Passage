@@ -34,7 +34,7 @@ const PATTERN_TYPE_IDX =0;
 
 class ServerGui {
     constructor(containerComponent) {
-        this.gui = new Pane({title: 'Pigeon GUI', container: containerComponent, expanded: false});
+        this.gui = new Pane({title: 'Pigeon GUI', container: containerComponent, expanded: false });
         this.gui.registerPlugin(EssentialsPlugin);
 
         // Preset name
@@ -118,12 +118,22 @@ class ServerGui {
         f3.addInput(SkyboxParams, 'ShowBoundingBox');
         f3.addInput(SkyboxParams, 'BoundingBoxScalar', {min: -50, max: 0}).on('change', this.onBoundedBoxScalarChange.bind(this)); 
 
-        // Save Preset button
+        // Buttons
         this.gui.addButton({title: 'Save Preset'}).on('click', this.onSavePreset.bind(this));       
-        this.gui.addButton({title: 'Delete Preset'}).on('click', this.onDeletePreset.bind(this))
+        this.gui.addButton({title: 'Delete Preset'}).on('click', this.onDeletePreset.bind(this));
 
         // Read presets from the database. 
         Websocket.readAllPresets(this.onReceivePresets.bind(this)); 
+
+        // Hide the gui by default. 
+        this.gui.hidden = true;
+
+        // 
+        window.addEventListener('keypress', (e) => {
+            if (e.key === 'h') {
+                this.gui.hidden = !this.gui.hidden; 
+            }
+        }); 
     }
 
     onPresetSelected(event) {
