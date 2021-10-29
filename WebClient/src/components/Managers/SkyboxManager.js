@@ -31,7 +31,7 @@ class SkyboxManager {
         let materialArray = textureArray.map(t => {
             return new THREE.MeshBasicMaterial({
                 map: t,
-                side: THREE.BackSide
+                side: THREE.DoubleSide
             }); 
         });
 

@@ -45,7 +45,7 @@ class Footer extends React.Component {
     return (
       <div style={styles.container}>
         <div style={styles.website}>thelostpassage.art, © 2021</div>
-        <div style={styles.message}>crafted with love, care, and compassion.</div>
+        <div style={styles.message}>crafted with love, care, and hope.</div>
       </div>
     );
   }

@@ -23,10 +23,11 @@ const styles = {
     container: {
         display: 'flex',
         alignItems: 'center',
+        width: '100%',
         flexDirection: 'column',
         paddingTop: padding.veryBig,
-        paddingLeft: padding.veryBig,
-        paddingRight: padding.veryBig,
+        // paddingLeft: padding.veryBig,
+        // paddingRight: padding.veryBig,
         paddingBottom: padding.small
     },
 
@@ -86,14 +87,13 @@ const styles = {
     sponsors: {
       display: 'flex',
       flexDirection: 'row',
-      justifyContent: 'center',
+      justifyContent: 'space-evenly',
       marginTop: padding.huge,
       width: '100%'
     },
     
     image: {
-      objectFit: 'contain',
-      padding: padding.big
+      objectFit: 'contain'
     }
 };
 
@@ -121,10 +121,10 @@ class About extends React.Component {
           {yu}
         </div>
         <div style={styles.sponsors}>
-          <img style={styles.image} src={beFantastic} alt='befantastic'/>
-          <img style={styles.image} src={artahack} alt='artahack' />
-          <img style={styles.image} src={supernormal} alt='supernormal' />
-          <img style={styles.image} src={dara} alt='dara' />
+          <img width='350px' style={styles.image} src={beFantastic} alt='befantastic'/>
+          <img width='300px' style={styles.image} src={artahack} alt='artahack' />
+          <img width='300px' style={styles.image} src={supernormal} alt='supernormal' />
+          <img width='300px' style={styles.image} src={dara} alt='dara' />
         </div>
         <Footer />
       </div>

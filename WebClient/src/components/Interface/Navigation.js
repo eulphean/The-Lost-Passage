@@ -185,9 +185,6 @@ class Navigation extends React.Component {
 
   onClick(panelTitle) {
     this.props.onClickNavTitle(panelTitle);
-
-    // TODO: Do something about stopping the WebGL loop as well. 
-    // Stop rendering or animating the frame. 
     this.setState({
       showHomeButton: true
     });
