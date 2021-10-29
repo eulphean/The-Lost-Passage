@@ -196,7 +196,7 @@ class Navigation extends React.Component {
       this.setState({
         showHomeButton: false
       }); 
-    }, 500);
+    }, 250);
   }
 }
 

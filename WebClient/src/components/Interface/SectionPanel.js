@@ -7,6 +7,7 @@
 
 import React from 'react'
 import Radium from 'radium'
+import { elementScrollIntoView } from 'seamless-scroll-polyfill'
 
 import { PanelTitle } from './ContentPanel';
 import PassengerPigeons from './PassengerPigeons'
@@ -55,7 +56,7 @@ class SectionPanel extends React.Component {
 
   scrollTo() {
     setTimeout(() => {
-      this.containerRef.current.scrollIntoView({
+      elementScrollIntoView(this.containerRef.current, {
         behavior: 'smooth',
         block: 'start'
       });
@@ -64,3 +65,8 @@ class SectionPanel extends React.Component {
 }
 
 export default Radium(SectionPanel);
+
+// this.containerRef.current.scrollIntoView({
+//   behavior: 'smooth',
+//   block: 'start'
+// });

@@ -63,6 +63,7 @@
     "resolve": "1.18.1",
     "resolve-url-loader": "^3.1.2",
     "sass-loader": "^10.0.5",
+    "seamless-scroll-polyfill": "^2.1.5",
     "semver": "7.3.2",
     "socket.io-client": "^4.0.0",
     "sparse-octree": "^6.1.0",

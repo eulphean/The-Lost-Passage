@@ -10,6 +10,7 @@ import React from 'react'
 import Radium from 'radium'
 import * as THREE from 'three'
 import * as TWEEN from "@tweenjs/tween.js";
+import { elementScrollIntoView } from 'seamless-scroll-polyfill'
 
 // Utility components
 // import Terrain from '../Environment/Terrain.js'
@@ -274,10 +275,10 @@ class World extends React.Component {
   }
 
   scrollTo() {
-    this.worldRef.current.scrollIntoView({
+    elementScrollIntoView(this.worldRef.current, {
       behavior: 'smooth',
       block: 'start'
-    }, 100);
+    });
   }
 }
 

@@ -64,7 +64,7 @@ class ServerGui {
         // World Parameters.
         let f1 = this.gui.addFolder({ title: 'Target Params', expanded: true });
         f1.addInput(TargetParams, 'ShowTarget', {label: 'Show Target'});
-        f1.addInput(TargetParams, 'MaxTargetRadius', {label: 'Max Target Radius', min: 50.0, max: 200.0}); 
+        f1.addInput(TargetParams, 'MaxTargetRadius', {label: 'Max Target Radius', min: 50.0, max: 400.0}); 
         f1.addMonitor(TargetParams, 'CurrentTargetRadius', {label: 'Current Target Radius'}); 
 
         // Pattern Parameters.
@@ -86,10 +86,10 @@ class ServerGui {
 
         this.roseCurveParamsFolder = this.patternFolder.addFolder({ title: 'Rose-Curve Pattern Params', expanded: true });
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Origin');
-        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Radius', { min: 1, max: 300 });
+        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Radius', { min: 1, max: 400 });
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Phase', { min: 0, max: 10 });
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'NumPetals', { min: 1, max: 10, step: 1 });
-        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Amplitude', { min: 0, max: 300 });
+        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Amplitude', { min: 0, max: 400 });
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Sinusoidal');
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Direction');
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Speed', { min: 0, max: 2 });
