@@ -19,6 +19,7 @@ uniform float uSeperationForce;
 uniform float uAlignmentForce;
 uniform float uCohesionForce;
 uniform float uSpeedLerp;
+uniform bool uShoot; 
 
 // TARGET
 uniform vec3 uTargetPosition; 

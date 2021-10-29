@@ -16,7 +16,7 @@ import * as TWEEN from "@tweenjs/tween.js";
 import CameraControl from '../Managers/CameraControl.js'
 import LightingManager from '../Managers/LightingManager.js'
 import RendererManager from '../Managers/RendererManager.js'
-import PigeonManager, { PigeonParams } from '../Managers/PigeonManager.js'
+import PigeonManager from '../Managers/PigeonManager.js'
 import RaycastManager from '../Managers/RaycastManager.js'
 
 // Interface components. 
@@ -188,6 +188,15 @@ class World extends React.Component {
       this.skyboxManager.update();   
 
       this.rendererManager.monitorDrawCalls();
+      
+      // Wait till the camera animation has stopped before beginning Raycasting. 
+      if (this.cameraControl.animationStopped) {
+        let mesh = this.skyboxManager.getMesh(); 
+        // Intersect with bounding box mesh? 
+        if (mesh) {
+          this.raycastManager.intersect(this.cameraControl.camera, mesh, this.shouldAnimate); 
+        }
+      }
       TWEEN.update();
     this.fpsGraph.end();
   }
@@ -213,9 +222,7 @@ class World extends React.Component {
   }
 
   updateAnimationStatus(status) {  
-    console.log('Animation Status: ' + status);
     this.shouldAnimate = status; 
-
     if (status) {
       this.rendererManager.setAnimationLoop(this.renderThree.bind(this));
     } else {
@@ -250,7 +257,10 @@ class World extends React.Component {
     let tween = new TWEEN.Tween(control.camera.position)
         .to({x:0, y:0, z:this.zoom}, 5000)
         .easing(TWEEN.Easing.Cubic.Out)
-        .onComplete(() => control.animationStopped = true).start()
+        .onComplete(() => {
+          // Animation has finished. 
+          control.animationStopped = true;
+        }).start()
   }
 
   onPatternChanged(newPatternType) {
@@ -258,7 +268,9 @@ class World extends React.Component {
   }
 
   onShootPigeon() {
-     //this.pigeonManager.shootPigeon();
+    if (this.shouldAnimate) {
+      this.pigeonManager.shootPigeon();
+    }     
   }
 
   scrollTo() {
@@ -270,8 +282,3 @@ class World extends React.Component {
 }
 
 export default Radium(World);
-
-      // // Target exists? 
-      // if (this.pigeonManager.target) {
-      //   this.raycastManager.intersect(this.cameraControl.camera, this.pigeonManager.target.mesh); 
-      // }

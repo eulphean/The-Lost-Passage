@@ -208,6 +208,22 @@ class PigeonManager {
         console.log('Pigeon Manager Ready'); 
     }
 
+    shootPigeon() {
+        console.log('Pigeon Renderer: Shoot Pigeon');
+        if (this.gpuRenderer) {
+            this.gpuRenderer.shootPigeons();
+        }
+        
+        // OLD logic - now we send this info to the Shader. 
+        // // Set one randome pigeon to be dead
+        // let choseOne = THREE.MathUtils.randInt(0, this.pigeons.length - 1)
+        // this.pigeons[choseOne].isAlive = false;
+        
+        // // Gun shot will scare them away
+        // AgentParams.SeperationForce *= 3
+        // AgentParams.AttractionForce *= 0.1
+    }
+
     setNewPatternType(newPatternType) {
         this.patternManager.setTargetPattern(newPatternType);
         console.log('Setting pattern');

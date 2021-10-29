@@ -65,6 +65,7 @@ class GPURenderer {
         this.velocityUniforms["uSeperationForce"] = { value: PigeonParams.Seperation };
         this.velocityUniforms["uAlignmentForce"] = { value: PigeonParams.Alignment };
         this.velocityUniforms["uCohesionForce"] = { value: PigeonParams.Cohesion };
+        this.velocityUniforms["uShoot"] = { value: false }; 
 
         // TARGET
         this.velocityUniforms["uTargetPosition"] = { value: new THREE.Vector3() };
@@ -95,6 +96,9 @@ class GPURenderer {
         
         // GPU Renderer is ready. 
         IsGPURendererReady = true;
+
+        this.pause = false;
+        this.shoot = false; 
         console.log('GPU Renderer Ready.') 
     } 
 
@@ -115,6 +119,7 @@ class GPURenderer {
         this.velocityUniforms['uSeperationForce'].value = PigeonParams.Seperation; 
         this.velocityUniforms['uAlignmentForce'].value = PigeonParams.Alignment;
         this.velocityUniforms['uCohesionForce'].value = PigeonParams.Cohesion;
+        this.velocityUniforms['uShoot'].value = this.shoot;
 
         // TARGET
         this.velocityUniforms['uTargetPosition'].value.set(targetPosition.x, targetPosition.y, targetPosition.z);
@@ -136,6 +141,15 @@ class GPURenderer {
         // until actually reset. 
         if (this.pause) {
             this.pause = false;
+        }
+
+        // @Yu-jeng - Decide when to turn the
+        // value to false. Right now, we turn it 
+        // on, shader receives it once and then we turn 
+        // it off. Since this will be like a single impact, 
+        // maybe this is okay. 
+        if (this.shoot) {
+            this.shoot = false; 
         }
     }
 
@@ -186,6 +200,10 @@ class GPURenderer {
 
     pausePigeons() {
         this.pause = true; 
+    }
+
+    shootPigeons() {
+        this.shoot = true; 
     }
 }
 

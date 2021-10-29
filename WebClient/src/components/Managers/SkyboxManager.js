@@ -93,6 +93,10 @@ class SkyboxManager {
         // Update the bounding box mesh on the screen with respect to bbMesh. 
         this.boundingBoxMesh.update(this.cubeMesh); 
     }
+
+    getMesh() {
+        return this.cubeMesh; 
+    }
 } 
 
 export default SkyboxManager;

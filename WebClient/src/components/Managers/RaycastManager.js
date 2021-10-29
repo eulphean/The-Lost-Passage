@@ -7,6 +7,7 @@
 
 import * as THREE from 'three'
 
+const COOLDOWN_PERIOD = 5; // 5 seconds. 
 class RaycastManager {
     constructor(shootPigeonCallback) {
         this.raycaster = new THREE.Raycaster();
@@ -17,6 +18,8 @@ class RaycastManager {
 
         // Listen for mouse events for raycaster.  
         window.addEventListener('click', this.onMouseClick.bind(this), false);
+
+        this.clock = new THREE.Clock(); 
     }
 
     onMouseMove(event) {
@@ -24,19 +27,21 @@ class RaycastManager {
         this.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
     }
 
-    intersect(mouse, camera, targetMesh) {
-        this.raycaster.setFromCamera(mouse, camera);
+    intersect(camera, targetMesh, shouldAnimate) {
+        if (shouldAnimate) {
+            this.raycaster.setFromCamera(this.mouse, camera);
 
-        // Do we intersect with the target mesh? 
-        const objects = this.raycaster.intersectObject(targetMesh); 
-        this.isIntersecting = objects.length > 0;
+            // Do we intersect with the target mesh? 
+            const objects = this.raycaster.intersectObject(targetMesh); 
+            this.isIntersecting = objects.length > 0;
+        }
     }
 
-    onMouseClick(event) {
-        if (this.isIntersecting) {
-            this.shootPigeon();
-            // TODO: Add some cooldown period before we can actually
-            // shoot the pigeons again. 
+    onMouseClick() {
+        let elapsedTime = this.clock.getDelta(); 
+        console.log(elapsedTime);
+        if (this.isIntersecting && elapsedTime > COOLDOWN_PERIOD) {
+            this.shootPigeon();            
         }
     }
 } 

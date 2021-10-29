@@ -35,12 +35,12 @@ class CameraControl {
         
         // Once the camera animation stopped, return the control back to user
         if (this.animationStopped){
-            this.camera.position.x += ( mouse.x - this.camera.position.x ) * .05;
-            this.camera.position.y += ( - mouse.y - this.camera.position.y ) * .05;
+            this.camera.position.x += (mouse.x - this.camera.position.x ) * .05;
+            this.camera.position.y += (- mouse.y - this.camera.position.y ) * .05;
             this.camera.position.z = zoom;
         }
 
-        this.camera.lookAt( scene.position );
+        this.camera.lookAt(scene.position);
         // this.updateControls();
     }
 
