@@ -144,7 +144,7 @@ class GPUPigeon {
             // Incoming geometry has an index array that represents something realted to the vertices 
             // of the triangles that are added to the geometry. 
             for (let i = 0; i < this.indicesPerBird * BIRDS; i++) {
-                const offset = Math.floor(i / this.indicesPerBird) * this.vertexPerBird * 3; // CRITICAL FIX: Contribute back to Three.js
+                const offset = Math.floor(i / this.indicesPerBird) * this.vertexPerBird; // CRITICAL FIX: Contribute back to Three.js
                 indices.push(birdGeo.index.array[i % this.indicesPerBird] + offset);
             }
 

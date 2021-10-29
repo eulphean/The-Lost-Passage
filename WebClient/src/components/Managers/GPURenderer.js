@@ -15,9 +15,6 @@ import fragmentShaderPosition from '../../shaders/fragmentShaderPosition.glsl'
 import fragmentShaderVelocity from '../../shaders/fragmentShaderVelocity.glsl'
 import { TargetParams } from '../Environment/Target.js';
 
-// const BOUNDS = 100;
-// const BOUNDS_HALF = BOUNDS / 2; 
-
 export let IsGPURendererReady = false; 
 
 class GPURenderer {
@@ -80,12 +77,12 @@ class GPURenderer {
         this.velocityUniforms["uBoundingBoxMax"] = { value: new THREE.Vector3() };
         
         // Velocity variable.
-        this.velocityVariable.wrapS = THREE.RepeatWrapping;
-        this.velocityVariable.wrapT = THREE.RepeatWrapping;
+        this.velocityVariable.wrapS = THREE.ClampToEdgeWrapping;
+        this.velocityVariable.wrapT = THREE.ClampToEdgeWrapping;
 
         // Position variable. 
-        this.positionVariable.wrapS = THREE.RepeatWrapping;
-        this.positionVariable.wrapT = THREE.RepeatWrapping;
+        this.positionVariable.wrapS = THREE.ClampToEdgeWrapping;
+        this.positionVariable.wrapT = THREE.ClampToEdgeWrapping;
 
         // A simple test to make sure GPURenderer has everything. 
         const error = this.gpuCompute.init();
