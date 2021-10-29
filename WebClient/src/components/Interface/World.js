@@ -9,7 +9,6 @@
 import React from 'react'
 import Radium from 'radium'
 import * as THREE from 'three'
-import * as TWEEN from "@tweenjs/tween.js";
 import { elementScrollIntoView } from 'seamless-scroll-polyfill'
 
 // Utility components
@@ -59,8 +58,6 @@ class World extends React.Component {
   constructor(props) {
     super(props);
     this.state={};
-    this.mouse = new THREE.Vector2(0, 0);
-    this.zoom = 250;
 
     // Animation flag. 
     this.shouldAnimate = true; 
@@ -112,10 +109,6 @@ class World extends React.Component {
         this.updateAnimationStatus(true);
       }
     }); 
-    
-    // Mouse activites
-    window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
-    window.addEventListener('wheel', this.onMouseWheel.bind(this), false);
   }
 
   componentDidMount() {
@@ -181,7 +174,7 @@ class World extends React.Component {
         this.pigeonManager.update(boundingBox);
       }
       
-      this.cameraControl.update(this.scene, this.mouse, this.zoom);
+      this.cameraControl.update(this.scene);
 
       // This renders each frame. 
       this.rendererManager.render(this.scene, this.cameraControl.getCamera());   
@@ -198,19 +191,7 @@ class World extends React.Component {
           this.raycastManager.intersect(this.cameraControl.camera, mesh, this.shouldAnimate); 
         }
       }
-      TWEEN.update();
     this.fpsGraph.end();
-  }
-
-  onMouseMove(event) {
-    this.mouse.x = (event.clientX - window.innerWidth / 2) * 0.3;
-    this.mouse.y = (event.clientY - window.innerHeight / 2) * 0.7;
-  }
-
-  onMouseWheel(event) {
-      this.zoom += event.deltaY * 0.1;
-      // Constrain the zoom within the reasonable range
-      this.zoom = Math.min(Math.max(100, this.zoom), 400);
   }
 
   onWindowResize() {
@@ -254,16 +235,7 @@ class World extends React.Component {
 
   enterWorld() {
     // Animate the camera zooming into the skybox. 
-    let control = this.cameraControl;
-    let tween = new TWEEN.Tween(control.camera.position)
-        .to({x:0, y:0, z:this.zoom}, 4000)
-        .easing(TWEEN.Easing.Cubic.Out)
-        .onComplete(() => {
-          // Animation has finished. 
-          control.animationStopped = true;
-          // Now, show the nav panel.
-          this.props.onInitialCameraAnimationDone(); 
-        }).start()
+    this.cameraControl.initialTween(this.props.onInitialCameraAnimationDone); 
   }
 
   onPatternChanged(newPatternType) {

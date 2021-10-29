@@ -7,6 +7,7 @@
 
 import * as THREE from 'three'
 import oc from 'three-orbit-controls'
+import * as TWEEN from "@tweenjs/tween.js"
 
 const OrbitControls = oc(THREE); 
 
@@ -25,23 +26,55 @@ class CameraControl {
         this.camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.05, 20000);
         this.camera.position.set(10000, 7000, 500); 
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
-        this.camera.frustumCulled = false; 
+        this.camera.frustumCulled = true; 
+
+        this.mouse = new THREE.Vector2(0, 0);
+        this.zoom = 250;
 
         // this.controls = new OrbitControls(this.camera); 
         this.animationStopped = false;
+
+        // Mouse activites
+        window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
+        window.addEventListener('wheel', this.onMouseWheel.bind(this), false);
     }
 
-    update(scene, mouse, zoom) {
-        
+    update(scene) {
         // Once the camera animation stopped, return the control back to user
         if (this.animationStopped){
-            this.camera.position.x += (mouse.x - this.camera.position.x ) * .05;
-            this.camera.position.y += (- mouse.y - this.camera.position.y ) * .05;
-            this.camera.position.z = zoom;
+            this.camera.position.x += (this.mouse.x - this.camera.position.x ) * .01;
+            this.camera.position.y += (- this.mouse.y - this.camera.position.y ) * .01;
+            this.camera.position.z = this.zoom;
         }
 
         this.camera.lookAt(scene.position);
-        // this.updateControls();
+
+        TWEEN.update();
+    }
+
+    onMouseMove(event) {
+        this.mouse.x = (event.clientX - window.innerWidth / 2) * 0.4;
+        this.mouse.y = (event.clientY - window.innerHeight / 2) * 0.8;
+    }
+    
+    onMouseWheel(event) {
+        this.zoom += event.deltaY * 0.1;
+        // Constrain the zoom within the reasonable range
+        this.zoom = Math.min(Math.max(100, this.zoom), 400);
+    }
+
+    initialTween(onAnimationComplete) {
+        let tween = new TWEEN.Tween(this.camera.position)
+        .to({x:0, y:0, z:this.zoom}, 4000)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .onComplete(() => {
+          // Animation has finished. 
+          this.animationStopped = true;
+          // Now, show the nav panel.
+          onAnimationComplete();
+        }); 
+
+        tween.start(); 
     }
 
     updateControls() {
