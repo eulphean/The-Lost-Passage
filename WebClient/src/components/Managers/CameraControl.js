@@ -42,8 +42,8 @@ class CameraControl {
     update(scene) {
         // Once the camera animation stopped, return the control back to user
         if (this.animationStopped){
-            this.camera.position.x += (this.mouse.x - this.camera.position.x ) * .01;
-            this.camera.position.y += (- this.mouse.y - this.camera.position.y ) * .01;
+            this.camera.position.x += (this.mouse.x - this.camera.position.x ) * .05;
+            this.camera.position.y += (- this.mouse.y - this.camera.position.y ) * .05;
             this.camera.position.z = this.zoom;
         }
 
