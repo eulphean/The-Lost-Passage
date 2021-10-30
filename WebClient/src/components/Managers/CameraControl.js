@@ -31,7 +31,7 @@ class CameraControl {
         this.mouse = new THREE.Vector2(0, 0);
         this.zoom = 250;
 
-        // this.controls = new OrbitControls(this.camera); 
+        this.controls = new OrbitControls(this.camera); 
         this.animationStopped = false;
 
         // Mouse activites

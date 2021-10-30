@@ -25,12 +25,12 @@ import RaycastManager from '../Managers/RaycastManager.js'
 import GuiPanel from './GuiPanel.js'
 
 // Clouds video. 
-import front from '../../assets/videos/front.mp4'
-import back from '../../assets/videos/back.mp4'
-import top from '../../assets/videos/top.mp4'
-import bottom from '../../assets/videos/bottom.mp4'
+import front from '../../assets/videos/left.mp4'
+import back from '../../assets/videos/left.mp4'
+import top from '../../assets/videos/left.mp4'
+import bottom from '../../assets/videos/left.mp4'
 import left from '../../assets/videos/left.mp4'
-import right from '../../assets/videos/right.mp4'
+import right from '../../assets/videos/left.mp4'
 import SkyboxManager, { IsSkyboxReady } from '../Managers/SkyboxManager.js'
 
 // Set this flag to true when the world has loaded all the videos 
