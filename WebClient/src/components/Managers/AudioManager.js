@@ -9,7 +9,9 @@
 */
 
 // NOTE: p5 library is loaded through index.html script tags.
-// We assign it to a variable that we want to use. 
+// We assign it to a variable that we want to use.
+import soundscape from '../../assets/soundscape.mp3'
+
 let p5 = window.p5;  
 
 class Audio {
@@ -24,12 +26,12 @@ class Audio {
         this.adsr.set(attackTime, attackLevel, decayTime, decayLevel, releaseTime, releaseLevel); 
     }
 
-    trigger(isLeft) {
-        if (isLeft) {
-            this.soundObject.pan(1); 
-        } else {
-            this.soundObject.pan(-1); 
-        }
+    trigger() {
+        // if (isLeft) {
+        //     this.soundObject.pan(1); 
+        // } else {
+        //     this.soundObject.pan(-1); 
+        // }
 
         if (this.soundObject.isPlaying()) {
             this.soundObject.stop();
@@ -50,8 +52,11 @@ class Audio {
 // Use this p5 sketch to load all audio. 
 var sketch = (s) => {
     // Single array that holds all the audio files. 
-    let audio = [];
+    let soundObject = ''; 
     s.preload = () => {
+        let sound = s.loadSound(soundscape); 
+        let env = new p5.Envelope(0.8, 0.3, 0.5, 0.3, 1, 0.);
+        soundObject = new Audio(sound, env); 
         // Load any sounds here. 
         // for (let i = 0; i < audioFiles.length; i++) {
         //     let sound = s.loadSound(audioFiles[i]); 
@@ -69,14 +74,26 @@ var sketch = (s) => {
         s.noLoop(); // We don't want to loop either.
     };
 
-    s.getAudio = () => {
-        return audio; 
+    s.trigger = () => {
+        soundObject.trigger(); 
+    }
+
+    s.release = () => {
+        soundObject.release();
     }
 };
  
 class AudioManager {
     constructor() {
         this.myP5 = new p5(sketch); 
+    }
+
+    trigger() {
+        this.myP5.trigger(); 
+    }
+
+    release() {
+        this.myP5.release();
     }
 }
 

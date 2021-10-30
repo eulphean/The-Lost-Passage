@@ -12,6 +12,7 @@ import World from './Interface/World.js'
 import ContentPanel from './Interface/ContentPanel.js';
 import Navigation from './Interface/Navigation.js'
 import EnterPanel from './Interface/EnterPanel.js';
+import AudioManager from './Managers/AudioManager.js';
 
 
 const styles = {
@@ -103,6 +104,9 @@ class App extends React.Component {
     this.setState({
       showNavPanel: true
     }); 
+
+    // Trigger sound.
+    AudioManager.trigger();
   }
     
   onClickNavTitle(panelTitle) {
@@ -110,6 +114,9 @@ class App extends React.Component {
     this.setState({
       showContentPanel: true
     });
+
+    // Stop sound.
+    AudioManager.release();
 
     // Trigger scroll.
     this.contentPanelRef.current.scroll(panelTitle);
@@ -121,7 +128,10 @@ class App extends React.Component {
   onClickHomeButton() {
     this.worldRef.current.scrollTo(); 
     this.worldRef.current.updateAnimationStatus(true);
+
+
     setTimeout(() => {
+      AudioManager.trigger();
       this.setState({
         showContentPanel: false
       });

@@ -13,7 +13,6 @@ import { PanelTitle } from './ContentPanel';
 import PassengerPigeons from './PassengerPigeons'
 import ClimateStatement from './ClimateStatement'
 import About from './About'
-import { color } from '../Utilities/CommonStyles';
 
 const styles = {
     container: {
