@@ -11,6 +11,8 @@ import Radium from 'radium'
 import * as THREE from 'three'
 import { elementScrollIntoView } from 'seamless-scroll-polyfill'
 
+import AudioManager from '../Managers/AudioManager.js'
+
 // Utility components
 // import Terrain from '../Environment/Terrain.js'
 import CameraControl from '../Managers/CameraControl.js'
@@ -207,10 +209,12 @@ class World extends React.Component {
     this.shouldAnimate = status; 
     if (status) {
       this.rendererManager.setAnimationLoop(this.renderThree.bind(this));
+      AudioManager.trigger();
     } else {
       // Pause
       this.pigeonManager.pausePigeons();
       this.rendererManager.setAnimationLoop(null);
+      AudioManager.release();
     }
   }
 

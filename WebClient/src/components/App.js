@@ -115,9 +115,6 @@ class App extends React.Component {
       showContentPanel: true
     });
 
-    // Stop sound.
-    AudioManager.release();
-
     // Trigger scroll.
     this.contentPanelRef.current.scroll(panelTitle);
 
@@ -129,9 +126,7 @@ class App extends React.Component {
     this.worldRef.current.scrollTo(); 
     this.worldRef.current.updateAnimationStatus(true);
 
-
     setTimeout(() => {
-      AudioManager.trigger();
       this.setState({
         showContentPanel: false
       });
