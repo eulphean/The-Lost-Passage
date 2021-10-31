@@ -26,9 +26,9 @@ export let PigeonParams = {
     Alignment: 20.0,
     Cohesion: 20.0,
     Freedom: 0.75,
-    MaxSpeed: 5.0,
+    MaxSpeed: 20.0,
     SpeedLerp: 0.1,
-    Size: 0.2,
+    Size: 0.1,
     Count: BIRDS
 }
 
@@ -92,6 +92,8 @@ class PigeonManager {
                 // Bind pigeon count.
                 this.pigeon.setDrawRange(PigeonParams.Count); 
             }
+
+            this.recoverFromShock() ;
         }
     }
 
@@ -210,6 +212,11 @@ class PigeonManager {
 
     shootPigeon() {
         console.log('Pigeon Renderer: Shoot Pigeon');
+        
+        // Increase separation and maxSpeed abruptly 
+        PigeonParams.Seperation *= 2.5;
+        PigeonParams.MaxSpeed *= 1.8;
+
         if (this.gpuRenderer) {
             this.gpuRenderer.shootPigeons();
         }
@@ -218,15 +225,20 @@ class PigeonManager {
         // // Set one randome pigeon to be dead
         // let choseOne = THREE.MathUtils.randInt(0, this.pigeons.length - 1)
         // this.pigeons[choseOne].isAlive = false;
-        
-        // // Gun shot will scare them away
-        // AgentParams.SeperationForce *= 3
-        // AgentParams.AttractionForce *= 0.1
     }
 
     setNewPatternType(newPatternType) {
         this.patternManager.setTargetPattern(newPatternType);
         console.log('Setting pattern');
+    }
+
+    recoverFromShock() {
+        // Separation and max speed would decay overtime to recover from gun shot
+        PigeonParams.Seperation *= 0.999;
+        PigeonParams.Seperation = THREE.MathUtils.clamp(PigeonParams.Seperation, 20, 120);
+        
+        PigeonParams.MaxSpeed *= .999;
+        PigeonParams.MaxSpeed = THREE.MathUtils.clamp(PigeonParams.MaxSpeed, 20, 50);
     }
 } 
 
