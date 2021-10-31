@@ -49,7 +49,9 @@ const styles = {
     }
 };
 
-const content = "It is obvious, that the organization of the treatment results in a complete compliance with The Facility of Environmental Flexibility (Hubert Agee in The Book of the Emergency Planning) It's a well-known fact that the major accomplishments, such as the continuing setting doctrine, the flexible production planning, the ability bias or the predictable behavior may share attitudes on the major outcomes. The situation is quite a successful matter. To be honest, the continuing hierarchy doctrine and growth opportunities of it are quite high.It's a well-known fact that the major accomplishments, such as the continuing setting doctrine, the flexible production planning, the ability bias or the predictable behavior may share attitudes on the major outcomes.Its a well-known fact that the major accomplishments, such as the...."
+const content = "The project revisits the past to raise these questions about our future - how many extinct species will it take to recalibrate our self-interests? Can we reverse the damage that has been done due to our need for power, control, and authority over other living beings? This work  is an attempt to reunite the audience with what’s lost in the past; however, only to realize that it’s nearly impossible to do so. In recent times, there have been failed attempts to bring passenger pigeons back to life using the DNA of the last remaining pigeon preserved in a historical museum. Can a clone of this pigeon survive in the world like its predecessors? Does it not seem like a scientific paradox to recreate a lost species, when our existing actions are deteriorating the relationship between us and the species that are presently alive and endangered on this planet? “The Lost Passage” points out that the balance has already been tipped and the damage has already been done. The need of the hour is to collectively reconsider our relationship with other living beings and take urgent steps before authoritatively exhausting the natural resources for our own survival.";
+ 
+
 
 class ClimateStatement extends React.Component {
   constructor(props) {
