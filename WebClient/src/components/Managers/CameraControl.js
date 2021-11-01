@@ -23,7 +23,7 @@ class CameraControl {
     constructor() {
         // Camera Setup
         // (FOV, AspectRatio, Near Clipping, Far Clipping)
-        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.05, 20000);
+        this.camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.05, 20000);
         this.camera.position.set(10000, 7000, 500); 
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
         this.camera.frustumCulled = true; 
