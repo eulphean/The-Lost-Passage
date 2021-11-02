@@ -159,27 +159,27 @@ class About extends React.Component {
 
   getShao() {
     return (
-      <div style={styles.member}>
+      <a href='https://www.linkedin.com/in/kshaohui/' target='_blank' rel="noreferrer"  style={styles.member}>
         <img src={shao} alt='shao' style={styles.photo} />
         <div style={styles.infoContainer}>
           <div style={styles.name}>Shaohui Kwok</div>
           <div style={styles.location}>Cultural Producer</div>
           <div style={styles.location}>Singapore</div>
         </div>
-      </div>
+      </a>
     );
   }
   
   getYu() {
     return (
-      <div style={styles.member}>
+      <a href='https://www.linkedin.com/in/yu-jeng-kuo-696133aa/' target='_blank' rel="noreferrer"  style={styles.member}>
         <img src={yu} alt='yu' style={styles.photo} />
         <div style={styles.infoContainer}>
           <div style={styles.name}>Yu-Jeng Kuo</div>
           <div style={styles.location}>Software Engineer</div>
           <div style={styles.location}>Singapore</div>
         </div>
-      </div>
+      </a>
     );
   }
 }

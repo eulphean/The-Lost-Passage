@@ -332,7 +332,7 @@ class EnterPanel extends React.Component {
 
   checkIfReady() {
     setTimeout(() => {
-      if (IsGUIReady && IsPigeonManagerReady && IsWorldReady) {
+      if (IsPigeonManagerReady && IsWorldReady) {
         this.hasFinishedLoading(); 
       } else {
         this.checkIfReady();
