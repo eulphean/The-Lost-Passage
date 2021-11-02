@@ -118,6 +118,8 @@ class GPURenderer {
         this.velocityUniforms['uCohesionForce'].value = PigeonParams.Cohesion;
         this.velocityUniforms['uShoot'].value = this.shoot;
 
+        // console.log(PigeonParams.Seperation);
+
         // TARGET
         this.velocityUniforms['uTargetPosition'].value.set(targetPosition.x, targetPosition.y, targetPosition.z);
         this.velocityUniforms['uTargetRadius'].value = TargetParams.CurrentTargetRadius;

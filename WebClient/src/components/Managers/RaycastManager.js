@@ -41,7 +41,7 @@ class RaycastManager {
         let elapsedTime = this.clock.getDelta(); 
         console.log(elapsedTime);
         if (this.isIntersecting && elapsedTime > COOLDOWN_PERIOD) {
-            this.shootPigeon();            
+            //this.shootPigeon();            
         }
     }
 } 

@@ -93,7 +93,11 @@ class PigeonManager {
                 this.pigeon.setDrawRange(PigeonParams.Count); 
             }
 
-            this.recoverFromShock() ;
+            // DISABLING FOR NOW
+            // The flock recovers back to default Seperation and becomes a sphere. 
+            // This should only be called once the shock has been introduced. 
+            // Check the seperation values as they are always stuck to 20 even after adjusting it in GUI. 
+            // this.recoverFromShock() ;
         }
     }
 
@@ -213,18 +217,10 @@ class PigeonManager {
     shootPigeon() {
         console.log('Pigeon Renderer: Shoot Pigeon');
         
-        // Increase separation and maxSpeed abruptly 
-        PigeonParams.Seperation *= 2.5;
-        PigeonParams.MaxSpeed *= 1.8;
-
-        if (this.gpuRenderer) {
-            this.gpuRenderer.shootPigeons();
-        }
-        
-        // OLD logic - now we send this info to the Shader. 
-        // // Set one randome pigeon to be dead
-        // let choseOne = THREE.MathUtils.randInt(0, this.pigeons.length - 1)
-        // this.pigeons[choseOne].isAlive = false;
+        // DISABLING FOR NOW. 
+        // // Increase separation and maxSpeed abruptly 
+        // PigeonParams.Seperation *= 2.5;
+        // PigeonParams.MaxSpeed *= 1.8;
     }
 
     setNewPatternType(newPatternType) {
@@ -243,95 +239,3 @@ class PigeonManager {
 } 
 
 export default PigeonManager;
-
-// UNUSED METHODS RIGHT NOW.
-// NEED TO BRING ALL THIS BACK!!
-// HOW, WHEN???
-// setup(scene, currentPatternType) {
-//     console.log('Pigeon Manager Pattern: ' + currentPatternType);
-    
-//     this.spawnPigeons(scene);
-
-//     // Create the target object that the pigeons are following. 
-//     this.target = new Target(scene);
-
-//     // Create the target pattern.
-//     this.patternManager.setTargetPattern(currentPatternType); 
-// }
-
-// update(boundingBox) {
-//     // Do any pigeons exist? 
-//     if (this.pigeons.length > 0) {
-//         // Don't do anything until we have a valid target position. 
-//         let patternPos = this.patternManager.update(); 
-//         if (patternPos) {
-//             this.target.setVector(patternPos);
-//             this.target.setVisibility(TargetParams.ShowTarget);
-
-//             // Update octree. 
-//             // Note: On every update, we instantiate a new octree
-//             // and populate it with the new pigeon position. So everytime, 
-//             // the neighbors get updated. 
-//             this.octreeManager.update(patternPos, this.pigeons); 
-
-//             let nAgents = []; // Neighboring agents. 
-
-//             // Delta change in time to advance the animation of the wings. 
-//             let delta = this.clock.getDelta(); 
-//             this.pigeons.forEach(p => {
-//                 // Update the target's position 
-//                 p.setTarget(patternPos); 
-//                 // Find and update the location of neighboring agents
-//                 nAgents = this.octreeManager.getNeighbours(p.position); 
-//                 p.update(delta, nAgents, boundingBox);
-//             });
-//         }
-        
-//         // Slowly reset some of the agent params that was disturbed by the gun shot
-//         this.recoverFromShock()
-//     }
-// }
-
-// setNewPatternType(newPatternType) {
-//     this.patternManager.setTargetPattern(newPatternType)
-// }
-
-// spawnPigeons(scene) {
-//     // NOT IMPLEMENTED
-//     // ISSUES IN CLEANING GEOMETRY!!
-//     /// Empty the pigeons first. 
-//     // if (this.pigeons.length > 0) {
-//     //     scene.children.forEach(child => {
-//     //         if (child.name === 'pigeon') {
-//     //             child.remove(child[0]);
-//     //         }
-//     //     });
-//     // }
-
-//     // Instantiate pigeons again. 
-//     for (let i = 0; i < NUM_PIGEONS; i++) {
-//         let p = new Pigeon(scene); 
-//         this.pigeons.push(p);
-//     }
-// }
-
-// shootPigeon() {
-//     console.log('Shoot Pigeon');
-//     // Set one randome pigeon to be dead
-//     let choseOne = THREE.MathUtils.randInt(0, this.pigeons.length - 1)
-//     this.pigeons[choseOne].isAlive = false;
-    
-//     // Gun shot will scare them away
-//     AgentParams.SeperationForce *= 3
-//     AgentParams.AttractionForce *= 0.1
-// }
-
-// recoverFromShock() {
-//     // Separation would decay overtime to recover from gun shot
-//     AgentParams.SeperationForce *= 0.999;
-//     AgentParams.SeperationForce = THREE.MathUtils.clamp(AgentParams.SeperationForce, 1.2, 2);      
-    
-//     // Agent would focus back on seeking target again
-//     AgentParams.AttractionForce *= 1.001;
-//     AgentParams.AttractionForce = THREE.MathUtils.clamp(AgentParams.AttractionForce, 0.5, 2);
-// }
