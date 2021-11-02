@@ -23,7 +23,7 @@ class CameraControl {
     constructor() {
         // Camera Setup
         // (FOV, AspectRatio, Near Clipping, Far Clipping)
-        this.camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.05, 20000);
+        this.camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.05, 20000);
         this.camera.position.set(10000, 7000, 500); 
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
         this.camera.frustumCulled = true; 
@@ -36,14 +36,14 @@ class CameraControl {
 
         // Mouse activites
         window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
-        window.addEventListener('wheel', this.onMouseWheel.bind(this), false);
+        // window.addEventListener('wheel', this.onMouseWheel.bind(this), false);
     }
 
     update(scene) {
         // Once the camera animation stopped, return the control back to user
         if (this.animationStopped){
             this.camera.position.x += (this.mouse.x - this.camera.position.x ) * .025;
-            this.camera.position.y += (- this.mouse.y - this.camera.position.y ) * .025;
+            this.camera.position.y += (this.mouse.y - this.camera.position.y ) * .025;
             this.camera.position.z = this.zoom;
         }
 

@@ -86,10 +86,10 @@ class ServerGui {
 
         this.roseCurveParamsFolder = this.patternFolder.addFolder({ title: 'Rose-Curve Pattern Params', expanded: true });
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Origin');
-        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Radius', { min: 1, max: 400 });
+        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Radius', { min: 1, max: 800 });
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Phase', { min: 0, max: 10 });
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'NumPetals', { min: 1, max: 10, step: 1 });
-        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Amplitude', { min: 0, max: 400 });
+        this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Amplitude', { min: 0, max: 800 });
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Sinusoidal');
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Direction');
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Speed', { min: 0, max: 2 });
@@ -106,13 +106,7 @@ class ServerGui {
         f2.addInput(PigeonParams, 'MaxSpeed', {label: 'Max Agent Speed', min: 1, max: 200, step: 0.1});
         f2.addInput(PigeonParams, 'SpeedLerp', {label: 'Speed Lerp', min: 0, max: 1, step: 0.01});
         f2.addInput(PigeonParams, 'Count', {label: 'Count', min: 0, max: PigeonParams.Count, step: 1}); 
-        
-        // f2.addInput(AgentParams, 'AttractionForce', {label: 'Attraction Force', min: 0.5, max: 2, step: 0.05});
-        // f2.addInput(AgentParams, 'SmoothFactor', {label: 'Smooth Factor', min: 0.005, max: 0.1, step: 0.005});
-        // f2.addInput(AgentParams, 'SeperationForce', {label: 'Seperation Force', min: 0.5, max: 2, step: 0.1}); 
-        // f2.addInput(AgentParams, 'CohesionForce', {label: 'Cohesion Force', min: 0.1, max: 2, step: 0.1});
-        // f2.addInput(AgentParams, 'AlignmentForce', {label: 'Alignment Force', min: 0, max: 2, step: 0.1}); 
-
+    
         let f3 = this.gui.addFolder({ title: 'Skybox Params', expanded: true});
         f3.addInput(SkyboxParams, 'ShowSkybox');
         f3.addInput(SkyboxParams, 'ShowBoundingBox');
