@@ -40,6 +40,11 @@ class PigeonManager {
         // Create the target object that the pigeons are following. 
         this.target = new Target(scene);
 
+        // State varables for shooting related behaviours
+        this.isFlockInShock = false;
+        this.previousSepValue = 0.0;
+        this.previousSpeedValue = 0.0;
+
         // Clock, required for animation of the agents. 
         this.clock = new THREE.Clock(); 
 
@@ -93,11 +98,10 @@ class PigeonManager {
                 this.pigeon.setDrawRange(PigeonParams.Count); 
             }
 
-            // DISABLING FOR NOW
-            // The flock recovers back to default Seperation and becomes a sphere. 
-            // This should only be called once the shock has been introduced. 
-            // Check the seperation values as they are always stuck to 20 even after adjusting it in GUI. 
-            // this.recoverFromShock() ;
+            // The flock will only recover from shock if they were indeed in shock
+            if (this.isFlockInShock){
+                this.recoverFromShock() ;
+            }
         }
     }
 
@@ -217,10 +221,17 @@ class PigeonManager {
     shootPigeon() {
         console.log('Pigeon Renderer: Shoot Pigeon');
         
-        // DISABLING FOR NOW. 
-        // // Increase separation and maxSpeed abruptly 
-        // PigeonParams.Seperation *= 2.5;
-        // PigeonParams.MaxSpeed *= 1.8;
+        if (!this.isFlockInShock){
+            // Remember where the previous states are
+            this.previousSepValue = PigeonParams.Seperation;
+            this.previousSpeedValue = PigeonParams.MaxSpeed;
+            console.log(`Seperation value when shot : ${this.previousSepValue}`)
+            // Increase separation and maxSpeed abruptly 
+            PigeonParams.Seperation *= 2.5;
+            PigeonParams.MaxSpeed *= 1.8;
+            this.isFlockInShock = true;
+        }
+        return this.isFlockInShock
     }
 
     setNewPatternType(newPatternType) {
@@ -229,12 +240,19 @@ class PigeonManager {
     }
 
     recoverFromShock() {
-        // Separation and max speed would decay overtime to recover from gun shot
-        PigeonParams.Seperation *= 0.999;
-        PigeonParams.Seperation = THREE.MathUtils.clamp(PigeonParams.Seperation, 20, 120);
-        
-        PigeonParams.MaxSpeed *= .999;
-        PigeonParams.MaxSpeed = THREE.MathUtils.clamp(PigeonParams.MaxSpeed, 20, 50);
+        if (PigeonParams.Seperation > this.previousSepValue){
+            // Separation and max speed would decay overtime to recover from gun shot
+            PigeonParams.Seperation *= 0.999;
+            PigeonParams.MaxSpeed *= 0.999;
+        }else{
+            // Pigeons are recovered from gun shot, setting the params back to their previous values
+            PigeonParams.Seperation = this.previousSepValue;
+            PigeonParams.MaxSpeed = this.previousSpeedValue;
+            console.log(`Seperation value after recovered : ${PigeonParams.Seperation}`)
+            this.previousSepValue = 0.0;
+            this.previousSpeedValue = 0.0
+            this.isFlockInShock = false;
+        }        
     }
 } 
 

@@ -172,6 +172,10 @@ class World extends React.Component {
       if (this.pigeonManager) {
         let boundingBox = this.skyboxManager.getBoundingBox(); 
         this.pigeonManager.update(boundingBox);
+        // Once the flock is no longer in shock, enable the pigeon params again
+        if (!this.pigeonManager.isFlockInShock && this.guiRef.current.getPiegonParamFolder().disabled){
+          this.guiRef.current.getPiegonParamFolder().disabled = false;
+        }
       }
       
       this.cameraControl.update(this.scene);
@@ -246,7 +250,14 @@ class World extends React.Component {
 
   onShootPigeon() {
     if (this.shouldAnimate) {
-      this.pigeonManager.shootPigeon();
+      let isFlockInShock = this.pigeonManager.shootPigeon();
+      if (isFlockInShock){
+        // If the flock is in shock, disable the pigeon param temporarily
+        // to avoid further value adjustment during this process.
+        // The gui will be enabled again when the pigeons are no longer in shock
+        let guiParams = this.guiRef.current.getPiegonParamFolder();
+        guiParams.disabled = true;
+      }
     }     
   }
 
