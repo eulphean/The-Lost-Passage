@@ -49,6 +49,10 @@ class GuiPanel extends React.Component {
   getCurPatternType() {
     return this.gui.currentPatternType; 
   }
+
+  getPiegonParamFolder() {
+    return this.gui.pigeonParamsFolder;
+  }
 }
 
 export default Radium(GuiPanel);
