@@ -91,6 +91,7 @@ class World extends React.Component {
 
     // Three.js Renderer
     this.rendererManager = new RendererManager(); 
+    this.rendererManager.renderer.domElement.addEventListener('click', this.onShootPigeon.bind(this), false);
 
     // Pigeons
     this.pigeonManager = new PigeonManager(this.scene); 

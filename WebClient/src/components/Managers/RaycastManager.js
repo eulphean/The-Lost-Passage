@@ -17,7 +17,7 @@ class RaycastManager {
         this.isIntersecting = false;  
 
         // Listen for mouse events for raycaster.  
-        window.addEventListener('click', this.onMouseClick.bind(this), false);
+        // window.addEventListener('click', this.onMouseClick.bind(this), false);
 
         this.clock = new THREE.Clock(); 
     }
