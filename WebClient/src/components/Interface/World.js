@@ -33,7 +33,7 @@ import SkyboxManager, { IsSkyboxReady } from '../Managers/SkyboxManager.js'
 export let IsWorldReady = false; 
 
 // NOTE: Change this when we have more videos loading. 
-const NUM_VIDEOS_LOADED = 3; 
+const NUM_VIDEOS_LOADED = 1; 
 
 const styles = {
   container: {
