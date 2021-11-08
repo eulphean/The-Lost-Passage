@@ -25,12 +25,7 @@ import RaycastManager from '../Managers/RaycastManager.js'
 import GuiPanel from './GuiPanel.js'
 
 // Clouds video. 
-import front from '../../assets/videos/front.mp4'
-import back from '../../assets/videos/back.mp4'
-import top from '../../assets/videos/top.mp4'
-import bottom from '../../assets/videos/bottom.mp4'
-import left from '../../assets/videos/left.mp4'
-import right from '../../assets/videos/right.mp4'
+import front from '../../assets/skybox/Front.mp4'
 import SkyboxManager, { IsSkyboxReady } from '../Managers/SkyboxManager.js'
 
 // Set this flag to true when the world has loaded all the videos 
@@ -38,7 +33,7 @@ import SkyboxManager, { IsSkyboxReady } from '../Managers/SkyboxManager.js'
 export let IsWorldReady = false; 
 
 // NOTE: Change this when we have more videos loading. 
-const NUM_VIDEOS_LOADED = 6; 
+const NUM_VIDEOS_LOADED = 3; 
 
 const styles = {
   container: {
@@ -122,6 +117,8 @@ class World extends React.Component {
     this.fpsGraph = this.guiRef.current.getFpsGraph(); 
     this.guiRef.current.subscribeForPatternChange(this.onPatternChanged.bind(this));
 
+    // this.frontVideoRef.current.src = front_url;
+
     // Setup texture on the skybox now that the video component is mounted. 
     this.skyboxManager.createSkybox(this.scene, 
         this.frontVideoRef, 
@@ -142,12 +139,12 @@ class World extends React.Component {
     return (
       <div style={styles.container} ref={this.worldRef}>
         <GuiPanel ref={this.guiRef} />
-        <video id={'front'} ref={this.frontVideoRef} playsInline loop src={front} style={styles.video} onCanPlay={this.onVideoLoaded.bind(this) } />
-        <video id={'back'} ref={this.backVideoRef} playsInline loop src={back} style={styles.video} onCanPlay={this.onVideoLoaded.bind(this) } />
-        <video id={'left'} ref={this.leftVideoRef} playsInline loop src={left} style={styles.video} onCanPlay={this.onVideoLoaded.bind(this) } />
-        <video id={'right'} ref={this.rightVideoRef} playsInline loop src={right} style={styles.video} onCanPlay={this.onVideoLoaded.bind(this) } />
-        <video id={'top'} ref={this.topVideoRef} playsInline loop src={top} style={styles.video} onCanPlay={this.onVideoLoaded.bind(this) } />
-        <video id={'bottom'} ref={this.bottomVideoRef} playsInline loop src={bottom} style={styles.video} onCanPlay={this.onVideoLoaded.bind(this) } />
+        <video id={'front'} ref={this.frontVideoRef} type='video/mp4' src={front} playsInline loop style={styles.video} onCanPlay={this.onVideoLoaded.bind(this) } />
+        <video id={'back'} ref={this.backVideoRef} type='video/mp4' playsInline loop src={front} style={styles.video} onCanPlay={this.onVideoLoaded.bind(this) } />
+        <video id={'left'} ref={this.leftVideoRef} type='video/mp4' playsInline loop src={front} style={styles.video} onCanPlay={this.onVideoLoaded.bind(this) } />
+        <video id={'right'} ref={this.rightVideoRef} type='video/mp4' playsInline loop src={front} style={styles.video} onCanPlay={this.onVideoLoaded.bind(this) } />
+        <video id={'top'} ref={this.topVideoRef} type='video/mp4' playsInline loop src={front} style={styles.video} onCanPlay={this.onVideoLoaded.bind(this) } />
+        <video id={'bottom'} ref={this.bottomVideoRef} type='video/mp4' playsInline loop src={front} style={styles.video} onCanPlay={this.onVideoLoaded.bind(this) } />
       </div>
     );
   }

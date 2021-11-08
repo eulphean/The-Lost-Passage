@@ -10,7 +10,7 @@ import Radium from 'radium'
 
 import { fontFamily, color, fontSize, padding } from '../Utilities/CommonStyles.js'
 import { PanelTitle } from './ContentPanel.js';
-import { ReactComponent as Pigeon } from '../../assets/pigeon.svg'
+import { ReactComponent as Pigeon } from '../../assets/icons/pigeon.svg'
 
 const animation = {
   color: Radium.keyframes({

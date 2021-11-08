@@ -20,9 +20,27 @@ class SkyboxManager {
     createSkybox(scene, frontVideoRef, backVideoRef, leftVideoRef, rightVideoRef, topVideoRef, bottomVideoRef) {
         // Create video textures. 
         const rightTexture = new THREE.VideoTexture(rightVideoRef.current);
+        rightTexture.center = new THREE.Vector2(0.5, 0.5);
+        rightTexture.rotation = Math.PI;
+        rightTexture.flipY = false;
         const leftTexture = new THREE.VideoTexture(leftVideoRef.current);
+        leftTexture.center = new THREE.Vector2(0.5, 0.5);
+        leftTexture.rotation = Math.PI;
+        leftTexture.flipY = false;
         const topTexture = new THREE.VideoTexture(topVideoRef.current);
+        topTexture.wrapS = THREE.MirroredRepeatWrapping;
+        topTexture.wrapT = THREE.MirroredRepeatWrapping;
+        topTexture.center = new THREE.Vector2(0.25, 0.25);
+        topTexture.rotation = Math.PI;
+        topTexture.flipY = false;
+        topTexture.magFilter = THREE.LinearFilter;
         const bottomTexture = new THREE.VideoTexture(bottomVideoRef.current);
+        bottomTexture.wrapS = THREE.MirroredRepeatWrapping;
+        bottomTexture.wrapT = THREE.MirroredRepeatWrapping;
+        bottomTexture.center = new THREE.Vector2(0.5, 1.0);
+        bottomTexture.rotation = Math.PI / 2;
+        bottomTexture.flipY = false;
+        bottomTexture.magFilter = THREE.LinearFilter;
         const backTexture = new THREE.VideoTexture(backVideoRef.current);
         const frontTexture = new THREE.VideoTexture(frontVideoRef.current);
         

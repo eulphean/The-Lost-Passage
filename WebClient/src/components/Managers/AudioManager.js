@@ -10,7 +10,7 @@
 
 // NOTE: p5 library is loaded through index.html script tags.
 // We assign it to a variable that we want to use.
-import soundscape from '../../assets/soundscape.mp3'
+import soundscape from '../../assets/skybox/soundscape.mp3'
 
 let p5 = window.p5;  
 

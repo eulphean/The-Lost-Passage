@@ -10,14 +10,14 @@ import Radium from 'radium'
 
 import Footer from './Footer';
 import { color, fontFamily, fontSize, padding } from '../Utilities/CommonStyles';
-import beFantastic from '../../assets/beFantastic.jpg';
-import artahack from '../../assets/artahack.jpg';
-import supernormal from '../../assets/supernormal.jpg';
-import dara from '../../assets/dara.jpg';
+import beFantastic from '../../assets/sponsors/beFantastic.jpg';
+import artahack from '../../assets/sponsors/artahack.jpg';
+import supernormal from '../../assets/sponsors/supernormal.jpg';
+import dara from '../../assets/sponsors/dara.jpg';
 import amay from '../../assets/headshots/amay.jpg';
 import shao from '../../assets/headshots/shao.jpg';
 import yu from '../../assets/headshots/yu.jpg';
-import ong from '../../assets/headshots/ong2.jpg';
+import ong from '../../assets/headshots/ong.jpg';
 
 const styles = {
     container: {

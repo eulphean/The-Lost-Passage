@@ -9,7 +9,7 @@ import React from 'react'
 import Radium from 'radium'
 
 import { color, fontFamily, padding, fontSize } from '../Utilities/CommonStyles';
-import pp from '../../assets/pigeon.mp4'
+import pp from '../../assets/info/pigeon.mp4'
 
 const styles = {
     container: {
