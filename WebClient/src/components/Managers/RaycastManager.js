@@ -7,7 +7,7 @@
 
 import * as THREE from 'three'
 
-const COOLDOWN_PERIOD = 5; // 5 seconds. 
+const COOLDOWN_PERIOD = 5; // 15 seconds. 
 class RaycastManager {
     constructor(shootPigeonCallback) {
         this.raycaster = new THREE.Raycaster();
@@ -39,7 +39,6 @@ class RaycastManager {
 
     onMouseClick() {
         let elapsedTime = this.clock.getDelta(); 
-        console.log(elapsedTime);
         if (this.isIntersecting && elapsedTime > COOLDOWN_PERIOD) {
             this.shootPigeon();            
         }

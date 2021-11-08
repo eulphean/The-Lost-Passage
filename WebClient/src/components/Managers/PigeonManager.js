@@ -13,6 +13,7 @@ import Target from '../Environment/Target'
 import GPUPigeon from '../Environment/GPUPigeon.js';
 import { BIRDS } from '../Environment/GPUPigeon.js'
 import GPURenderer from './GPURenderer.js';
+import AudioManager from './AudioManager';
 
 
 // Set this to true when everything has been loaded. 
@@ -31,6 +32,8 @@ export let PigeonParams = {
     Size: 0.1,
     Count: BIRDS
 }
+
+const KillFactor = 500; 
 
 class PigeonManager {
     constructor(scene) {
@@ -53,6 +56,9 @@ class PigeonManager {
 
         // GPURenderer
         this.gpuRenderer = '';
+
+        // Keep track of how many times user interacted.
+        this.shootCount = 0; 
     }
     
     setupTarget(curPatternType) {
@@ -229,6 +235,16 @@ class PigeonManager {
             // Increase separation and maxSpeed abruptly 
             PigeonParams.Seperation *= 2.5;
             PigeonParams.MaxSpeed *= 1.8;
+
+            // Play gunshot sound. 
+            AudioManager.shoot(); 
+
+            // Reduce the pigeons. 
+            if (PigeonParams.Count > 0) {
+                this.shootCount++; 
+                PigeonParams.Count = PigeonParams.Count - this.shootCount * KillFactor; 
+            }
+            
             this.isFlockInShock = true;
         }
         return this.isFlockInShock
@@ -244,7 +260,7 @@ class PigeonManager {
             // Separation and max speed would decay overtime to recover from gun shot
             PigeonParams.Seperation *= 0.999;
             PigeonParams.MaxSpeed *= 0.999;
-        }else{
+        } else {
             // Pigeons are recovered from gun shot, setting the params back to their previous values
             PigeonParams.Seperation = this.previousSepValue;
             PigeonParams.MaxSpeed = this.previousSpeedValue;

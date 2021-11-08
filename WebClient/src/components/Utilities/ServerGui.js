@@ -110,7 +110,7 @@ class ServerGui {
         let f3 = this.gui.addFolder({ title: 'Skybox Params', expanded: true});
         f3.addInput(SkyboxParams, 'ShowSkybox');
         f3.addInput(SkyboxParams, 'ShowBoundingBox');
-        f3.addInput(SkyboxParams, 'BoundingBoxScalar', {min: -50, max: 0}).on('change', this.onBoundedBoxScalarChange.bind(this)); 
+        f3.addInput(SkyboxParams, 'BoundingBoxScalar', {min: -50, max: 0}); 
 
         // Buttons
         this.gui.addButton({title: 'Save Preset'}).on('click', this.onSavePreset.bind(this));       
@@ -293,10 +293,6 @@ class ServerGui {
 
     subscribeForPatternChange(callback) {
         this.patternChangeUpdate = callback; 
-    }
-
-    onBoundedBoxScalarChange(event) {
-
     }
 } 
 

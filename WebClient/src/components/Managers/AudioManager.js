@@ -11,6 +11,7 @@
 // NOTE: p5 library is loaded through index.html script tags.
 // We assign it to a variable that we want to use.
 import soundscape from '../../assets/skybox/soundscape.mp3'
+import gunshot from '../../assets/skybox/gunshot.mp3'
 
 let p5 = window.p5;  
 
@@ -26,13 +27,13 @@ class Audio {
         this.adsr.set(attackTime, attackLevel, decayTime, decayLevel, releaseTime, releaseLevel); 
     }
 
-    trigger() {
-        // if (isLeft) {
-        //     this.soundObject.pan(1); 
-        // } else {
-        //     this.soundObject.pan(-1); 
-        // }
+    play() {
+        this.soundObject.play();
+        this.adsr.play(this.soundObject); 
+        console.log('Hello play shoot');
+    }
 
+    trigger() {
         if (this.soundObject.isPlaying()) {
             this.soundObject.stop();
         }
@@ -52,18 +53,19 @@ class Audio {
 // Use this p5 sketch to load all audio. 
 var sketch = (s) => {
     // Single array that holds all the audio files. 
-    let soundObject = ''; 
+    let soundObject = '';
+    let gunObject = '';
+
     s.preload = () => {
+        // Soundscape 
         let sound = s.loadSound(soundscape); 
-        let env = new p5.Envelope(0.8, 0.3, 0.5, 0.3, 1, 0.);
+        let env = new p5.Envelope(0.8, 0.6, 0.5, 0.6, 1, 0.);
         soundObject = new Audio(sound, env); 
-        // Load any sounds here. 
-        // for (let i = 0; i < audioFiles.length; i++) {
-        //     let sound = s.loadSound(audioFiles[i]); 
-        //     let env = new p5.Envelope(0.1, 0.5, 0.1, 0.5); // Default envelope. 
-        //     let a = new Audio(sound, env); 
-        //     audio.push(a);
-        // }
+
+        // Gunshot
+        sound = s.loadSound(gunshot); 
+        env = new p5.Envelope(0.5, 1.0, 0.5, 0.6, 2, 0.);
+        gunObject = new Audio(sound, env); 
     }
 
     s.setup = () => {
@@ -81,6 +83,10 @@ var sketch = (s) => {
     s.release = () => {
         soundObject.release();
     }
+
+    s.shoot = () => {
+        gunObject.play(); 
+    }
 };
  
 class AudioManager {
@@ -94,6 +100,10 @@ class AudioManager {
 
     release() {
         this.myP5.release();
+    }
+
+    shoot() {
+        this.myP5.shoot();
     }
 }
 

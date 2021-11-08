@@ -50,7 +50,7 @@ class GuiPanel extends React.Component {
     return this.gui.currentPatternType; 
   }
 
-  getPiegonParamFolder() {
+  getPigeonParamFolder() {
     return this.gui.pigeonParamsFolder;
   }
 }
