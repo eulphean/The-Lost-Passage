@@ -134,7 +134,7 @@ class World extends React.Component {
     return (
       <div style={styles.container} ref={this.worldRef}>
         <GuiPanel ref={this.guiRef} />
-        <video id={'front'} ref={this.frontVideoRef} type='video/mp4' src={front} preload playsInline loop style={styles.video} onCanPlay={this.onVideoLoaded.bind(this) } />
+        <video id={'front'} ref={this.frontVideoRef} type='video/mp4' src={front} preload='true' playsInline loop style={styles.video} onCanPlay={this.onVideoLoaded.bind(this) } />
       </div>
     );
   }

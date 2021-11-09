@@ -12,25 +12,19 @@ import { color, fontFamily, padding, fontSize } from '../Utilities/CommonStyles'
 
 const styles = {
     container: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        marginTop: padding.huge, 
-        color: color.darkBlue,
-        fontFamily: fontFamily.tenor   
+      marginTop: padding.big, 
+      color: color.darkBlue,
+      fontFamily: fontFamily.tenor   
     },
 
     website: {      
+      letterSpacing: 2, 
+      fontSize: fontSize.lessSmall,
+      
+      '@media (min-width: 900px)': {  
         letterSpacing: 5,
-        fontSize: fontSize.lessSmall
-    },
-  
-    message: {
-        color: color.orange,
-        marginTop: padding.extraSmall,
-        letterSpacing: 3,
-        fontSize: fontSize.lessSmall,
-        fontStyle: 'italic'
+        fontSize: fontSize.lessBig
+      }
     }
 };
 
@@ -44,7 +38,7 @@ class Footer extends React.Component {
   render() {
     return (
       <div style={styles.container}>
-        <div style={styles.website}>thelostpassage.art, © 2021</div>
+        <div style={styles.website}>thelostpassage.art, ©2021</div>
       </div>
     );
   }

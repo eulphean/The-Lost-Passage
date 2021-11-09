@@ -42,7 +42,7 @@ const styles = {
         position: 'absolute',
         top: '0%',
         width: '100vw',
-        height: '100vh',
+        height: '100%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -60,17 +60,27 @@ const styles = {
 
     title: {
         fontFamily: fontFamily.bebas,
-        fontSize: fontSize.massive,
+        fontSize: fontSize.veryHuge,
         textAlign: 'center',
         maxWidth: '200px',
         letterSpacing: 5,
         opacity: 1,
         color: color.darkBlue,
+        
+        '@media (min-width: 568px)': {
+          maxWidth: '100%'
+        },
 
-        '@media (min-width: 900px)': {  
+        '@media (min-width: 768px) and (orientation: portrait)': {
+          fontSize: fontSize.massive
+        },
+
+        '@media (min-width: 1024px) and (orientation: landscape)': {
           fontSize: fontSize.extraInsane,
-          maxWidth: '100%',
-          letterSpacing: 6,
+        },
+
+        '@media (min-width: 1024px) and (orientation: portrait)': {
+          fontSize: fontSize.extraInsane,
         }
     },
 
@@ -121,18 +131,16 @@ const styles = {
         fontSize: fontSize.lessBig,
         borderStyle: 'solid',
         borderColor: color.darkBlue,
-        borderWidth: '4px',
+        borderWidth: '2px',
         marginTop: padding.small,
         padding: padding.verySmall,
-        letterSpacing: '5px',
+        letterSpacing: '2px',
         cursor: 'crosshair',
 
-        '@media (min-width: 900px)': {  
+        '@media (min-width: 1024px)': {
           fontSize: fontSize.extraBig,
-          paddingTop: padding.small,
-          paddingBottom: padding.small,
-          paddingLeft: padding.big,
-          paddingRight: padding.big,
+          letterSpacing: '4px',
+          borderWidth: '4px',
         }
     },
 
@@ -151,13 +159,17 @@ const styles = {
       fontFamily: fontFamily.tenor,
       top: '15px',
 
-      '@media (min-width: 900px)': {  
+      '@media (min-width: 568px)': {
+        maxWidth: '80%'
+      },
+
+      '@media (min-width: 768px) and (orientation: portrait)': {
+        fontSize: fontSize.lessBig
+      },
+
+      '@media (min-width: 1024px) and (orientation: landscape)': {
         fontSize: fontSize.lessBig,
-        top: '30px',
-        paddingTop: padding.small,
-        paddingBottom: padding.small,
-        paddingLeft: padding.big,
-        paddingRight: padding.big,
+        top: '30px'
       }
     },
 
@@ -165,36 +177,32 @@ const styles = {
       position: 'absolute',
       textAlign: 'center',
       maxWidth: '300px',
-      left: '-40%',
+      left: '-130px',
       color: color.darkBlue, 
       fontSize: fontSize.verySmall,
       fontFamily: fontFamily.tenor,
       transform: 'rotate(-90deg)',
 
-      '@media (min-width: 360px)': {
-        left: '-35%'
+      '@media (min-width: 768px) and (orientation: portrait)': { 
+        maxWidth: '100%',
+        fontSize: fontSize.lessBig,
+        left: '-250px'
       },
 
-      
-      '@media (min-width: 411px)': {
-        left: '-30%'
-      },
-
-
-      '@media (min-width: 900px)': {  
+      '@media (min-width: 1024px) and (orientation: landscape)': {
         fontSize: fontSize.lessBig,
         maxWidth: '100%',
-        left: '0px',
-        paddingTop: padding.small,
-        paddingBottom: padding.small,
-        paddingLeft: padding.big,
-        paddingRight: padding.big,
+        left: '-250px'
+      },
+
+      '@media (min-width: 1200px) and (orientation: landscape)': {
+        left: '-80px'
       }
     },
 
     rightMessage: {
       position: 'absolute',
-      right: '-40%',
+      right: '-130px',
       textAlign: 'center',
       maxWidth: '300px',
       fontSize: fontSize.verySmall,
@@ -202,23 +210,20 @@ const styles = {
       color: color.darkBlue, 
       transform: 'rotate(90deg)',
 
-      '@media (min-width: 360px)': {
-        right: '-35%'
-      },
-
-      
-      '@media (min-width: 411px)': {
-        right: '-30%'
-      },
-
-      '@media (min-width: 900px)': {  
-        fontSize: fontSize.lessBig,
-        right: '0px',
+      '@media (min-width: 768px) and (orientation: portrait)': { 
         maxWidth: '100%',
-        paddingTop: padding.small,
-        paddingBottom: padding.small,
-        paddingLeft: padding.big,
-        paddingRight: padding.big,
+        fontSize: fontSize.lessBig,
+        right: '-250px'
+      },
+
+      '@media (min-width: 1024px) and (orientation: landscape)': {
+        fontSize: fontSize.lessBig,
+        maxWidth: '100%',
+        right: '-250px'
+      },
+
+      '@media (min-width: 1200px) and (orientation: landscape)': {
+        right: '-80px'
       }
     },
 
@@ -232,13 +237,17 @@ const styles = {
       textAlign: 'center',
       bottom: '15px',
 
-      '@media (min-width: 900px)': {  
+      '@media (min-width: 568px)': {
+        maxWidth: '80%'
+      },
+
+      '@media (min-width: 768px) and (orientation: portrait)': {
+        fontSize: fontSize.lessBig
+      },
+
+      '@media (min-width: 1024px) and (orientation: landscape)': {
         fontSize: fontSize.lessBig,
-        bottom: '30px',
-        paddingTop: padding.small,
-        paddingBottom: padding.small,
-        paddingLeft: padding.big,
-        paddingRight: padding.big,
+        bottom: '30px'
       }
     }
 };
@@ -265,7 +274,6 @@ class EnterPanel extends React.Component {
       <div style={containerStyle}>
         {content}
         {messages}
-        <Footer />
       </div>
     );
   }
