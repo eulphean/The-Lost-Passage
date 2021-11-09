@@ -96,15 +96,24 @@ const styles = {
 
     loadTitle: {
       fontFamily: fontFamily.mont,
-      fontSize: fontSize.small,
+      fontSize: fontSize.verySmall,
       color: color.darkBlue,
-      marginTop: '-' + padding.big
+      marginTop: padding.big,
+
+      '@media (min-width: 1024px)': {
+        fontSize: fontSize.small
+      }
     },
 
     svg: {
-      width: '80%',
-      height: '80%',
-      fill: color.darkBlue
+      width: '50px',
+      height: '50px',
+      fill: color.darkBlue,
+
+      '@media (min-width: 1024px)': {
+        width: '90%',
+        height: '90%',
+      }
     },
 
     flash: {
@@ -285,7 +294,7 @@ class EnterPanel extends React.Component {
         <Pigeon style={styles.svg} />
        </div>
        <div style={styles.loadTitle}>
-         Getting things ready...
+         Getting things ready ...
        </div>
       </div>
 
