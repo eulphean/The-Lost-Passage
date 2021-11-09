@@ -38,6 +38,7 @@ const styles = {
     objectFit: 'cover'
   }
 }
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -69,7 +70,6 @@ class App extends React.Component {
   }
 
   getWorldContent() {
-    console.log('Mobiel: ' + isMobile);
     let content = isMobile ? 
     (
       <video id={'front'} ref={this.mobileVideoRef} type='video/mp4' src={gaugan} preload='true' playsInline loop style={styles.video} />

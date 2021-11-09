@@ -27,13 +27,22 @@ const animation = {
 }
 
 const styles = {
-    container: {
-        position: 'absolute',
-        top: '30px',
-        left: '30px',
-        display: 'flex',
-        flexDirection: 'column',
-        visibility: 'visible'
+    absoluteContainer: {
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column', 
+      alignItems: 'center',
+      visibility: 'visible',     
+
+      '@media (min-width: 768px) and (orientation: landscape)': {
+        alignItems: 'flex-start'
+      }
+    },
+
+    contentContainer: {
+      padding: padding.veryBig
     },
 
     hidden: {
@@ -42,24 +51,47 @@ const styles = {
 
     homeTitle: {
       fontFamily: fontFamily.bebas,
-      fontSize: fontSize.huge,
-      letterSpacing: 6,
+      fontSize: fontSize.extraBig,
+      letterSpacing: 2,
       color: color.darkBlue,
-      cursor: 'default'
+      cursor: 'default',
+
+      '@media (min-width: 768px) and (orientation: portrait)': {
+        fontSize: fontSize.huge,
+        letterSpacing: 6
+      },
+
+      '@media (min-width: 1024px)': {
+        fontSize: fontSize.veryHuge,
+        letterSpacing: 6
+      }
     },
 
     titleContainer: {
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      alignItems: 'center',
+
+      '@media (min-width: 768px) and (orientation: landscape)': {
+        alignItems: 'flex-start'
+      }
     },
 
     title: {
         fontFamily: fontFamily.tenor,
-        fontSize: fontSize.small,
+        fontSize: fontSize.verySmall,
         letterSpacing: 2,
         color: color.darkBlue,
         cursor: 'crosshair',
-        paddingTop: padding.verySmall
+        paddingTop: padding.verySmall,
+
+        '@media (min-width: 768px) and (orientation: portrait)': {
+          fontSize: fontSize.small
+        },
+
+        '@media (min-width: 1024px)': {
+          fontSize: fontSize.big
+        }
     },
 
     hover: {
@@ -70,13 +102,19 @@ const styles = {
       position: 'fixed',
       right: padding.big,
       bottom: padding.big,
-      fontSize: fontSize.small,
-      padding: padding.verySmall,
       backgroundColor: color.darkBlue,
-      width: fontSize.gaia,
-      height: fontSize.gaia,
-      borderRadius: fontSize.extraMassive,
-      zIndex: 1
+      borderRadius: fontSize.huge,
+      padding: padding.small,
+      width: fontSize.extraHuge,
+      height: fontSize.extraHuge,
+      zIndex: 1,
+
+      '@media (minWidth: 1024px)': {
+        padding: padding.verySmall,
+        borderRadius: fontSize.extraMassive,
+        width: fontSize.gaia,
+        height: fontSize.gaia,
+      }
     },
 
     colorFlick: {
@@ -109,35 +147,36 @@ class Navigation extends React.Component {
   }
 
   render() {
-    let containerStyle = styles.container; 
     let pigeonStyle = this.state.isHoveringPigeons ? [styles.title, styles.hover] : styles.title;
     let climateStyle = this.state.isHoveringClimate ? [styles.title, styles.hover] : styles.title;
     let aboutStyle = this.state.isHoveringAbout ? [styles.title, styles.hover] : styles.title; 
     let homeButton = this.getHomeButton(); 
     return (
-      <div style={containerStyle} >
-        <div style={styles.homeTitle}>THE LOST PASSAGE</div>
-        <div style={styles.titleContainer}>
-          <div style={pigeonStyle}
-              onClick={this.onClick.bind(this, PanelTitle.PIGEONS)}
-              onMouseEnter={this.onHoverPigeons.bind(this)} 
-              onMouseLeave={this.onHoverPigeons.bind(this)}>
-            PASSENGER PIGEONS
+      <div style={styles.absoluteContainer}>
+        <div style={styles.contentContainer}>
+          <div style={styles.homeTitle}>THE LOST PASSAGE</div>
+          <div style={styles.titleContainer}>
+            <div style={pigeonStyle}
+                onClick={this.onClick.bind(this, PanelTitle.PIGEONS)}
+                onMouseEnter={this.onHoverPigeons.bind(this)} 
+                onMouseLeave={this.onHoverPigeons.bind(this)}>
+              PASSENGER PIGEONS
+            </div>
+            <div style={climateStyle} 
+              onClick={this.onClick.bind(this, PanelTitle.CLIMATE)}
+              onMouseEnter={this.onHoverClimate.bind(this)}
+              onMouseLeave={this.onHoverClimate.bind(this)}>
+              CLIMATE STATEMENT
+            </div>
+            <div style={aboutStyle}
+                onClick={this.onClick.bind(this, PanelTitle.ABOUT)}
+                onMouseEnter={this.onHoverAbout.bind(this)}
+                onMouseLeave={this.onHoverAbout.bind(this)}>
+              ABOUT US
+            </div>
           </div>
-          <div style={climateStyle} 
-            onClick={this.onClick.bind(this, PanelTitle.CLIMATE)}
-            onMouseEnter={this.onHoverClimate.bind(this)}
-            onMouseLeave={this.onHoverClimate.bind(this)}>
-            CLIMATE STATEMENT
-          </div>
-          <div style={aboutStyle}
-              onClick={this.onClick.bind(this, PanelTitle.ABOUT)}
-              onMouseEnter={this.onHoverAbout.bind(this)}
-              onMouseLeave={this.onHoverAbout.bind(this)}>
-            ABOUT US
-          </div>
+          {homeButton}
         </div>
-        {homeButton}
       </div>
     );
   }

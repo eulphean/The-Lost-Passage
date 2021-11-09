@@ -14,13 +14,21 @@ import pp from '../../assets/info/pigeon.mp4'
 const styles = {
     container: {
       display: 'flex',
-      flexDirection: 'row'    
+      flexDirection: 'column',
+
+      '@media (min-width: 1024px)': {
+        flexDirection: 'row'
+      }
     },
 
     ppVideo: {
-      width: '600px',
-      height: '100%',
-      objectFit: 'fill'
+      width: '100%',
+
+      '@media (min-width: 1024px)': {
+        width: '600px',
+        height: '100%',
+        objectFit: 'fill'
+      }
     },
 
     content: {
@@ -31,20 +39,31 @@ const styles = {
     },
     
     title: {
-      letterSpacing: 5,
+      textAlign: 'center',
+      color: color.darkBlue,
       fontFamily: fontFamily.bebas,
-      fontSize: fontSize.extraHuge,
-      marginTop: padding.veryBig,
-      color: color.darkBlue
+      fontSize: fontSize.extraBig,
+      marginTop: padding.big,
+      
+      '@media (min-width: 1024px)': {
+        marginTop: padding.veryBig,
+        letterSpacing: 5,
+        fontSize: fontSize.extraHuge,
+      }
     },
 
     info: {
-      letterSpacing: 3,
-      lineSpacing: 2,
       fontFamily: fontFamily.tenor,
-      fontSize: fontSize.big,
+      padding: padding.small,
+      fontSize: fontSize.small,
       color: color.darkBlue,
-      padding: padding.veryBig
+      letterSpacing: 2,
+      lineSpacing: 2,
+
+      '@media (min-width: 1024px)': {
+        fontSize: fontSize.big,
+        padding: padding.veryBig,
+      }
     }
 };
 
@@ -59,9 +78,7 @@ class PassengerPigeons extends React.Component {
   render() {
     return (
       <div style={styles.container}>
-        <div style={styles.image}>
-          <video style={styles.ppVideo} autoPlay playsInline muted loop src={pp} />
-        </div>
+        <video style={styles.ppVideo} autoPlay playsInline muted loop src={pp} />
         <div style={styles.content}>
           <div style={styles.title}>
             PASSENGER PIGEONS

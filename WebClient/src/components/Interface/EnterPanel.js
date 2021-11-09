@@ -351,7 +351,7 @@ class EnterPanel extends React.Component {
     if (isMobile) {
       setTimeout(() => {
         this.hasFinishedLoading();
-      }, 2000); 
+      }, 100); 
     } else {
       setTimeout(() => {
         if (IsPigeonManagerReady && IsWorldReady) {

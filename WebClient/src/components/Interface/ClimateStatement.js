@@ -14,14 +14,21 @@ import gaugan from '../../assets/info/gaugan.mp4'
 const styles = {
     container: {
       display: 'flex',
-      flexDirection: 'row'  
+      flexDirection: 'column',
+
+      '@media (min-width: 1024px)': {
+        flexDirection: 'row'
+      }
     },
 
-    
     video: {
-      width: '600px',
-      height: '100%',
-      objectFit: 'fill'
+      width: '100%',
+
+      '@media (min-width: 1024px)': {
+        width: '600px',
+        height: '100%',
+        objectFit: 'fill'
+      }
     },
 
     content: {
@@ -32,20 +39,31 @@ const styles = {
     },
     
     title: {
-      letterSpacing: 5,
-      fontFamily: fontFamily.bebas,
-      fontSize: fontSize.extraHuge,
+    textAlign: 'center',
+    color: color.darkBlue,
+    fontFamily: fontFamily.bebas,
+    fontSize: fontSize.extraBig,
+    marginTop: padding.big,
+    
+    '@media (min-width: 1024px)': {
       marginTop: padding.veryBig,
-      color: color.darkBlue
+      letterSpacing: 5,
+      fontSize: fontSize.extraHuge,
+    }
     },
 
     info: {
-      letterSpacing: 3,
-      lineSpacing: 2,
       fontFamily: fontFamily.tenor,
-      fontSize: fontSize.big,
+      padding: padding.small,
+      fontSize: fontSize.small,
       color: color.darkBlue,
-      padding: padding.veryBig
+      letterSpacing: 2,
+      lineSpacing: 2,
+
+      '@media (min-width: 1024px)': {
+        fontSize: fontSize.big,
+        padding: padding.veryBig,
+      }
     }
 };
 
@@ -71,9 +89,7 @@ class ClimateStatement extends React.Component {
             {content}
           </div>
         </div>
-        <div style={styles.videoCanvas}>
-          <video style={styles.video} src={gaugan} playsInline loop autoPlay muted />
-        </div>
+        <video style={styles.video} src={gaugan} playsInline loop autoPlay muted />
       </div>
     );
   }

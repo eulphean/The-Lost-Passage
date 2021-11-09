@@ -25,32 +25,42 @@ const styles = {
         alignItems: 'center',
         width: '100%',
         flexDirection: 'column',
-        paddingTop: padding.veryBig,
+        // paddingTop: padding.veryBig,
         // paddingLeft: padding.veryBig,
         // paddingRight: padding.veryBig,
         paddingBottom: padding.small
     },
 
     title: {
-      letterSpacing: 5,
+      textAlign: 'center',
+      color: color.darkBlue,
       fontFamily: fontFamily.bebas,
-      fontSize: fontSize.extraHuge,
-      marginTop: padding.veryBig,
-      color: color.darkBlue
+      fontSize: fontSize.extraBig,
+      marginTop: padding.big,
+      
+      '@media (min-width: 1024px)': {
+        marginTop: padding.veryBig,
+        letterSpacing: 5,
+        fontSize: fontSize.extraHuge,
+      }
     },
 
     team: {
       display: 'flex',
-      flexDirection: 'row',
-      marginTop: padding.huge,
-      width: '100%',
-      justifyContent: 'center'
+      flexDirection: 'column',
+
+      '@media (min-width: 1024px)': {
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'center'
+      }
     },
 
     member: {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
+      marginTop: padding.small,
       paddingLeft: padding.huge,
       paddingRight: padding.huge
     },
@@ -81,19 +91,30 @@ const styles = {
     },
 
     moreMargin: {
-      marginTop: padding.veryHuge
+      marginTop: padding.veryBig
     },
 
     sponsors: {
       display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-evenly',
-      marginTop: padding.huge,
-      width: '100%'
+      flexDirection: 'column',
+      alignItems: 'center',
+      
+      '@media (min-width: 1024px)': {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        marginTop: padding.huge,
+        width: '100%'
+      }
     },
     
     image: {
-      objectFit: 'contain'
+      objectFit: 'contain',
+      width: '80%',
+      marginTop: padding.small,
+
+      '@media (min-width: 1024px)': {
+        maxWidth:'350px' 
+      }
     }
 };
 
@@ -115,16 +136,18 @@ class About extends React.Component {
           ABOUT THE TEAM
         </div>   
         <div style={styles.team}>
-          {kianPeng}
           {amay}
           {shao}
           {yu}
         </div>
         <div style={styles.sponsors}>
-          <img width='350px' style={styles.image} src={beFantastic} alt='befantastic'/>
-          <img width='300px' style={styles.image} src={artahack} alt='artahack' />
-          <img width='300px' style={styles.image} src={supernormal} alt='supernormal' />
-          <img width='300px' style={styles.image} src={dara} alt='dara' />
+          <div style={[styles.title, styles.moreMargin]}>
+            SUPPORTED BY
+          </div>
+          <img style={styles.image} src={beFantastic} alt='befantastic'/>
+          <img style={styles.image} src={artahack} alt='artahack' />
+          <img style={styles.image} src={supernormal} alt='supernormal' />
+          <img style={styles.image} src={dara} alt='dara' />
         </div>
         <Footer />
       </div>
