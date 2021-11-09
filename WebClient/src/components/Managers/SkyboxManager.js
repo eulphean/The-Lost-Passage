@@ -34,6 +34,8 @@ class SkyboxManager {
         const topTexture = new THREE.VideoTexture(videoRef.current);
         topTexture.wrapS = THREE.MirroredRepeatWrapping;
         topTexture.wrapT = THREE.MirroredRepeatWrapping;
+        // topTexture.offset = new THREE.Vector2(1.5, 1.5);
+        // topTexture.repeat = new THREE.Vector2(0.25, 0.25);
         topTexture.center = new THREE.Vector2(0.25, 0.25);
         topTexture.rotation = Math.PI;
         topTexture.flipY = false;

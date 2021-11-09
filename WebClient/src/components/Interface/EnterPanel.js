@@ -13,9 +13,9 @@ import Radium from 'radium'
 import { bounceOut, zoomIn } from 'react-animations'
 import { fontFamily, color, fontSize, padding } from '../Utilities/CommonStyles.js'
 import { ReactComponent as Pigeon } from '../../assets/icons/pigeon.svg'
-import Footer from './Footer.js'
 import { IsPigeonManagerReady } from '../Managers/PigeonManager.js'
 import { IsWorldReady } from './World.js'
+import { isMobile } from 'react-device-detect'
 
 const FLASH_DURATION = '1.5s';
 const TopMessage = "\"They existed in billions, but today they are lost and revered only in museums.\"";
@@ -110,7 +110,7 @@ const styles = {
       height: '50px',
       fill: color.darkBlue,
 
-      '@media (min-width: 1024px)': {
+      '@media (minWidth: 1024px)': {
         width: '90%',
         height: '90%',
       }
@@ -347,13 +347,20 @@ class EnterPanel extends React.Component {
   }
 
   checkIfReady() {
-    setTimeout(() => {
-      if (IsPigeonManagerReady && IsWorldReady) {
-        this.hasFinishedLoading(); 
-      } else {
-        this.checkIfReady();
-      }
-    }, 10); 
+    // On mobile just wait for 2 seconds and do complete. 
+    if (isMobile) {
+      setTimeout(() => {
+        this.hasFinishedLoading();
+      }, 2000); 
+    } else {
+      setTimeout(() => {
+        if (IsPigeonManagerReady && IsWorldReady) {
+          this.hasFinishedLoading(); 
+        } else {
+          this.checkIfReady();
+        }
+      }, 10); 
+    }
   }
 
   hasFinishedLoading() {

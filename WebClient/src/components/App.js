@@ -13,7 +13,9 @@ import ContentPanel from './Interface/ContentPanel.js';
 import Navigation from './Interface/Navigation.js'
 import EnterPanel from './Interface/EnterPanel.js';
 import AudioManager from './Managers/AudioManager.js';
+import { isMobile } from 'react-device-detect'
 
+import gaugan from '../assets/info/gaugan.mp4'
 
 const styles = {
   container: {
@@ -28,6 +30,12 @@ const styles = {
 
   panelVisible: {
     display: 'block'
+  },
+
+  video: {
+    width: '100vw',
+    height: '100vh',
+    objectFit: 'cover'
   }
 }
 class App extends React.Component {
@@ -42,23 +50,35 @@ class App extends React.Component {
     this.worldRef = React.createRef(); 
     this.contentPanelRef = React.createRef();
     this.navRef = React.createRef();
+    this.mobileVideoRef = React.createRef();
   }
 
   render() {
     let navPanel = this.state.showNavPanel ? this.getNavPanel() : <React.Fragment></React.Fragment>;
     let enterPanel = this.state.showEnterPanel ? this.getEnterPanel() : <React.Fragment></React.Fragment>;
     let contentPanel = this.getContentPanel();
+    let worldContent = this.getWorldContent();
     return (
       <div style={styles.container}>
-        <World 
-          ref={this.worldRef} 
-          onInitialCameraAnimationDone={this.onInitialCameraAnimationDone.bind(this)}
-        />
+        {worldContent}
         {navPanel}
         {enterPanel}
         {contentPanel}
       </div>
     );
+  }
+
+  getWorldContent() {
+    console.log('Mobiel: ' + isMobile);
+    let content = isMobile ? 
+    (
+      <video id={'front'} ref={this.mobileVideoRef} type='video/mp4' src={gaugan} preload='true' playsInline loop style={styles.video} />
+    ) :
+    (
+      <World ref={this.worldRef} onInitialCameraAnimationDone={this.onInitialCameraAnimationDone.bind(this)} />
+    ); 
+
+    return content; 
   }
 
   getNavPanel() {
@@ -88,7 +108,11 @@ class App extends React.Component {
   }
 
   onEnterWorld() {
-    this.worldRef.current.beginWorld();  
+    if (isMobile) {
+
+    } else {
+      this.worldRef.current.beginWorld();   
+    }
   }
 
   onLoadComplete() {
@@ -96,8 +120,13 @@ class App extends React.Component {
       showEnterPanel: false
     });
 
-    // Begin zoom into the world. 
-    this.worldRef.current.enterWorld(); 
+    if (isMobile) {
+      this.mobileVideoRef.current.play();
+      this.onInitialCameraAnimationDone();
+    } else {
+      // Begin zoom into the world. 
+      this.worldRef.current.enterWorld(); 
+    }
   }
 
   onInitialCameraAnimationDone() {
@@ -118,13 +147,21 @@ class App extends React.Component {
     // Trigger scroll.
     this.contentPanelRef.current.scroll(panelTitle);
 
-    // Stop Renderer
-    this.worldRef.current.updateAnimationStatus(false); 
+    if (isMobile) {
+      // Pause the video
+    } else {
+      // Stop Renderer
+      this.worldRef.current.updateAnimationStatus(false); 
+    }
   }
 
   onClickHomeButton() {
-    this.worldRef.current.scrollTo(); 
-    this.worldRef.current.updateAnimationStatus(true);
+    if (isMobile) {
+      // Scroll back up to the video. 
+    } else {
+      this.worldRef.current.scrollTo(); 
+      this.worldRef.current.updateAnimationStatus(true);
+    }
 
     setTimeout(() => {
       this.setState({
