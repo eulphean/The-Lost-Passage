@@ -17,32 +17,40 @@ export let SkyboxParams = {
 export let IsSkyboxReady = false; 
 
 class SkyboxManager {
-    createSkybox(scene, frontVideoRef, backVideoRef, leftVideoRef, rightVideoRef, topVideoRef, bottomVideoRef) {
-        // Create video textures. 
-        const rightTexture = new THREE.VideoTexture(rightVideoRef.current);
+    createSkybox(scene, videoRef) {
+        // Right video texture. 
+        const rightTexture = new THREE.VideoTexture(videoRef.current);
         rightTexture.center = new THREE.Vector2(0.5, 0.5);
         rightTexture.rotation = Math.PI;
         rightTexture.flipY = false;
-        const leftTexture = new THREE.VideoTexture(leftVideoRef.current);
+
+        // Left video texture. 
+        const leftTexture = new THREE.VideoTexture(videoRef.current);
         leftTexture.center = new THREE.Vector2(0.5, 0.5);
         leftTexture.rotation = Math.PI;
         leftTexture.flipY = false;
-        const topTexture = new THREE.VideoTexture(topVideoRef.current);
+
+        // Top video texture. 
+        const topTexture = new THREE.VideoTexture(videoRef.current);
         topTexture.wrapS = THREE.MirroredRepeatWrapping;
         topTexture.wrapT = THREE.MirroredRepeatWrapping;
         topTexture.center = new THREE.Vector2(0.25, 0.25);
         topTexture.rotation = Math.PI;
         topTexture.flipY = false;
-        topTexture.magFilter = THREE.LinearFilter;
-        const bottomTexture = new THREE.VideoTexture(bottomVideoRef.current);
+
+        // Bottom video texture. 
+        const bottomTexture = new THREE.VideoTexture(videoRef.current);
         bottomTexture.wrapS = THREE.MirroredRepeatWrapping;
         bottomTexture.wrapT = THREE.MirroredRepeatWrapping;
         bottomTexture.center = new THREE.Vector2(0.5, 1.0);
         bottomTexture.rotation = Math.PI / 2;
         bottomTexture.flipY = false;
-        bottomTexture.magFilter = THREE.LinearFilter;
-        const backTexture = new THREE.VideoTexture(backVideoRef.current);
-        const frontTexture = new THREE.VideoTexture(frontVideoRef.current);
+
+        // Back video texture. 
+        const backTexture = new THREE.VideoTexture(videoRef.current);
+
+        // Front video texture. 
+        const frontTexture = new THREE.VideoTexture(videoRef.current);
         
         // [right, left, top, bottom, back, front] - DO NOT CHANGE THE ARRAY ORDER. 
         let textureArray = [rightTexture, leftTexture, topTexture, bottomTexture, backTexture, frontTexture];
