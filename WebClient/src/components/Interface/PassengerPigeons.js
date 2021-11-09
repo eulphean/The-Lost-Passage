@@ -16,18 +16,18 @@ const styles = {
       display: 'flex',
       flexDirection: 'column',
 
-      '@media (min-width: 1024px)': {
-        flexDirection: 'row'
+      '@media (min-width: 1200px)': {
+        flexDirection: 'row',
+        justifyContent: 'center'
       }
     },
 
     ppVideo: {
       width: '100%',
 
-      '@media (min-width: 1024px)': {
-        width: '600px',
-        height: '100%',
-        objectFit: 'fill'
+      '@media (min-width: 1200px)': {
+        width: '500px',
+        objectFit: 'cover'
       }
     },
 
@@ -44,10 +44,10 @@ const styles = {
       fontFamily: fontFamily.bebas,
       fontSize: fontSize.extraBig,
       marginTop: padding.big,
+      letterSpacing: 2,
       
       '@media (min-width: 1024px)': {
-        marginTop: padding.veryBig,
-        letterSpacing: 5,
+        letterSpacing: 3,
         fontSize: fontSize.extraHuge,
       }
     },
@@ -55,14 +55,26 @@ const styles = {
     info: {
       fontFamily: fontFamily.tenor,
       padding: padding.small,
-      fontSize: fontSize.small,
+      fontSize: fontSize.lessSmall,
       color: color.darkBlue,
-      letterSpacing: 2,
+      letterSpacing: 0.5,
       lineSpacing: 2,
 
+      '@media (min-width: 768px)': {
+        fontSize: fontSize.small
+      },
+      
       '@media (min-width: 1024px)': {
-        fontSize: fontSize.big,
-        padding: padding.veryBig,
+        fontSize: fontSize.lessBig
+      },
+
+      '@media (min-width: 1200px)': {
+        fontSize: fontSize.big
+      },
+
+      '@media (min-width: 1400px)': {
+        letterSpacing: 1.0,
+        fontSize: fontSize.veryBig
       }
     }
 };

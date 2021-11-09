@@ -21,8 +21,24 @@ const styles = {
       letterSpacing: 2, 
       fontSize: fontSize.lessSmall,
       
-      '@media (min-width: 900px)': {  
-        letterSpacing: 5,
+      '@media (orientation: landscape)': {
+        fontSize: fontSize.lessSmall
+      },
+
+      '@media (min-width: 768px)': {
+        fontSize: fontSize.verySmall
+      },
+      
+      '@media (min-width: 1024px)': {
+        fontSize: fontSize.lessBig
+      },
+
+      '@media (min-width: 1200px)': {
+        fontSize: fontSize.lessBig
+      },
+
+      '@media (min-width: 1400px)': {
+        letterSpacing: 1.0,
         fontSize: fontSize.lessBig
       }
     }

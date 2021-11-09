@@ -110,7 +110,7 @@ const styles = {
       height: fontSize.extraHuge,
       zIndex: 1,
 
-      '@media (minWidth: 1024px)': {
+      '@media (min-width: 1024px)': {
         padding: padding.verySmall,
         borderRadius: fontSize.extraMassive,
         width: fontSize.gaia,

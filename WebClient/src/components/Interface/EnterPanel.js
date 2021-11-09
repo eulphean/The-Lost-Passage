@@ -42,7 +42,7 @@ const styles = {
         position: 'absolute',
         top: '0%',
         width: '100vw',
-        height: '100%',
+        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

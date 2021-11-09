@@ -37,10 +37,10 @@ const styles = {
       fontFamily: fontFamily.bebas,
       fontSize: fontSize.extraBig,
       marginTop: padding.big,
+      letterSpacing: 2,
       
       '@media (min-width: 1024px)': {
-        marginTop: padding.veryBig,
-        letterSpacing: 5,
+        letterSpacing: 3,
         fontSize: fontSize.extraHuge,
       }
     },
@@ -48,8 +48,15 @@ const styles = {
     team: {
       display: 'flex',
       flexDirection: 'column',
+      marginTop: padding.small,
 
-      '@media (min-width: 1024px)': {
+      '@media (orientation: landscape)': {
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'center'
+      },
+
+      '@media (min-width: 768px) and (orientation: portrait)': {
         flexDirection: 'row',
         width: '100%',
         justifyContent: 'center'
@@ -61,33 +68,107 @@ const styles = {
       flexDirection: 'column',
       alignItems: 'center',
       marginTop: padding.small,
-      paddingLeft: padding.huge,
-      paddingRight: padding.huge
+      marginBottom: padding.small,
+      // marginLeft: padding.huge,
+      // paddingRight: padding.huge,
+
+      '@media (orientation: landscape)': {
+        marginLeft: padding.lessBig,
+        marginRight: padding.lessBig        
+      },
+
+      '@media (min-width: 768px)': {
+        marginLeft: padding.lessBig,
+        marginRight: padding.lessBig        
+      },
+
+      '@media (min-width: 1200px)': {
+        marginLeft: padding.veryBig,
+        marginRight: padding.veryBig        
+      }
     },
 
     photo: {
       width: '150px',
       height: '150px',
       borderRadius: '75px',
-      backgroundColor: color.midGrey
+      backgroundColor: color.midGrey,
+
+      '@media (orientation: landscape)': {
+        width: '100px',
+        height: '100px',
+        borderRadius: '75px'
+      },
+
+      '@media (min-width: 1200px)': {
+        width: '150px',
+        height: '150px',
+        borderRadius: '100px'
+      }
     },
 
     infoContainer: {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
+      justifyContent: 'center',
       fontFamily: fontFamily.tenor,
       marginTop: padding.small
     },
 
     name: {
       color: color.brown,
-      fontSize: fontSize.big
+      fontSize: fontSize.big,
+      textAlign: 'center',
+      width: '100%',
+
+      '@media (orientation: landscape)': {
+        fontSize: fontSize.lessSmall
+      },
+
+      '@media (min-width: 768px)': {
+        fontSize: fontSize.small
+      },
+      
+      '@media (min-width: 1024px)': {
+        fontSize: fontSize.big
+      },
+
+      '@media (min-width: 1200px)': {
+        fontSize: fontSize.littleBig
+      },
+
+      '@media (min-width: 1400px)': {
+        letterSpacing: 1.0,
+        fontSize: fontSize.veryBig
+      }
     },
 
     location: {
       color: color.darkBlue,
-      fontSize: fontSize.small
+      fontSize: fontSize.small,
+      textAlign: 'center',
+
+      '@media (orientation: landscape)': {
+        fontSize: fontSize.verySmall
+      },
+
+      '@media (min-width: 768px)': {
+        fontSize: fontSize.lessSmall
+      },
+      
+      '@media (min-width: 1024px)': {
+        fontSize: fontSize.lessBig
+      },
+
+      '@media (min-width: 1200px)': {
+        fontSize: fontSize.big
+      },
+
+      '@media (min-width: 1400px)': {
+        letterSpacing: 1.0,
+        fontSize: fontSize.big
+      }
     },
 
     moreMargin: {
@@ -98,12 +179,21 @@ const styles = {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
+      marginTop: padding.small,
+
+      '@media (orientation: landscape)': {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+      },
+
+      '@media (min-width: 768px) and (orientation: portrait)': {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly'
+      },
       
       '@media (min-width: 1024px)': {
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        marginTop: padding.huge,
-        width: '100%'
+        justifyContent: 'space-evenly'
       }
     },
     
@@ -111,6 +201,14 @@ const styles = {
       objectFit: 'contain',
       width: '80%',
       marginTop: padding.small,
+
+      '@media (orientation: landscape)': {
+        width: '24%',
+      },
+
+      '@media (min-width: 768px) and (orientation: portrait)': {
+        width: '24%'
+      },
 
       '@media (min-width: 1024px)': {
         maxWidth:'350px' 
@@ -139,11 +237,12 @@ class About extends React.Component {
           {amay}
           {shao}
           {yu}
+          {kianPeng}
         </div>
-        <div style={styles.sponsors}>
-          <div style={[styles.title, styles.moreMargin]}>
+        <div style={[styles.title, styles.moreMargin]}>
             SUPPORTED BY
           </div>
+        <div style={styles.sponsors}>
           <img style={styles.image} src={beFantastic} alt='befantastic'/>
           <img style={styles.image} src={artahack} alt='artahack' />
           <img style={styles.image} src={supernormal} alt='supernormal' />

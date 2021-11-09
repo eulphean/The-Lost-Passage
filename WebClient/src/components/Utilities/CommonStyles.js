@@ -19,6 +19,7 @@ const fontSize = {
     small: '16px',
     lessBig: '18px',
     big: '20px',
+    littleBig: '22px',
     veryBig: '24px',
     extraBig: '28px',
     huge: '32px',
@@ -44,7 +45,9 @@ const padding = {
     verySmall: '8px',
     small: '12px',
     // Incremenets of 8
+    lessBig: '18px',
     big : '20px',
+    littleBig: '24px',
     veryBig : '28px',
     extraBig : '36px',
     // Increments of 12
