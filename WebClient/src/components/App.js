@@ -14,6 +14,7 @@ import Navigation from './Interface/Navigation.js'
 import EnterPanel from './Interface/EnterPanel.js';
 import AudioManager from './Managers/AudioManager.js';
 import { isMobile } from 'react-device-detect'
+import { elementScrollIntoView } from 'seamless-scroll-polyfill'
 
 import gaugan from '../assets/info/gaugan.mp4'
 
@@ -158,6 +159,10 @@ class App extends React.Component {
   onClickHomeButton() {
     if (isMobile) {
       // Scroll back up to the video. 
+      elementScrollIntoView(this.mobileVideoRef.current, {
+        behavior: 'smooth',
+        block: 'start'
+      });
     } else {
       this.worldRef.current.scrollTo(); 
       this.worldRef.current.updateAnimationStatus(true);

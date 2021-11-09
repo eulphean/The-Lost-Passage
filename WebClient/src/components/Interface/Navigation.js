@@ -11,6 +11,7 @@ import Radium from 'radium'
 import { fontFamily, color, fontSize, padding } from '../Utilities/CommonStyles.js'
 import { PanelTitle } from './ContentPanel.js';
 import { ReactComponent as Pigeon } from '../../assets/icons/pigeon.svg'
+import { isMobile } from 'react-device-detect';
 
 const animation = {
   color: Radium.keyframes({
@@ -182,6 +183,7 @@ class Navigation extends React.Component {
   }
 
   getHomeButton() {
+    console.log('Home Button: ' + this.state.showHomeButton);
     let buttonStyle = this.state.showHomeButton ? [styles.homeButton, styles.colorFlick] : [styles.homeButton, styles.hidden];
     buttonStyle = this.state.isHomeButtonHovering ? [styles.homeButton, styles.homeHover] : buttonStyle; 
     return (
@@ -194,32 +196,48 @@ class Navigation extends React.Component {
     );
   }
 
-  onHomeButtonHover() {
-    let hovering = this.state.isHomeButtonHovering; 
-    this.setState({
-      isHomeButtonHovering: !hovering
-    }); 
+  onHomeButtonHover() {    
+    if (isMobile) {
+      // Don't update anything
+    } else {
+      let hovering = this.state.isHomeButtonHovering; 
+      this.setState({
+        isHomeButtonHovering: !hovering
+      }); 
+    }    
   }
 
   onHoverPigeons() {
-    let hovering = this.state.isHoveringPigeons;
-    this.setState({
-      isHoveringPigeons: !hovering
-    }); 
+    if (isMobile) {
+      // Don't update anything.
+    } else {
+      let hovering = this.state.isHoveringPigeons;
+      this.setState({
+        isHoveringPigeons: !hovering
+      }); 
+    }
   }
 
   onHoverClimate() {
-    let hovering = this.state.isHoveringClimate;
-    this.setState({
-      isHoveringClimate: !hovering
-    }); 
+    if (isMobile) {
+      // Don't update anything
+    } else {
+      let hovering = this.state.isHoveringClimate;
+      this.setState({
+        isHoveringClimate: !hovering
+      }); 
+    }
   }
 
   onHoverAbout() {
-    let hovering = this.state.isHoveringAbout;
-    this.setState({
-      isHoveringAbout: !hovering
-    }); 
+    if (isMobile) {
+      // Don't update anything. 
+    } else {
+      let hovering = this.state.isHoveringAbout;
+      this.setState({
+        isHoveringAbout: !hovering
+      }); 
+    }
   }
 
   onClick(panelTitle) {
