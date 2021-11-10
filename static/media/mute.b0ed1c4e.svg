@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="67px" height="54px" viewBox="0 0 67 54" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+  <g id="Mute" transform="translate(2.5 2.5)">
+    <path d="M33.389 0L16.235 14.837L0 14.837L0 33.93L15.989 33.93L33.389 48.981L33.389 0L33.389 0Z" id="Shape" fill="inherit" fill-rule="evenodd" stroke="inherit" stroke-width="5" stroke-linejoin="round" />
+    <g id="Shape" transform="translate(42.671387 14.730957)">
+      <path d="M19 0L0 19" id="Line" fill="inherit" fill-rule="evenodd" stroke="#FFFFFF" stroke-width="5" stroke-linecap="square" />
+      <path d="M0.5 0L19 19" id="Line-2" fill="inherit" fill-rule="evenodd" stroke="#FFFFFF" stroke-width="5" stroke-linecap="square" />
+    </g>
+  </g>
+</svg>
