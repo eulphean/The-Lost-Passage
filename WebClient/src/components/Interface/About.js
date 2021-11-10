@@ -24,24 +24,27 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         width: '100%',
-        flexDirection: 'column',
-        // paddingTop: padding.veryBig,
-        // paddingLeft: padding.veryBig,
-        // paddingRight: padding.veryBig,
-        paddingBottom: padding.small
+        flexDirection: 'column'
     },
 
     title: {
       textAlign: 'center',
       color: color.darkBlue,
       fontFamily: fontFamily.bebas,
-      fontSize: fontSize.extraBig,
+      fontSize: fontSize.veryBig,
       marginTop: padding.big,
-      letterSpacing: 2,
+      letterSpacing: 1,
+
+      '@media (min-width: 768px)': {
+        fontSize: fontSize.extraBig
+      },
       
       '@media (min-width: 1024px)': {
-        letterSpacing: 3,
-        fontSize: fontSize.extraHuge,
+
+      },
+
+      '@media (min-width: 1200px)': {
+        fontSize: fontSize.huge
       }
     },
 
@@ -82,15 +85,25 @@ const styles = {
         marginRight: padding.lessBig        
       },
 
+      '@media (min-width: 1024px)': {
+        marginLeft: padding.big,
+        marginRight: padding.big        
+      },
+
       '@media (min-width: 1200px)': {
         marginLeft: padding.veryBig,
         marginRight: padding.veryBig        
+      },
+
+      '@media (min-width: 1400px)': {
+        marginLeft: padding.huge,
+        marginRight: padding.huge        
       }
     },
 
     photo: {
-      width: '150px',
-      height: '150px',
+      width: '125px',
+      height: '125px',
       borderRadius: '75px',
       backgroundColor: color.midGrey,
 
@@ -118,7 +131,7 @@ const styles = {
 
     name: {
       color: color.brown,
-      fontSize: fontSize.big,
+      fontSize: fontSize.small,
       textAlign: 'center',
       width: '100%',
 
@@ -127,7 +140,7 @@ const styles = {
       },
 
       '@media (min-width: 768px)': {
-        fontSize: fontSize.small
+        fontSize: fontSize.lessBig
       },
       
       '@media (min-width: 1024px)': {
@@ -135,18 +148,17 @@ const styles = {
       },
 
       '@media (min-width: 1200px)': {
-        fontSize: fontSize.littleBig
+        fontSize: fontSize.big
       },
 
       '@media (min-width: 1400px)': {
-        letterSpacing: 1.0,
-        fontSize: fontSize.veryBig
+        fontSize: fontSize.big
       }
     },
 
     location: {
       color: color.darkBlue,
-      fontSize: fontSize.small,
+      fontSize: fontSize.lessSmall,
       textAlign: 'center',
 
       '@media (orientation: landscape)': {
@@ -154,7 +166,7 @@ const styles = {
       },
 
       '@media (min-width: 768px)': {
-        fontSize: fontSize.lessSmall
+        fontSize: fontSize.small
       },
       
       '@media (min-width: 1024px)': {
@@ -162,12 +174,11 @@ const styles = {
       },
 
       '@media (min-width: 1200px)': {
-        fontSize: fontSize.big
+        fontSize: fontSize.lessBig
       },
 
       '@media (min-width: 1400px)': {
-        letterSpacing: 1.0,
-        fontSize: fontSize.big
+        fontSize: fontSize.lessBig
       }
     },
 
@@ -183,7 +194,7 @@ const styles = {
 
       '@media (orientation: landscape)': {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-evenly'
       },
 
       '@media (min-width: 768px) and (orientation: portrait)': {
@@ -198,20 +209,24 @@ const styles = {
     },
     
     image: {
-      objectFit: 'contain',
-      width: '80%',
+      width: '100%'
+    },
+
+    imgLink: {
       marginTop: padding.small,
 
+      width: '50%',
+
       '@media (orientation: landscape)': {
-        width: '24%',
+        width: '20%',
       },
 
       '@media (min-width: 768px) and (orientation: portrait)': {
-        width: '24%'
+        width: '20%'
       },
 
       '@media (min-width: 1024px)': {
-        maxWidth:'350px' 
+        maxWidth:'275px' 
       }
     }
 };
@@ -243,10 +258,18 @@ class About extends React.Component {
             SUPPORTED BY
           </div>
         <div style={styles.sponsors}>
-          <img style={styles.image} src={beFantastic} alt='befantastic'/>
-          <img style={styles.image} src={artahack} alt='artahack' />
-          <img style={styles.image} src={supernormal} alt='supernormal' />
-          <img style={styles.image} src={dara} alt='dara' />
+          <a style={styles.imgLink} href='https://www.dara.network/bftogether/' target='_blank' rel="noreferrer">
+            <img style={styles.image} src={beFantastic} alt='befantastic'/>
+          </a>
+          <a style={styles.imgLink} href='https://artahack.io/' target='_blank' rel="noreferrer">
+            <img style={styles.image} src={artahack} alt='artahack'/>
+          </a>
+          <a style={styles.imgLink} href='https://www.instagram.com/supernormal.space/?hl=en' target='_blank' rel="noreferrer">
+            <img style={styles.image} src={supernormal} alt='supernormal'/>
+          </a>
+          <a style={styles.imgLink} href='https://dara.network/' target='_blank' rel="noreferrer">
+            <img style={styles.image} src={dara} alt='dara'/>
+          </a>
         </div>
         <Footer />
       </div>

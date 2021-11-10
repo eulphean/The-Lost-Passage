@@ -26,7 +26,7 @@ const styles = {
       width: '100%',
 
       '@media (min-width: 1200px)': {
-        width: '500px',
+        width: '350px',
         objectFit: 'cover'
       }
     },
@@ -34,7 +34,6 @@ const styles = {
     content: {
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
       justifyContent: 'center'
     },
     
@@ -42,13 +41,20 @@ const styles = {
       textAlign: 'center',
       color: color.darkBlue,
       fontFamily: fontFamily.bebas,
-      fontSize: fontSize.extraBig,
+      fontSize: fontSize.veryBig,
       marginTop: padding.big,
-      letterSpacing: 2,
+      letterSpacing: 1,
+
+      '@media (min-width: 768px)': {
+        fontSize: fontSize.extraBig
+      },
       
       '@media (min-width: 1024px)': {
-        letterSpacing: 3,
-        fontSize: fontSize.extraHuge,
+
+      },
+
+      '@media (min-width: 1200px)': {
+        fontSize: fontSize.huge
       }
     },
 
@@ -57,24 +63,21 @@ const styles = {
       padding: padding.small,
       fontSize: fontSize.lessSmall,
       color: color.darkBlue,
-      letterSpacing: 0.5,
-      lineSpacing: 2,
 
       '@media (min-width: 768px)': {
-        fontSize: fontSize.small
+        fontSize: fontSize.lessSmall
       },
       
       '@media (min-width: 1024px)': {
-        fontSize: fontSize.lessBig
+        fontSize: fontSize.small
       },
 
       '@media (min-width: 1200px)': {
-        fontSize: fontSize.big
+        fontSize: fontSize.lessBig
       },
 
       '@media (min-width: 1400px)': {
-        letterSpacing: 1.0,
-        fontSize: fontSize.veryBig
+        fontSize: fontSize.big
       }
     }
 };

@@ -16,7 +16,7 @@ import AudioManager from './Managers/AudioManager.js';
 import { isMobile } from 'react-device-detect'
 import { elementScrollIntoView } from 'seamless-scroll-polyfill'
 
-import gaugan from '../assets/info/gaugan.mp4'
+import mobilevideo from '../assets/info/mobile_video.mp4'
 
 const styles = {
   container: {
@@ -73,7 +73,7 @@ class App extends React.Component {
   getWorldContent() {
     let content = isMobile ? 
     (
-      <video id={'front'} ref={this.mobileVideoRef} type='video/mp4' src={gaugan} preload='true' playsInline loop style={styles.video} />
+      <video id={'front'} ref={this.mobileVideoRef} type='video/mp4' src={mobilevideo} preload='true' playsInline loop style={styles.video} />
     ) :
     (
       <World ref={this.worldRef} onInitialCameraAnimationDone={this.onInitialCameraAnimationDone.bind(this)} />

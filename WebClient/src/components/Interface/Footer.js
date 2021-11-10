@@ -12,33 +12,34 @@ import { color, fontFamily, padding, fontSize } from '../Utilities/CommonStyles'
 
 const styles = {
     container: {
-      marginTop: padding.big, 
+      marginTop: padding.veryBig, 
       color: color.darkBlue,
       fontFamily: fontFamily.tenor   
     },
 
     website: {      
-      letterSpacing: 2, 
-      fontSize: fontSize.lessSmall,
+      letterSpacing: 2.0, 
+      fontSize: fontSize.verySmall,
+      width: '100vw',
+      backgroundColor: color.darkBlue,
+      paddingTop: padding.extraSmall,
+      paddingBottom: padding.extraSmall,
+      color: color.lightBlue,
+      textAlign: 'center',
       
       '@media (orientation: landscape)': {
         fontSize: fontSize.lessSmall
       },
 
       '@media (min-width: 768px)': {
-        fontSize: fontSize.verySmall
+        fontSize: fontSize.lessSmall
       },
       
       '@media (min-width: 1024px)': {
-        fontSize: fontSize.lessBig
+        fontSize: fontSize.small
       },
 
       '@media (min-width: 1200px)': {
-        fontSize: fontSize.lessBig
-      },
-
-      '@media (min-width: 1400px)': {
-        letterSpacing: 1.0,
         fontSize: fontSize.lessBig
       }
     }

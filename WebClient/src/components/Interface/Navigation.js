@@ -52,19 +52,17 @@ const styles = {
 
     homeTitle: {
       fontFamily: fontFamily.bebas,
-      fontSize: fontSize.extraBig,
+      fontSize: fontSize.huge,
       letterSpacing: 2,
       color: color.darkBlue,
       cursor: 'default',
 
       '@media (min-width: 768px) and (orientation: portrait)': {
-        fontSize: fontSize.huge,
-        letterSpacing: 6
+        fontSize: fontSize.veryHuge,
       },
 
-      '@media (min-width: 1024px)': {
-        fontSize: fontSize.veryHuge,
-        letterSpacing: 6
+      '@media (min-width: 1200px)': {
+        fontSize: fontSize.extraHuge,
       }
     },
 
@@ -80,7 +78,7 @@ const styles = {
 
     title: {
         fontFamily: fontFamily.tenor,
-        fontSize: fontSize.verySmall,
+        fontSize: fontSize.lessSmall,
         letterSpacing: 2,
         color: color.darkBlue,
         cursor: 'crosshair',
@@ -90,7 +88,7 @@ const styles = {
           fontSize: fontSize.small
         },
 
-        '@media (min-width: 1024px)': {
+        '@media (min-width: 1200px)': {
           fontSize: fontSize.big
         }
     },
@@ -183,7 +181,6 @@ class Navigation extends React.Component {
   }
 
   getHomeButton() {
-    console.log('Home Button: ' + this.state.showHomeButton);
     let buttonStyle = this.state.showHomeButton ? [styles.homeButton, styles.colorFlick] : [styles.homeButton, styles.hidden];
     buttonStyle = this.state.isHomeButtonHovering ? [styles.homeButton, styles.homeHover] : buttonStyle; 
     return (
