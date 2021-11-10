@@ -11,7 +11,10 @@ import Radium from 'radium'
 import { fontFamily, color, fontSize, padding } from '../Utilities/CommonStyles.js'
 import { PanelTitle } from './ContentPanel.js';
 import { ReactComponent as Pigeon } from '../../assets/icons/pigeon.svg'
+import { ReactComponent as Mute } from '../../assets/icons/mute.svg'
+import { ReactComponent as Volume } from '../../assets/icons/volume.svg'
 import { isMobile } from 'react-device-detect';
+import AudioManager from '../Managers/AudioManager.js';
 
 const animation = {
   color: Radium.keyframes({
@@ -102,17 +105,17 @@ const styles = {
       right: padding.big,
       bottom: padding.big,
       backgroundColor: color.darkBlue,
-      borderRadius: fontSize.huge,
       padding: padding.small,
-      width: fontSize.extraHuge,
-      height: fontSize.extraHuge,
+      width: fontSize.extraBig,
+      height: fontSize.extraBig,
+      borderRadius: fontSize.huge,
       zIndex: 1,
 
       '@media (min-width: 1024px)': {
         padding: padding.verySmall,
-        borderRadius: fontSize.extraMassive,
-        width: fontSize.gaia,
-        height: fontSize.gaia,
+        borderRadius: fontSize.extraBig,
+        width: fontSize.extraHuge,
+        height: fontSize.extraHuge,
       }
     },
 
@@ -130,6 +133,34 @@ const styles = {
       width: '100%',
       height: '100%',
       fill: 'white'
+    },
+
+    muteSvg: {
+      width: '90%',
+      height: '90%',
+      fill: 'white'
+    },
+
+    soundButton: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'fixed',
+      left: padding.big,
+      bottom: padding.big,
+      backgroundColor: color.darkBlue,
+      padding: padding.small,
+      width: fontSize.extraBig,
+      height: fontSize.extraBig,
+      borderRadius: fontSize.huge,
+      zIndex: 1,
+
+      '@media (min-width: 1024px)': {
+        padding: padding.verySmall,
+        borderRadius: fontSize.extraBig,
+        width: fontSize.extraHuge,
+        height: fontSize.extraHuge,
+      }
     }
 };
 
@@ -141,7 +172,8 @@ class Navigation extends React.Component {
       isHoveringClimate: false,
       isHoveringAbout: false,
       isHomeButtonHovering: false, 
-      showHomeButton: false
+      showHomeButton: false,
+      isPlayingSound: true
     };
   }
 
@@ -150,6 +182,7 @@ class Navigation extends React.Component {
     let climateStyle = this.state.isHoveringClimate ? [styles.title, styles.hover] : styles.title;
     let aboutStyle = this.state.isHoveringAbout ? [styles.title, styles.hover] : styles.title; 
     let homeButton = this.getHomeButton(); 
+    let soundButton = this.getSoundButton();
     return (
       <div style={styles.absoluteContainer}>
         <div style={styles.contentContainer}>
@@ -175,9 +208,36 @@ class Navigation extends React.Component {
             </div>
           </div>
           {homeButton}
+          {soundButton}
         </div>
       </div>
     );
+  }
+
+  getSoundButton() {
+
+    let button = this.state.isPlayingSound ? <Volume style={styles.muteSvg} /> : <Mute style={styles.muteSvg} />;
+    return (
+      <div onClick={this.setSound.bind(this)} style={[styles.soundButton, styles.colorFlick]} >
+         {button}
+      </div>
+    );
+  }
+
+  setSound() {
+    let isPlaying = this.state.isPlayingSound; 
+    if (isPlaying) {
+      AudioManager.release();
+      AudioManager.isPermanentlyMute = true; // We are muting it permanently, so sound isn't affected from anywhere else. 
+    } else {
+      // Trigger the sound
+      AudioManager.trigger();
+    } 
+
+    // Update state
+    this.setState({
+      isPlayingSound: !this.state.isPlayingSound
+    });
   }
 
   getHomeButton() {

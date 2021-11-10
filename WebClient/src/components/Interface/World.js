@@ -201,12 +201,20 @@ class World extends React.Component {
     this.shouldAnimate = status; 
     if (status) {
       this.rendererManager.setAnimationLoop(this.renderThree.bind(this));
-      AudioManager.trigger();
+      if (AudioManager.isPermanentlyMute) {
+        // Don't retrigger
+      } else {
+        AudioManager.trigger();
+      }
     } else {
       // Pause
       this.pigeonManager.pausePigeons();
       this.rendererManager.setAnimationLoop(null);
-      AudioManager.release();
+      if (AudioManager.isPermanentlyMute) {
+        // Don't do anything
+      } else {
+        AudioManager.release();
+      }
     }
   }
 

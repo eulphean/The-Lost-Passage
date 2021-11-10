@@ -37,7 +37,8 @@ class Audio {
         if (this.soundObject.isPlaying()) {
             this.soundObject.stop();
         }
-        this.soundObject.playMode('restart');
+        // this.soundObject.playMode('restart');
+        this.soundObject.play();
         this.adsr.triggerAttack(this.soundObject); 
         this.soundObject.loop();
         this.isActive = true; 
@@ -45,6 +46,7 @@ class Audio {
 
     release() {
         // this.soundObject.stop();
+        this.soundObject.pause();
         this.adsr.triggerRelease(this.soundObject);
         this.isActive = false; 
     }
@@ -59,7 +61,7 @@ var sketch = (s) => {
     s.preload = () => {
         // Soundscape 
         let sound = s.loadSound(soundscape); 
-        let env = new p5.Envelope(0.8, 0.6, 0.5, 0.6, 1, 0.);
+        let env = new p5.Envelope(5.0, 0.2, 2.5, 0.1, 1.5, 0.);
         soundObject = new Audio(sound, env); 
 
         // Gunshot
@@ -92,6 +94,7 @@ var sketch = (s) => {
 class AudioManager {
     constructor() {
         this.myP5 = new p5(sketch); 
+        this.isPermanentlyMute = false; 
     }
 
     trigger() {

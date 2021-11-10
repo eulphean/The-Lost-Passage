@@ -121,6 +121,9 @@ class App extends React.Component {
       showEnterPanel: false
     });
 
+    // Trigger sound.
+    AudioManager.trigger();
+    
     if (isMobile) {
       this.mobileVideoRef.current.play();
       this.onInitialCameraAnimationDone();
@@ -133,10 +136,7 @@ class App extends React.Component {
   onInitialCameraAnimationDone() {
     this.setState({
       showNavPanel: true
-    }); 
-
-    // Trigger sound.
-    AudioManager.trigger();
+    });
   }
     
   onClickNavTitle(panelTitle) {
