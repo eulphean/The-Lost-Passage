@@ -74,7 +74,7 @@ class App extends React.Component {
   getWorldContent() {
     let content = isMobile ? 
     (
-      <video id={'front'} ref={this.mobileVideoRef} type='video/mp4' src={mobilevideo} preload='true' playsInline loop muted style={styles.video} />
+      <video id={'front'} ref={this.mobileVideoRef} type='video/mp4' src={mobilevideo} preload='true' autoPlay playsInline muted loop style={styles.video} />
     ) :
     (
       <World ref={this.worldRef} onInitialCameraAnimationDone={this.onInitialCameraAnimationDone.bind(this)} />
