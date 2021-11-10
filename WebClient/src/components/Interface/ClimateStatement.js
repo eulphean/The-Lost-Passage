@@ -104,7 +104,7 @@ class ClimateStatement extends React.Component {
             {content}
           </div>
         </div>
-        <video style={styles.video} src={gaugan} playsInline loop autoPlay muted />
+        <video style={styles.video} src={gaugan} preload='true' type='video/mp4' autoPlay playsInline muted loop/>
       </div>
     );
   }
