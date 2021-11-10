@@ -101,15 +101,13 @@ const styles = {
     },
 
     homeButton: {
-      position: 'fixed',
-      right: padding.big,
-      bottom: padding.big,
       backgroundColor: color.darkBlue,
-      padding: padding.small,
-      width: fontSize.extraBig,
-      height: fontSize.extraBig,
-      borderRadius: fontSize.huge,
-      zIndex: 1,
+      padding: padding.verySmall,
+      width: fontSize.big,
+      height: fontSize.big,
+      borderRadius: fontSize.big,
+      borderRadius: fontSize.big,
+      marginBottom: padding.extraSmall,
 
       '@media (min-width: 1024px)': {
         padding: padding.verySmall,
@@ -145,14 +143,11 @@ const styles = {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      position: 'fixed',
-      left: padding.big,
-      bottom: padding.big,
       backgroundColor: color.darkBlue,
-      padding: padding.small,
-      width: fontSize.extraBig,
-      height: fontSize.extraBig,
-      borderRadius: fontSize.huge,
+      padding: padding.verySmall,
+      width: fontSize.big,
+      height: fontSize.big,
+      borderRadius: fontSize.big,
       zIndex: 1,
 
       '@media (min-width: 1024px)': {
@@ -160,6 +155,19 @@ const styles = {
         borderRadius: fontSize.extraBig,
         width: fontSize.extraHuge,
         height: fontSize.extraHuge,
+      }
+    },
+
+    buttonCollection: {
+      display: 'flex',
+      flexDirection: 'column',
+      position: 'fixed',
+      right: padding.verySmall, 
+      bottom: padding.veryBig,
+      zIndex: 1,
+
+      '@media (min-width: 1024px)': {
+        right: padding.small,
       }
     }
 };
@@ -207,8 +215,10 @@ class Navigation extends React.Component {
               ABOUT US
             </div>
           </div>
-          {homeButton}
-          {soundButton}
+          <div style={styles.buttonCollection}>
+            {homeButton}
+            {soundButton}
+          </div>
         </div>
       </div>
     );

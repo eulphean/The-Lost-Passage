@@ -21,7 +21,8 @@ import mobilevideo from '../assets/info/mobile_video.mp4'
 const styles = {
   container: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    overflow: 'hidden'
   },
 
   panelStyles: {
@@ -123,7 +124,7 @@ class App extends React.Component {
 
     // Trigger sound.
     AudioManager.trigger();
-    
+
     if (isMobile) {
       this.mobileVideoRef.current.play();
       this.onInitialCameraAnimationDone();

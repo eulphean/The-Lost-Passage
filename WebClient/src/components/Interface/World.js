@@ -37,8 +37,8 @@ const NUM_VIDEOS_LOADED = 1;
 
 const styles = {
   container: {
-    width: '100vw', 
-    height: '100vh',
+    width: '100%', 
+    height: '100%',
     overflow: 'hidden'
   },
 
