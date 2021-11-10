@@ -93,7 +93,7 @@ class PassengerPigeons extends React.Component {
   render() {
     return (
       <div style={styles.container}>
-        <video style={styles.ppVideo} preload='true' type='video/mp4' autoPlay playsInline muted loop src={pp} />
+        <video style={styles.ppVideo} autoPlay playsInline muted loop src={pp} />
         <div style={styles.content}>
           <div style={styles.title}>
             PASSENGER PIGEONS
