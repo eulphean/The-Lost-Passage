@@ -45,8 +45,10 @@ const styles = {
     container: {
         position: 'fixed',
         top: '0%',
-        width: '100%',
-        height: '100%',
+        left: '0%',
+        bottom: '0%',
+        right: '0%',
+        overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -56,10 +58,6 @@ const styles = {
         background: '-moz-linear-gradient(top, #e6e9ec 0%, #f9fdff 100%)', /* FF3.6-15 */
         background: '-webkit-linear-gradient(top, #e6e9ec 0%,#f9fdff 100%)', /* Chrome10-25,Safari5.1-6 */
         background: 'linear-gradient(to bottom, #e6e9ec 0%,#f9fdff 100%)' /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    },
-
-    hide: {
-        visibility: 'hidden'
     },
 
     title: {
@@ -165,12 +163,20 @@ const styles = {
     topMessage: {
       position: 'absolute',
       color: color.darkBlue, 
-      fontSize: fontSize.lessSmall,
+      fontSize: fontSize.verySmall,
       textAlign: 'center',
       paddingLeft: padding.verySmall,
       paddingRight: padding.verySmall,
       fontFamily: fontFamily.tenor,
       top: '15px',
+
+      '@media (orientation: landscape)': {
+        fontSize: fontSize.verySmall
+      },
+
+      '@media (min-width: 768px) and (orientation: landscape)': {
+        fontSize: fontSize.verySmall
+      },
 
       '@media (min-width: 568px)': {
         maxWidth: '80%'
@@ -196,6 +202,10 @@ const styles = {
       fontFamily: fontFamily.tenor,
       transform: 'rotate(-90deg)',
 
+      '@media (orientation: landscape)': {
+        fontSize: fontSize.lessSmall
+      },
+
       '@media (min-width: 768px) and (orientation: portrait)': { 
         maxWidth: '100%',
         fontSize: fontSize.lessBig,
@@ -203,7 +213,7 @@ const styles = {
       },
 
       '@media (min-width: 1024px) and (orientation: landscape)': {
-        fontSize: fontSize.lessBig,
+        fontSize: fontSize.small,
         maxWidth: '100%',
         left: '-250px'
       },
@@ -223,6 +233,10 @@ const styles = {
       color: color.darkBlue, 
       transform: 'rotate(90deg)',
 
+      '@media (orientation: landscape)': {
+        fontSize: fontSize.lessSmall
+      },
+
       '@media (min-width: 768px) and (orientation: portrait)': { 
         maxWidth: '100%',
         fontSize: fontSize.lessBig,
@@ -230,7 +244,7 @@ const styles = {
       },
 
       '@media (min-width: 1024px) and (orientation: landscape)': {
-        fontSize: fontSize.lessBig,
+        fontSize: fontSize.small,
         maxWidth: '100%',
         right: '-250px'
       },
@@ -243,12 +257,16 @@ const styles = {
     bottomMessage: {
       position: 'absolute',
       color: color.darkBlue, 
-      fontSize: fontSize.lessSmall,
+      fontSize: fontSize.verySmall,
       fontFamily: fontFamily.tenor,
       paddingLeft: padding.big,
       paddingRight: padding.big,
       textAlign: 'center',
       bottom: '15px',
+
+      '@media (orientation: landscape)': {
+        fontSize: fontSize.verySmall
+      },
 
       '@media (min-width: 568px)': {
         maxWidth: '80%'
@@ -327,9 +345,9 @@ class EnterPanel extends React.Component {
   getMessages() {
     return (
       <React.Fragment>
-        {/* <div style={styles.topMessage}>{TopMessage}</div> */}
-        {/* <div style={styles.leftMessage}>{LeftMessage}</div> */}
-        {/* <div style={styles.rightMessage}>{RightMessage}</div> */}
+        <div style={styles.topMessage}>{TopMessage}</div>
+        <div style={styles.leftMessage}>{LeftMessage}</div>
+        <div style={styles.rightMessage}>{RightMessage}</div>
         <div style={styles.bottomMessage}>{BottomMessage}</div>
       </React.Fragment>
     );

@@ -44,25 +44,12 @@ const styles = {
     display: 'block'
   },
 
-  canvas: {
+  videoCanvas: {
+    position: 'relative',
     height: '100vh',
     width: '100vw',
-    objectFit: 'cover'
-  },
-
-  video: {
-    overflow: 'hidden',
-    width: '100vw',
-    height: '100vh',
-    objectFit: 'cover'
-  },
-
-  videoIOS: {
-    overflow: 'hidden',
-    width: '100vw',
-    height: '100vh',
-    minHeight: '-webkit-fill-available',
     objectFit: 'cover',
+    overflow: 'hidden'
   }
 }
 
@@ -100,14 +87,20 @@ class App extends React.Component {
   }
 
   getWorldContent() {
-    let videoStyles = isIOSDevice() ? [styles.videoIOS] : [styles.video];
-    let videoNode = this.state.showVideo ? 
-    (
-      <video style={styles.canvas} ref={this.mobileVideoRef} playsInline muted loop>
+    // let videoStyles = isIOSDevice() ? [styles.videoIOS] : [styles.video];
+    // let videoNode = this.state.showVideo ? 
+    // (
+    //   <video style={styles.videoCanvas} ref={this.mobileVideoRef} playsInline muted loop>
+    //     <source src={mobilevideo} />
+    //   </video>
+    // ) : 
+    // (<React.Fragment></React.Fragment>);
+
+    let videoNode = (
+      <video style={styles.videoCanvas} ref={this.mobileVideoRef} playsInline muted loop>
         <source src={mobilevideo} />
       </video>
-    ) : 
-    (<React.Fragment></React.Fragment>);
+    );
 
     let content = isMobile ? videoNode :
     (
