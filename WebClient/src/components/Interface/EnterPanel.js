@@ -14,8 +14,11 @@ import { bounceOut, zoomIn } from 'react-animations'
 import { fontFamily, color, fontSize, padding } from '../Utilities/CommonStyles.js'
 import { ReactComponent as Pigeon } from '../../assets/icons/pigeon.svg'
 import { IsPigeonManagerReady } from '../Managers/PigeonManager.js'
+import { IsAudioManagerReady } from '../Managers/AudioManager.js'
 import { IsWorldReady } from './World.js'
 import { isMobile } from 'react-device-detect'
+
+let IsMobileVideoReady = false; 
 
 const FLASH_DURATION = '1.5s';
 const TopMessage = "\"They existed in billions, but today they are lost and revered only in museums.\"";
@@ -314,7 +317,7 @@ class EnterPanel extends React.Component {
     return (
         <React.Fragment>
             <div style={[styles.title, styles.flash]}
-                 onAnimationEnd={this.onStartAnimationEnd.bind(this)}>THE LOST PASSAGE</div>
+                onAnimationEnd={this.onStartAnimationEnd.bind(this)}>THE LOST PASSAGE</div>
             {button}  
         </React.Fragment>
     );
@@ -349,18 +352,27 @@ class EnterPanel extends React.Component {
   checkIfReady() {
     // On mobile just wait for 2 seconds and do complete. 
     if (isMobile) {
+      // Check if our main video is ready and audio manager is ready.
+      // Then set HasFinishedLoading.
       setTimeout(() => {
-        this.hasFinishedLoading();
-      }, 2000); 
+        if (IsAudioManagerReady && IsMobileVideoReady) {
+          this.hasFinishedLoading();
+        }
+      }, 1000); 
     } else {
       setTimeout(() => {
-        if (IsPigeonManagerReady && IsWorldReady) {
+        if (IsPigeonManagerReady && IsWorldReady && IsAudioManagerReady) {
           this.hasFinishedLoading(); 
         } else {
           this.checkIfReady();
         }
-      }, 10); 
+      }, 250); 
     }
+  }
+
+  setMobileVideoReady() {
+    IsMobileVideoReady = true; 
+    console.log('Mobile Video Ready');
   }
 
   hasFinishedLoading() {

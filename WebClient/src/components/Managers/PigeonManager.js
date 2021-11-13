@@ -33,7 +33,7 @@ export let PigeonParams = {
     Count: BIRDS
 }
 
-const KillFactor = 500; 
+const KillFactor = 250; 
 
 class PigeonManager {
     constructor(scene) {

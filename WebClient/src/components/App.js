@@ -54,6 +54,7 @@ class App extends React.Component {
     this.contentPanelRef = React.createRef();
     this.navRef = React.createRef();
     this.mobileVideoRef = React.createRef();
+    this.enterPanelRef = React.createRef(); 
   }
 
   render() {
@@ -74,7 +75,7 @@ class App extends React.Component {
   getWorldContent() {
     let content = isMobile ? 
     (
-      <video id={'front'} ref={this.mobileVideoRef} type='video/mp4' src={mobilevideo} preload='true' autoPlay playsInline muted loop style={styles.video} />
+      <video id={'front'} ref={this.mobileVideoRef} type='video/mp4' src={mobilevideo} preload='true' autoPlay playsInline muted loop style={styles.video} onCanPlay={this.onMobileVideoLoaded.bind(this)} />
     ) :
     (
       <World ref={this.worldRef} onInitialCameraAnimationDone={this.onInitialCameraAnimationDone.bind(this)} />
@@ -94,6 +95,7 @@ class App extends React.Component {
   getEnterPanel() {
     return (
       <EnterPanel 
+        ref={this.enterPanelRef}
         onEnterWorld={this.onEnterWorld.bind(this)} 
         onLoadComplete={this.onLoadComplete.bind(this)}
       />
@@ -174,6 +176,10 @@ class App extends React.Component {
         showContentPanel: false
       });
     }, 1000); // Give a little timeout so the panel can be made visible first.
+  }
+
+  onMobileVideoLoaded() {
+    this.enterPanelRef.current.setMobileVideoReady(); 
   }
 }
 

@@ -57,6 +57,7 @@ var sketch = (s) => {
     // Single array that holds all the audio files. 
     let soundObject = '';
     let gunObject = '';
+    let audioManagerCbk; 
 
     s.preload = () => {
         // Soundscape 
@@ -68,6 +69,13 @@ var sketch = (s) => {
         sound = s.loadSound(gunshot); 
         env = new p5.Envelope(0.5, 1.0, 0.5, 0.6, 2, 0.);
         gunObject = new Audio(sound, env); 
+
+        // Audio manager is ready now. 
+        audioManagerCbk();
+    }
+
+    s.audioCallback = (audioCbk) => {
+        audioManagerCbk = audioCbk;
     }
 
     s.setup = () => {
@@ -90,11 +98,18 @@ var sketch = (s) => {
         gunObject.play(); 
     }
 };
- 
+
+export let IsAudioManagerReady = false; 
 class AudioManager {
     constructor() {
-        this.myP5 = new p5(sketch); 
+        this.myP5 = new p5(sketch);
+        this.myP5.audioCallback(this.audioManagerReady.bind(this));
         this.isPermanentlyMute = false; 
+    }
+
+    audioManagerReady() {
+        IsAudioManagerReady = true;
+        console.log('Audio Manager Ready'); 
     }
 
     trigger() {

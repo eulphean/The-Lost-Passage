@@ -106,7 +106,6 @@ const styles = {
       width: fontSize.big,
       height: fontSize.big,
       borderRadius: fontSize.big,
-      borderRadius: fontSize.big,
       marginBottom: padding.extraSmall,
 
       '@media (min-width: 1024px)': {
