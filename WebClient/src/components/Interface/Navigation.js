@@ -15,6 +15,7 @@ import { ReactComponent as Mute } from '../../assets/icons/mute.svg'
 import { ReactComponent as Volume } from '../../assets/icons/volume.svg'
 import { isMobile } from 'react-device-detect';
 import AudioManager from '../Managers/AudioManager.js';
+import { isIOSDevice } from '../Managers/Helper.js';
 
 const animation = {
   color: Radium.keyframes({
@@ -174,13 +175,16 @@ const styles = {
 class Navigation extends React.Component {
   constructor(props) {
     super(props);
+    // On iOS we never are playing sound in the beginning. So we are paused by default. 
+    let isPlayingSoundInitialState = isIOSDevice() ? false : true; 
+
     this.state={ 
       isHoveringPigeons: false,
       isHoveringClimate: false,
       isHoveringAbout: false,
       isHomeButtonHovering: false, 
       showHomeButton: false,
-      isPlayingSound: true
+      isPlayingSound: isPlayingSoundInitialState
     };
   }
 
@@ -224,7 +228,6 @@ class Navigation extends React.Component {
   }
 
   getSoundButton() {
-
     let button = this.state.isPlayingSound ? <Volume style={styles.muteSvg} /> : <Mute style={styles.muteSvg} />;
     return (
       <div onClick={this.setSound.bind(this)} style={[styles.soundButton, styles.colorFlick]} >

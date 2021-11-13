@@ -17,11 +17,14 @@ import { isMobile } from 'react-device-detect'
 import { elementScrollIntoView } from 'seamless-scroll-polyfill'
 
 import mobilevideo from '../assets/info/mobile_video.mp4'
+import { isIOSDevice } from './Managers/Helper.js';
 
 const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
+    width: '100%',
+    height: '100%',
     overflow: 'hidden'
   },
 
@@ -35,9 +38,11 @@ const styles = {
   },
 
   video: {
-    width: '100vw',
-    height: '100vh',
-    objectFit: 'cover'
+    width: '0%',
+    height: '0%',
+    overflow: 'hidden',
+    objectFit: 'cover',
+    visibility: 'hidden'
   }
 }
 
@@ -75,7 +80,8 @@ class App extends React.Component {
   getWorldContent() {
     let content = isMobile ? 
     (
-      <video id={'front'} ref={this.mobileVideoRef} type='video/mp4' src={mobilevideo} preload='true' autoPlay playsInline muted loop style={styles.video} onCanPlay={this.onMobileVideoLoaded.bind(this)} />
+      // <video style={styles.video} ref={this.mobileVideoRef} preload='auto' src={mobilevideo} playsInline muted loop />
+      <React.Fragment></React.Fragment>
     ) :
     (
       <World ref={this.worldRef} onInitialCameraAnimationDone={this.onInitialCameraAnimationDone.bind(this)} />
@@ -113,7 +119,7 @@ class App extends React.Component {
 
   onEnterWorld() {
     if (isMobile) {
-
+      // Don't do anything. 
     } else {
       this.worldRef.current.beginWorld();   
     }
@@ -124,13 +130,18 @@ class App extends React.Component {
       showEnterPanel: false
     });
 
-    // Trigger sound.
-    AudioManager.trigger();
-
     if (isMobile) {
-      this.mobileVideoRef.current.play();
+      if (isIOSDevice()) {
+        // Don't do anything. Since we can't play audio
+        // on iOS until a user directly interacts.
+      } else {
+        AudioManager.trigger();
+      }
+      // this.mobileVideoRef.current.play();
       this.onInitialCameraAnimationDone();
     } else {
+      // Trigger sound.
+       AudioManager.trigger();
       // Begin zoom into the world. 
       this.worldRef.current.enterWorld(); 
     }

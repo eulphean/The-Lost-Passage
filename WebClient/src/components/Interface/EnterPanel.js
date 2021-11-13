@@ -14,11 +14,12 @@ import { bounceOut, zoomIn } from 'react-animations'
 import { fontFamily, color, fontSize, padding } from '../Utilities/CommonStyles.js'
 import { ReactComponent as Pigeon } from '../../assets/icons/pigeon.svg'
 import { IsPigeonManagerReady } from '../Managers/PigeonManager.js'
-import { IsAudioManagerReady } from '../Managers/AudioManager.js'
+import AudioManager from '../Managers/AudioManager.js'
 import { IsWorldReady } from './World.js'
 import { isMobile } from 'react-device-detect'
 
-let IsMobileVideoReady = false; 
+let IsMobileVideoReady = true; 
+const Mobile_Timeout = 2500; // 2.5 seconds
 
 const FLASH_DURATION = '1.5s';
 const TopMessage = "\"They existed in billions, but today they are lost and revered only in museums.\"";
@@ -29,13 +30,13 @@ const RightMessage = "\"No matter how abundant something is-if one's not careful
 const animation = {
   pulse: Radium.keyframes({
     '0%': {
-      transform: 'scale(0.5)'
+      transform: 'scale(1.0)'
     },
     '50%': {
-      transform: 'scale(1.1)',
+      transform: 'scale(2.0)',
     },
     '100%': {
-      transform: 'scale(0.5)',
+      transform: 'scale(1.0)',
     }
   })
 }
@@ -109,8 +110,8 @@ const styles = {
     },
 
     svg: {
-      width: '50px',
-      height: '50px',
+      width: '25px',
+      height: '25px',
       fill: color.darkBlue,
 
       '@media (minWidth: 1024px)': {
@@ -270,10 +271,9 @@ class EnterPanel extends React.Component {
     // Initial render of the component. 
     // NOTE: Whenever a component's state is updated, render is called. 
     this.state={
-        isHidden: false,
         isLoading: false,
         isHovering: false,
-        isDisabled: true
+        isDisabled: true        
     };
   }
 
@@ -291,9 +291,10 @@ class EnterPanel extends React.Component {
   }
 
   getLoader() {
+    let animStyles = [styles.svgContainer, styles.svgSimplePulse];
     return (
       <div style={styles.loadContainer}>
-        <div style={[styles.svgContainer, styles.svgSimplePulse]}>
+        <div style={animStyles}>
         <Pigeon style={styles.svg} />
        </div>
        <div style={styles.loadTitle}>
@@ -350,18 +351,15 @@ class EnterPanel extends React.Component {
   }
 
   checkIfReady() {
-    // On mobile just wait for 2 seconds and do complete. 
     if (isMobile) {
-      // Check if our main video is ready and audio manager is ready.
-      // Then set HasFinishedLoading.
       setTimeout(() => {
-        if (IsAudioManagerReady && IsMobileVideoReady) {
+        if (AudioManager.isAudioManagerReady) {
           this.hasFinishedLoading();
         }
-      }, 1000); 
+      }, Mobile_Timeout); 
     } else {
       setTimeout(() => {
-        if (IsPigeonManagerReady && IsWorldReady && IsAudioManagerReady) {
+        if (IsPigeonManagerReady && IsWorldReady && AudioManager.isAudioManagerReady) {
           this.hasFinishedLoading(); 
         } else {
           this.checkIfReady();
@@ -376,10 +374,6 @@ class EnterPanel extends React.Component {
   }
 
   hasFinishedLoading() {
-    this.setState({
-        isHidden: true
-    }); 
-
     console.log('Has Finished Loading');
     // Tel the world that load is complete. 
     this.props.onLoadComplete(); 

@@ -10,8 +10,12 @@
 
 // NOTE: p5 library is loaded through index.html script tags.
 // We assign it to a variable that we want to use.
+
+import { isMobile } from 'react-device-detect'
+
 import soundscape from '../../assets/skybox/soundscape.mp3'
 import gunshot from '../../assets/skybox/gunshot.mp3'
+import { times } from 'lodash';
 
 let p5 = window.p5;  
 
@@ -19,7 +23,6 @@ class Audio {
     constructor(soundObj, env) {
         this.soundObject = soundObj;
         this.adsr = env; 
-        this.isActive = false; 
     }
 
     setAdsr(attackTime, attackLevel, decayTime, decayLevel, releaseTime, releaseLevel) {
@@ -30,25 +33,17 @@ class Audio {
     play() {
         this.soundObject.play();
         this.adsr.play(this.soundObject); 
-        console.log('Hello play shoot');
     }
 
     trigger() {
-        if (this.soundObject.isPlaying()) {
-            this.soundObject.stop();
-        }
-        // this.soundObject.playMode('restart');
         this.soundObject.play();
         this.adsr.triggerAttack(this.soundObject); 
         this.soundObject.loop();
-        this.isActive = true; 
     }
 
     release() {
-        // this.soundObject.stop();
         this.soundObject.pause();
         this.adsr.triggerRelease(this.soundObject);
-        this.isActive = false; 
     }
 }
 
@@ -99,17 +94,21 @@ var sketch = (s) => {
     }
 };
 
-export let IsAudioManagerReady = false; 
 class AudioManager {
     constructor() {
         this.myP5 = new p5(sketch);
         this.myP5.audioCallback(this.audioManagerReady.bind(this));
         this.isPermanentlyMute = false; 
+        this.isAudioManagerReady = false; 
     }
 
     audioManagerReady() {
-        IsAudioManagerReady = true;
+        this.isAudioManagerReady = true;
         console.log('Audio Manager Ready'); 
+    }
+
+    reset() {
+        this.myP5.reset();
     }
 
     trigger() {
@@ -122,6 +121,10 @@ class AudioManager {
 
     shoot() {
         this.myP5.shoot();
+    }
+
+    triggerWithTime(time) {
+        this.myP5.triggerWithTime(time);
     }
 }
 
