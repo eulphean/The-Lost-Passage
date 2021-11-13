@@ -87,6 +87,7 @@ const styles = {
         color: color.darkBlue,
         cursor: 'crosshair',
         paddingTop: padding.verySmall,
+        fontWeight: '900',
 
         '@media (min-width: 768px) and (orientation: portrait)': {
           fontSize: fontSize.small

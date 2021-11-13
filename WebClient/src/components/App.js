@@ -21,11 +21,18 @@ import { isIOSDevice } from './Managers/Helper.js';
 
 const styles = {
   container: {
+    position: 'fixed',
+    top: '0%',
+    bottom: '0%',
+    left: '0%',
+    right: '0%',
     display: 'flex',
     flexDirection: 'column',
-    width: '100%',
-    height: '100%',
     overflow: 'hidden'
+  },
+
+  containerRelative: {
+    position: 'relative'
   },
 
   panelStyles: {
@@ -37,12 +44,25 @@ const styles = {
     display: 'block'
   },
 
+  canvas: {
+    height: '100vh',
+    width: '100vw',
+    objectFit: 'cover'
+  },
+
   video: {
-    width: '0%',
-    height: '0%',
     overflow: 'hidden',
+    width: '100vw',
+    height: '100vh',
+    objectFit: 'cover'
+  },
+
+  videoIOS: {
+    overflow: 'hidden',
+    width: '100vw',
+    height: '100vh',
+    minHeight: '-webkit-fill-available',
     objectFit: 'cover',
-    visibility: 'hidden'
   }
 }
 
@@ -52,7 +72,8 @@ class App extends React.Component {
     this.state={
       showContentPanel: false,
       showNavPanel: false,
-      showEnterPanel: true
+      showEnterPanel: true,
+      showVideo: false
     };
 
     this.worldRef = React.createRef(); 
@@ -67,8 +88,9 @@ class App extends React.Component {
     let enterPanel = this.state.showEnterPanel ? this.getEnterPanel() : <React.Fragment></React.Fragment>;
     let contentPanel = this.getContentPanel();
     let worldContent = this.getWorldContent();
+    let containerStyle = this.state.showContentPanel ? [styles.container, styles.containerRelative] : [styles.container];
     return (
-      <div style={styles.container}>
+      <div style={containerStyle}>
         {worldContent}
         {navPanel}
         {enterPanel}
@@ -78,11 +100,16 @@ class App extends React.Component {
   }
 
   getWorldContent() {
-    let content = isMobile ? 
+    let videoStyles = isIOSDevice() ? [styles.videoIOS] : [styles.video];
+    let videoNode = this.state.showVideo ? 
     (
-      // <video style={styles.video} ref={this.mobileVideoRef} preload='auto' src={mobilevideo} playsInline muted loop />
-      <React.Fragment></React.Fragment>
-    ) :
+      <video style={styles.canvas} ref={this.mobileVideoRef} playsInline muted loop>
+        <source src={mobilevideo} />
+      </video>
+    ) : 
+    (<React.Fragment></React.Fragment>);
+
+    let content = isMobile ? videoNode :
     (
       <World ref={this.worldRef} onInitialCameraAnimationDone={this.onInitialCameraAnimationDone.bind(this)} />
     ); 
@@ -135,9 +162,17 @@ class App extends React.Component {
         // Don't do anything. Since we can't play audio
         // on iOS until a user directly interacts.
       } else {
+        // On Android this works. 
         AudioManager.trigger();
       }
-      // this.mobileVideoRef.current.play();
+
+      // Show the video. 
+      this.setState({
+        showVideo: true
+      }); 
+
+      // Start playing the video.
+      this.mobileVideoRef.current.play();
       this.onInitialCameraAnimationDone();
     } else {
       // Trigger sound.

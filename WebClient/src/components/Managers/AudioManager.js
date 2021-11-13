@@ -11,11 +11,8 @@
 // NOTE: p5 library is loaded through index.html script tags.
 // We assign it to a variable that we want to use.
 
-import { isMobile } from 'react-device-detect'
-
 import soundscape from '../../assets/skybox/soundscape.mp3'
 import gunshot from '../../assets/skybox/gunshot.mp3'
-import { times } from 'lodash';
 
 let p5 = window.p5;  
 

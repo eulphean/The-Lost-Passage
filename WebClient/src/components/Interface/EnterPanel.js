@@ -43,7 +43,7 @@ const animation = {
 
 const styles = {
     container: {
-        position: 'absolute',
+        position: 'fixed',
         top: '0%',
         width: '100%',
         height: '100%',
@@ -327,9 +327,9 @@ class EnterPanel extends React.Component {
   getMessages() {
     return (
       <React.Fragment>
-        <div style={styles.topMessage}>{TopMessage}</div>
-        <div style={styles.leftMessage}>{LeftMessage}</div>
-        <div style={styles.rightMessage}>{RightMessage}</div>
+        {/* <div style={styles.topMessage}>{TopMessage}</div> */}
+        {/* <div style={styles.leftMessage}>{LeftMessage}</div> */}
+        {/* <div style={styles.rightMessage}>{RightMessage}</div> */}
         <div style={styles.bottomMessage}>{BottomMessage}</div>
       </React.Fragment>
     );
