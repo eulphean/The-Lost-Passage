@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/static/css/main.a1e7a69a.chunk.css",
-    "main.js": "/static/js/main.f5b9cd71.chunk.js",
-    "main.js.map": "/static/js/main.f5b9cd71.chunk.js.map",
+    "main.js": "/static/js/main.10b8a34d.chunk.js",
+    "main.js.map": "/static/js/main.10b8a34d.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.eeb2aa39.js",
     "runtime-main.js.map": "/static/js/runtime-main.eeb2aa39.js.map",
     "static/js/2.619872e4.chunk.js": "/static/js/2.619872e4.chunk.js",
@@ -16,7 +16,7 @@
     "static/media/beFantastic.5719ed1c.jpg": "/static/media/beFantastic.5719ed1c.jpg",
     "static/media/stylesheet.css": "/static/media/tenorsans-regular-webfont.c333f777.woff",
     "static/media/dara.5d8346a9.jpg": "/static/media/dara.5d8346a9.jpg",
-    "static/media/gaugan.8b3dea59.mp4": "/static/media/gaugan.8b3dea59.mp4",
+    "static/media/gaugan.a23390f4.mp4": "/static/media/gaugan.a23390f4.mp4",
     "static/media/gunshot.b260913b.mp3": "/static/media/gunshot.b260913b.mp3",
     "static/media/mobile_video.632d8245.mp4": "/static/media/mobile_video.632d8245.mp4",
     "static/media/mute.b0ed1c4e.svg": "/static/media/mute.b0ed1c4e.svg",
@@ -34,6 +34,6 @@
     "static/js/runtime-main.eeb2aa39.js",
     "static/js/2.619872e4.chunk.js",
     "static/css/main.a1e7a69a.chunk.css",
-    "static/js/main.f5b9cd71.chunk.js"
+    "static/js/main.10b8a34d.chunk.js"
   ]
 }
