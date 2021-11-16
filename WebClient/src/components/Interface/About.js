@@ -246,7 +246,7 @@ class About extends React.Component {
     return (
       <div style={styles.container}>
         <div style={styles.title}>
-          ABOUT THE TEAM
+          THE TEAM
         </div>   
         <div style={styles.team}>
           {amay}

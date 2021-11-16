@@ -34,7 +34,7 @@ const PATTERN_TYPE_IDX =0;
 
 class ServerGui {
     constructor(containerComponent) {
-        this.gui = new Pane({title: 'Pigeon GUI', container: containerComponent, expanded: false });
+        this.gui = new Pane({title: 'Pigeon GUI', container: containerComponent, expanded: true});
         this.gui.registerPlugin(EssentialsPlugin);
 
         // Preset name

@@ -26,7 +26,7 @@ const styles = {
       width: '100%',
 
       '@media (min-width: 1200px)': {
-        width: '350px',
+        width: '300px',
         objectFit: 'cover'
       }
     },
@@ -82,7 +82,8 @@ const styles = {
     }
 };
 
-const content = "The project revisits the past to raise these questions about our future - how many extinct species will it take to recalibrate our self-interests? Can we reverse the damage that has been done due to our need for power, control, and authority over other living beings? This work  is an attempt to reunite the audience with what’s lost in the past; however, only to realize that it’s nearly impossible to do so. In recent times, there have been failed attempts to bring passenger pigeons back to life using the DNA of the last remaining pigeon preserved in a historical museum. Can a clone of this pigeon survive in the world like its predecessors? Does it not seem like a scientific paradox to recreate a lost species, when our existing actions are deteriorating the relationship between us and the species that are presently alive and endangered on this planet? “The Lost Passage” points out that the balance has already been tipped and the damage has already been done. The need of the hour is to collectively reconsider our relationship with other living beings and take urgent steps before authoritatively exhausting the natural resources for our own survival.";
+const contentA = "It was a grim awakening in 1914 when the passenger pigeons faced extinction. This displayed the capability of industrial humanity, which annihilated even the most plentiful of natural resources. The Lost Passage reappropriates the past to pose questions about our future - how many extinct species will it take to recalibrate our self-interests? Can we reverse the damage that has been done due to our need for power, control, and authority over other living beings? ";
+const contentB = "Perhaps through the lens of this work, the audience may reflect upon our lack of empathy towards other living beings, our guileful ways of harming others for self-interests, and our problematic perception that nature is the implacable enemy that needs to be civilized, contained, and controlled.";
  
 
 
@@ -101,7 +102,9 @@ class ClimateStatement extends React.Component {
             CLIMATE STATEMENT
           </div>
           <div style={styles.info}>
-            {content}
+            {contentA}
+            <br /><br />
+            {contentB}
           </div>
         </div>
         <video style={styles.video} src={gaugan} autoPlay playsInline muted loop/>

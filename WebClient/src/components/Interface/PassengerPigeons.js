@@ -26,7 +26,7 @@ const styles = {
       width: '100%',
 
       '@media (min-width: 1200px)': {
-        width: '350px',
+        width: '300px',
         objectFit: 'cover'
       }
     },
@@ -82,7 +82,9 @@ const styles = {
     }
 };
 
-const content = "It was a grim awakening in 1914 when the passenger pigeons faced extinction - this displayed the capability of industrial humanity which annihilated even the most plentiful of natural resources. As a sociable flock, they once grew to a population of over 5 billion in the 1800s before going into extinction within four decades due to human intervention. This project is a digitally reconstructed environment of a swarm of artificial passenger pigeons. In this digital space, they inhabit a never-ending, sublime, yet destitute memory of a lost landscape. However, on closer inspection they are actually confined within the four walls of this space. The works reflects upon this historical moment of holocene extinction by utilizing artificial intelligence and machine learning to resurrect a memory of a lost passage, thus evoking a sense of being trapped and confined through the sublime imagery. The audience can coexist in an environment with the ghost of a species they once eliminated -  an ironic and strange affair. Perhaps these occurrences can compel the audience to reflect upon our lack of empathy towards other living beings, our guileful ways of harming others for self-interests, and our problematic perception that nature is the implacable enemy that needs to be civilized, contained, and controlled."
+const contentA = "The Lost Passage is a digitally reconstructed environment of a swarm of artificial passenger pigeons, which went extinct in the early 20th century. They once grew to a population of over 5 billion in the 1800s before going into extinction within four decades due to human intervention. The last known flock of these pigeons was raised in careful captivity and migrated through a freight train within North America every year.";
+const contentB = "In their new digital home on the internet, they inhabit a never-ending, sublime, yet destitute memory of a lost landscape. However, paradoxically they are confined within the four walls of this space. By using artificial intelligence and machine learning, The Lost Passage reflects upon the historical moment of passenger pigeon’s holocene extinction and resurrects a memory of this lost species.";
+
 class PassengerPigeons extends React.Component {
   constructor(props) {
     super(props);
@@ -96,10 +98,12 @@ class PassengerPigeons extends React.Component {
         <video style={styles.ppVideo} autoPlay playsInline muted loop src={pp} />
         <div style={styles.content}>
           <div style={styles.title}>
-            PASSENGER PIGEONS
+            THE LOST PASSAGE
           </div>
           <div style={styles.info}>
-            {content}
+            {contentA}
+            <br /><br />
+            {contentB}
           </div>
         </div>
       </div>

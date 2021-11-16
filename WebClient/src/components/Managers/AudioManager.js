@@ -48,7 +48,6 @@ class Audio {
 var sketch = (s) => {
     // Single array that holds all the audio files. 
     let soundObject = '';
-    let gunObject = '';
     let audioManagerCbk; 
 
     s.preload = () => {
@@ -56,11 +55,6 @@ var sketch = (s) => {
         let sound = s.loadSound(soundscape); 
         let env = new p5.Envelope(5.0, 0.2, 2.5, 0.1, 1.5, 0.);
         soundObject = new Audio(sound, env); 
-
-        // Gunshot
-        sound = s.loadSound(gunshot); 
-        env = new p5.Envelope(0.5, 1.0, 0.5, 0.6, 2, 0.);
-        gunObject = new Audio(sound, env); 
 
         // Audio manager is ready now. 
         audioManagerCbk();
@@ -84,10 +78,6 @@ var sketch = (s) => {
 
     s.release = () => {
         soundObject.release();
-    }
-
-    s.shoot = () => {
-        gunObject.play(); 
     }
 };
 
@@ -114,14 +104,6 @@ class AudioManager {
 
     release() {
         this.myP5.release();
-    }
-
-    shoot() {
-        this.myP5.shoot();
-    }
-
-    triggerWithTime(time) {
-        this.myP5.triggerWithTime(time);
     }
 }
 

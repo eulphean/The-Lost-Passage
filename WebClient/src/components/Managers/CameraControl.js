@@ -36,7 +36,7 @@ class CameraControl {
 
         // Mouse activites
         window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
-        // window.addEventListener('wheel', this.onMouseWheel.bind(this), false);
+        window.addEventListener('wheel', this.onMouseWheel.bind(this), false);
     }
 
     update(scene) {
@@ -53,14 +53,14 @@ class CameraControl {
     }
 
     onMouseMove(event) {
-        this.mouse.x = (event.clientX - window.innerWidth / 2) * 0.4;
-        this.mouse.y = (event.clientY - window.innerHeight / 2) * 0.8;
+        this.mouse.x = (event.clientX - window.innerWidth / 2) * 0.3;
+        this.mouse.y = (event.clientY - window.innerHeight / 2) * 0.7;
     }
     
     onMouseWheel(event) {
         this.zoom += event.deltaY * 0.1;
         // Constrain the zoom within the reasonable range
-        this.zoom = Math.min(Math.max(100, this.zoom), 400);
+        this.zoom = Math.min(Math.max(100, this.zoom), 300);
     }
 
     initialTween(onAnimationComplete) {

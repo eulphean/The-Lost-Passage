@@ -236,9 +236,6 @@ class PigeonManager {
             PigeonParams.Seperation *= 2.5;
             PigeonParams.MaxSpeed *= 1.8;
 
-            // Play gunshot sound. 
-            AudioManager.shoot(); 
-
             // Reduce the pigeons. 
             if (PigeonParams.Count > 0) {
                 this.shootCount++; 

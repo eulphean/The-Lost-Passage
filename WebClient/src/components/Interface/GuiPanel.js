@@ -14,7 +14,8 @@ const styles = {
     container: {
         position: 'absolute',
         top: '30px',
-        right: '35px'
+        right: '35px',
+        zIndex: 2
     }
 };
 

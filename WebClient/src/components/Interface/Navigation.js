@@ -40,6 +40,7 @@ const styles = {
       flexDirection: 'column', 
       alignItems: 'center',
       visibility: 'visible',     
+      zIndex: 1,
 
       '@media (min-width: 768px) and (orientation: landscape)': {
         alignItems: 'flex-start'
@@ -204,19 +205,19 @@ class Navigation extends React.Component {
                 onClick={this.onClick.bind(this, PanelTitle.PIGEONS)}
                 onMouseEnter={this.onHoverPigeons.bind(this)} 
                 onMouseLeave={this.onHoverPigeons.bind(this)}>
-              PASSENGER PIGEONS
+              ABOUT
             </div>
             <div style={climateStyle} 
               onClick={this.onClick.bind(this, PanelTitle.CLIMATE)}
               onMouseEnter={this.onHoverClimate.bind(this)}
               onMouseLeave={this.onHoverClimate.bind(this)}>
-              CLIMATE STATEMENT
+              STATEMENT
             </div>
             <div style={aboutStyle}
                 onClick={this.onClick.bind(this, PanelTitle.ABOUT)}
                 onMouseEnter={this.onHoverAbout.bind(this)}
                 onMouseLeave={this.onHoverAbout.bind(this)}>
-              ABOUT US
+              TEAM
             </div>
           </div>
           <div style={styles.buttonCollection}>
