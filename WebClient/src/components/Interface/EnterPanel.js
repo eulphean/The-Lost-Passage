@@ -19,7 +19,7 @@ import { IsWorldReady } from './World.js'
 import { isMobile } from 'react-device-detect'
 
 let IsMobileVideoReady = true; 
-const Mobile_Timeout = 2500; // 2.5 seconds
+const Mobile_Timeout = 3000; // 3.5 seconds
 
 const FLASH_DURATION = '1.5s';
 const TopMessage = "\"They existed in billions, but today they are lost and revered only in museums.\"";
@@ -280,6 +280,54 @@ const styles = {
         fontSize: fontSize.lessBig,
         bottom: '30px'
       }
+    },
+
+    headsupContainer: {
+      marginTop: padding.lessBig,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      maxWidth: '200px',
+
+      '@media (max-width: 800px) and (orientation: landscape)': {
+        marginTop: padding.small
+      },
+
+      '@media (min-width: 768px) and (orientation: portrait)': {
+        maxWidth: '300px'
+      },
+
+      '@media (min-width: 1024px) and (orientation: portrait)': {
+        maxWidth: '400px'
+      },
+    },
+
+    hContent: {
+      color: color.darkBlue, 
+      fontSize: fontSize.lessSmall,
+      fontFamily: fontFamily.tenor,
+      textAlign: 'center',
+
+      '@media (min-width: 768px) and (orientation: portrait)': {
+        fontSize: fontSize.small
+      },
+
+      '@media (min-width: 1024px) and (orientation: portrait)': {
+        fontSize: fontSize.big
+      },
+    },
+
+    hContentSmall: {
+      fontSize: fontSize.verySmall,
+
+      '@media (min-width: 768px) and (orientation: portrait)': {
+        fontSize: fontSize.lessSmall
+      },
+
+      '@media (min-width: 1024) and (orientation: portrait)': {
+        fontSize: fontSize.lessBig
+      },
     }
 };
 
@@ -325,6 +373,7 @@ class EnterPanel extends React.Component {
 
   getTitle() {
     let buttonStyle = this.state.isHovering ? [styles.button, styles.hover] : [styles.button]; 
+    let headsup = !this.state.isDisabled && isMobile ? this.getMobileHeadsup() : <React.Fragment></React.Fragment>;
     let button = this.state.isDisabled ? <React.Fragment></React.Fragment> : (
       <button 
       disabled={this.state.isDisabled}
@@ -338,7 +387,17 @@ class EnterPanel extends React.Component {
             <div style={[styles.title, styles.flash]}
                 onAnimationEnd={this.onStartAnimationEnd.bind(this)}>THE LOST PASSAGE</div>
             {button}  
+            {headsup}
         </React.Fragment>
+    );
+  }
+
+  getMobileHeadsup() {
+    return (
+      <div style={styles.headsupContainer}>
+        <div style={styles.hContent}>Using a mobile device?</div>
+        <div style={[styles.hContent, styles.hContentSmall]}>For the full interactive experience, use desktop or laptop.</div>
+      </div>
     );
   }
   
@@ -371,9 +430,7 @@ class EnterPanel extends React.Component {
   checkIfReady() {
     if (isMobile) {
       setTimeout(() => {
-        if (AudioManager.isAudioManagerReady) {
-          this.hasFinishedLoading();
-        }
+        this.hasFinishedLoading();
       }, Mobile_Timeout); 
     } else {
       setTimeout(() => {

@@ -68,6 +68,8 @@ class App extends React.Component {
     this.navRef = React.createRef();
     this.mobileVideoRef = React.createRef();
     this.enterPanelRef = React.createRef(); 
+
+    this.shouldPlay = false; 
   }
 
   render() {
@@ -86,18 +88,20 @@ class App extends React.Component {
     );
   }
 
-  getWorldContent() {
-    // let videoStyles = isIOSDevice() ? [styles.videoIOS] : [styles.video];
-    // let videoNode = this.state.showVideo ? 
-    // (
-    //   <video style={styles.videoCanvas} ref={this.mobileVideoRef} playsInline muted loop>
-    //     <source src={mobilevideo} />
-    //   </video>
-    // ) : 
-    // (<React.Fragment></React.Fragment>);
+  componentDidMount() {
+    if (this.mobileVideoRef.current) {
+      this.mobileVideoRef.current.addEventListener('playing', () => {
+        console.log('Beginning to play the video.');
+        if (!this.shouldPlay) {
+          this.mobileVideoRef.current.pause();
+        }
+      });
+    }
+  }
 
+  getWorldContent() {
     let videoNode = (
-      <video style={styles.videoCanvas} ref={this.mobileVideoRef} playsInline muted loop>
+      <video style={styles.videoCanvas} ref={this.mobileVideoRef} preload='metadata' autoPlay playsInline muted loop>
         <source src={mobilevideo} />
       </video>
     );
@@ -146,10 +150,6 @@ class App extends React.Component {
   }
 
   onLoadComplete() {
-    this.setState({
-      showEnterPanel: false
-    });
-
     if (isMobile) {
       if (isIOSDevice()) {
         // Don't do anything. Since we can't play audio
@@ -165,14 +165,19 @@ class App extends React.Component {
       }); 
 
       // Start playing the video.
+      this.shouldPlay = true; 
       this.mobileVideoRef.current.play();
       this.onInitialCameraAnimationDone();
     } else {
       // Trigger sound.
-       AudioManager.trigger();
+      AudioManager.trigger();
       // Begin zoom into the world. 
       this.worldRef.current.enterWorld(); 
     }
+       
+    this.setState({
+      showEnterPanel: false
+    });
   }
 
   onInitialCameraAnimationDone() {

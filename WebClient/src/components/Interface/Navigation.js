@@ -66,7 +66,7 @@ const styles = {
         fontSize: fontSize.veryHuge,
       },
 
-      '@media (min-width: 1200px)': {
+      '@media (min-width: 1024px)': {
         fontSize: fontSize.extraHuge,
       }
     },
@@ -83,24 +83,25 @@ const styles = {
 
     title: {
         fontFamily: fontFamily.tenor,
-        fontSize: fontSize.lessSmall,
+        fontSize: fontSize.big,
         letterSpacing: 2,
         color: color.darkBlue,
         cursor: 'crosshair',
         paddingTop: padding.verySmall,
-        fontWeight: '900',
+        textShadow: '1px 1px 3px ' + color.darkBlue,
 
         '@media (min-width: 768px) and (orientation: portrait)': {
-          fontSize: fontSize.small
+          fontSize: fontSize.veryBig
         },
 
-        '@media (min-width: 1200px)': {
-          fontSize: fontSize.big
+        '@media (min-width: 1024px)': {
+          fontSize: fontSize.veryBig
         }
     },
 
     hover: {
-      color: color.brown
+      color: color.orange,
+      textShadow: '1px 1px 3px ' + color.orange,
     },
 
     homeButton: {
@@ -211,7 +212,7 @@ class Navigation extends React.Component {
               onClick={this.onClick.bind(this, PanelTitle.CLIMATE)}
               onMouseEnter={this.onHoverClimate.bind(this)}
               onMouseLeave={this.onHoverClimate.bind(this)}>
-              STATEMENT
+              CLIMATE
             </div>
             <div style={aboutStyle}
                 onClick={this.onClick.bind(this, PanelTitle.ABOUT)}
