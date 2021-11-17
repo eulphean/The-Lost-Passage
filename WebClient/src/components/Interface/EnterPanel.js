@@ -18,7 +18,6 @@ import AudioManager from '../Managers/AudioManager.js'
 import { IsWorldReady } from './World.js'
 import { isMobile } from 'react-device-detect'
 
-let IsMobileVideoReady = true; 
 const Mobile_Timeout = 3000; // 3.5 seconds
 
 const FLASH_DURATION = '1.5s';
@@ -54,9 +53,9 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 1,
-        background: '#e6e9ec',
-        background: '-moz-linear-gradient(top, #e6e9ec 0%, #f9fdff 100%)', /* FF3.6-15 */
-        background: '-webkit-linear-gradient(top, #e6e9ec 0%,#f9fdff 100%)', /* Chrome10-25,Safari5.1-6 */
+        // background: '#e6e9ec',
+        // background: '-moz-linear-gradient(top, #e6e9ec 0%, #f9fdff 100%)', /* FF3.6-15 */
+        // background: '-webkit-linear-gradient(top, #e6e9ec 0%,#f9fdff 100%)', /* Chrome10-25,Safari5.1-6 */
         background: 'linear-gradient(to bottom, #e6e9ec 0%,#f9fdff 100%)' /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     },
 
@@ -441,11 +440,6 @@ class EnterPanel extends React.Component {
         }
       }, 250); 
     }
-  }
-
-  setMobileVideoReady() {
-    IsMobileVideoReady = true; 
-    console.log('Mobile Video Ready');
   }
 
   hasFinishedLoading() {

@@ -6,6 +6,7 @@
 */
 
 import * as THREE from 'three'
+import { isSafari } from './Helper';
 
 // User interface Params
 export let SkyboxParams = {
@@ -32,21 +33,33 @@ class SkyboxManager {
 
         // Top video texture. 
         const topTexture = new THREE.VideoTexture(videoRef.current);
-        topTexture.wrapS = THREE.MirroredRepeatWrapping;
-        topTexture.wrapT = THREE.MirroredRepeatWrapping;
-        // topTexture.offset = new THREE.Vector2(1.5, 1.5);
-        // topTexture.repeat = new THREE.Vector2(0.25, 0.25);
-        topTexture.center = new THREE.Vector2(0.25, 0.25);
-        topTexture.rotation = Math.PI;
-        topTexture.flipY = false;
+
+        // Texture wrapping broken on safari. 
+        if (isSafari()) {
+            topTexture.wrapS = THREE.ClampToEdgeWrapping;
+            topTexture.wrapT = THREE.ClampToEdgeWrapping; 
+        } else {
+            topTexture.wrapS = THREE.MirroredRepeatWrapping;
+            topTexture.wrapT = THREE.MirroredRepeatWrapping;
+            // topTexture.offset = new THREE.Vector2(1.5, 1.5);
+            // topTexture.repeat = new THREE.Vector2(0.25, 0.25);
+            topTexture.center = new THREE.Vector2(0.25, 0.25);
+            topTexture.rotation = Math.PI;
+            topTexture.flipY = false;
+        }
 
         // Bottom video texture. 
         const bottomTexture = new THREE.VideoTexture(videoRef.current);
-        bottomTexture.wrapS = THREE.MirroredRepeatWrapping;
-        bottomTexture.wrapT = THREE.MirroredRepeatWrapping;
-        bottomTexture.center = new THREE.Vector2(0.5, 1.0);
-        bottomTexture.rotation = Math.PI / 2;
-        bottomTexture.flipY = false;
+        if (isSafari()) {
+            bottomTexture.wrapS = THREE.ClampToEdgeWrapping;
+            bottomTexture.wrapT = THREE.ClampToEdgeWrapping; 
+        } else {
+            bottomTexture.wrapS = THREE.MirroredRepeatWrapping;
+            bottomTexture.wrapT = THREE.MirroredRepeatWrapping;
+            bottomTexture.center = new THREE.Vector2(0.5, 1.0);
+            bottomTexture.rotation = Math.PI / 2;
+            bottomTexture.flipY = false;
+        }
 
         // Back video texture. 
         const backTexture = new THREE.VideoTexture(videoRef.current);

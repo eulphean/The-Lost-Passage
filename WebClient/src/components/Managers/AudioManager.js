@@ -12,7 +12,7 @@
 // We assign it to a variable that we want to use.
 
 import soundscape from '../../assets/skybox/soundscape.mp3'
-import gunshot from '../../assets/skybox/gunshot.mp3'
+// import gunshot from '../../assets/skybox/gunshot.mp3'
 
 let p5 = window.p5;  
 

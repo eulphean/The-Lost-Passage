@@ -13,8 +13,6 @@ import Target from '../Environment/Target'
 import GPUPigeon from '../Environment/GPUPigeon.js';
 import { BIRDS } from '../Environment/GPUPigeon.js'
 import GPURenderer from './GPURenderer.js';
-import AudioManager from './AudioManager';
-
 
 // Set this to true when everything has been loaded. 
 export let IsPigeonManagerReady = false; 

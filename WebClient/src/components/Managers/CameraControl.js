@@ -6,10 +6,10 @@
 */
 
 import * as THREE from 'three'
-import oc from 'three-orbit-controls'
+// import oc from 'three-orbit-controls'
 import * as TWEEN from "@tweenjs/tween.js"
 
-const OrbitControls = oc(THREE); 
+// const OrbitControls = oc(THREE); 
 
 export let OrbitParams = {
     EnableControls: false,
@@ -77,14 +77,14 @@ class CameraControl {
         tween.start(); 
     }
 
-    updateControls() {
-        this.controls.update();
-        this.controls.enablePan = OrbitParams.EnablePan;
-        this.controls.autoRotate = OrbitParams.AutoRotate; 
-        this.controls.autoRotateSpeed = OrbitParams.RotateSpeed;
-        this.controls.enabled = OrbitParams.EnableControls; 
-        this.controls.enableKeys = OrbitParams.EnableKeys;
-    }
+    // updateControls() {
+    //     this.controls.update();
+    //     this.controls.enablePan = OrbitParams.EnablePan;
+    //     this.controls.autoRotate = OrbitParams.AutoRotate; 
+    //     this.controls.autoRotateSpeed = OrbitParams.RotateSpeed;
+    //     this.controls.enabled = OrbitParams.EnableControls; 
+    //     this.controls.enableKeys = OrbitParams.EnableKeys;
+    // }
 
     getCamera() {
         return this.camera;
