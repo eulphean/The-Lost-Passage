@@ -15,7 +15,6 @@ import { ReactComponent as Mute } from '../../assets/icons/mute.svg'
 import { ReactComponent as Volume } from '../../assets/icons/volume.svg'
 import { isMobile } from 'react-device-detect';
 import AudioManager from '../Managers/AudioManager.js';
-import { isIOSDevice } from '../Managers/Helper.js';
 
 const animation = {
   color: Radium.keyframes({
@@ -179,7 +178,7 @@ class Navigation extends React.Component {
   constructor(props) {
     super(props);
     // On iOS we never are playing sound in the beginning. So we are paused by default. 
-    let isPlayingSoundInitialState = isIOSDevice() ? false : true; 
+    let isPlayingSoundInitialState = isMobile ? false : true; 
 
     this.state={ 
       isHoveringPigeons: false,

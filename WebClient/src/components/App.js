@@ -17,7 +17,6 @@ import { isMobile } from 'react-device-detect'
 import { elementScrollIntoView } from 'seamless-scroll-polyfill'
 
 import mobilevideo from '../assets/info/mobile_video.mp4'
-import { isIOSDevice } from './Managers/Helper.js';
 
 const styles = {
   container: {
@@ -59,8 +58,7 @@ class App extends React.Component {
     this.state={
       showContentPanel: false,
       showNavPanel: false,
-      showEnterPanel: true,
-      showVideo: false
+      showEnterPanel: true
     };
 
     this.worldRef = React.createRef(); 
@@ -151,18 +149,13 @@ class App extends React.Component {
 
   onLoadComplete() {
     if (isMobile) {
-      if (isIOSDevice()) {
-        // Don't do anything. Since we can't play audio
-        // on iOS until a user directly interacts.
-      } else {
-        // On Android this works. 
-        AudioManager.trigger();
-      }
-
-      // Show the video. 
-      this.setState({
-        showVideo: true
-      }); 
+      // if (isIOSDevice()) {
+      //   // Don't do anything. Since we can't play audio
+      //   // on iOS until a user directly interacts.
+      // } else {
+      //   // On Android this works. 
+      //   AudioManager.trigger();
+      // }
 
       // Start playing the video.
       this.shouldPlay = true; 

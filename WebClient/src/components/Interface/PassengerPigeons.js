@@ -9,7 +9,7 @@ import React from 'react'
 import Radium from 'radium'
 
 import { color, fontFamily, padding, fontSize } from '../Utilities/CommonStyles';
-import pp from '../../assets/info/pigeon.mp4'
+import pp from '../../assets/info/gaugan.mp4'
 
 const styles = {
     container: {
@@ -82,8 +82,8 @@ const styles = {
     }
 };
 
-const contentA = "The Lost Passage is a digitally reconstructed environment of a swarm of artificial passenger pigeons, which went extinct in the early 20th century. They once grew to a population of over 5 billion in the 1800s before going into extinction within four decades due to human intervention. The last known flock of these pigeons was raised in careful captivity and migrated through a freight train within North America every year.";
-const contentB = "In their new digital home on the internet, they inhabit a never-ending, sublime, yet destitute memory of a lost landscape. However, paradoxically they are confined within the four walls of this space. By using artificial intelligence and machine learning, The Lost Passage reflects upon the historical moment of passenger pigeon’s holocene extinction and resurrects a memory of this lost species.";
+const contentA = "The Lost Passage is a digitally reconstructed environment of a swarm of artificial passenger pigeons, which went extinct in the early 20th century. They once grew to a population of over 5 billion in the 1800s before going into extinction within four decades due to human intervention. The last known flock of these pigeons was raised in careful captivity at University of Chicago and migrated through cargo trains across North America every year.";
+const contentB = "In their new digital home on the internet, they inhabit a never-ending, sublime, yet destitute memory of a lost landscape. However, paradoxically they are confined within the six walls of this space. By using artificial intelligence and machine learning, The Lost Passage reflects upon the historical moment of passenger pigeon’s holocene extinction and resurrects a memory of this lost species.";
 
 class PassengerPigeons extends React.Component {
   constructor(props) {

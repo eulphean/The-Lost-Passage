@@ -52,12 +52,12 @@ var sketch = (s) => {
 
     s.preload = () => {
         // Soundscape 
-        let sound = s.loadSound(soundscape); 
-        let env = new p5.Envelope(5.0, 0.2, 2.5, 0.1, 1.5, 0.);
-        soundObject = new Audio(sound, env); 
-
-        // Audio manager is ready now. 
-        audioManagerCbk();
+        let sound = s.loadSound(soundscape, () => {
+            let env = new p5.Envelope(5.0, 0.2, 2.5, 0.1, 1.5, 0.);
+            soundObject = new Audio(sound, env); 
+            // Audio manager is ready now. 
+            audioManagerCbk();
+        }); 
     }
 
     s.audioCallback = (audioCbk) => {

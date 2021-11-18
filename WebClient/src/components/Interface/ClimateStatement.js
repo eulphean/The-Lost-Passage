@@ -9,7 +9,7 @@ import React from 'react'
 import Radium from 'radium'
 
 import { color, fontFamily, padding, fontSize } from '../Utilities/CommonStyles';
-import gaugan from '../../assets/info/gaugan.mp4'
+import gaugan from '../../assets/info/pigeon.mp4'
 
 const styles = {
     container: {
