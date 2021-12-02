@@ -234,7 +234,7 @@ class PigeonManager {
             PigeonParams.Seperation *= 2.5;
             PigeonParams.MaxSpeed *= 1.8;
 
-            // Reduce the pigeons. 
+            // // Reduce the pigeons. 
             if (PigeonParams.Count > 0) {
                 this.shootCount++; 
                 PigeonParams.Count = PigeonParams.Count - this.shootCount * KillFactor; 

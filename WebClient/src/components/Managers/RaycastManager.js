@@ -34,10 +34,10 @@ class RaycastManager {
     }
 
     onMouseClick() {
-        let elapsedTime = this.clock.getDelta(); 
-        if (this.isIntersecting && elapsedTime > COOLDOWN_PERIOD) {
-            this.shootPigeon();            
-        }
+        // let elapsedTime = this.clock.getDelta(); 
+        // if (this.isIntersecting && elapsedTime > COOLDOWN_PERIOD) {
+        //     this.shootPigeon();            
+        // }
     }
 } 
 

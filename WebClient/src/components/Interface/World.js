@@ -91,7 +91,6 @@ class World extends React.Component {
 
     // Three.js Renderer
     this.rendererManager = new RendererManager(); 
-    this.rendererManager.renderer.domElement.addEventListener('click', this.onShootPigeon.bind(this), false);
 
     // Pigeons
     this.pigeonManager = new PigeonManager(this.scene); 
@@ -177,14 +176,15 @@ class World extends React.Component {
 
       this.rendererManager.monitorDrawCalls();
       
-      // Wait till the camera animation has stopped before beginning Raycasting. 
-      if (this.cameraControl.animationStopped) {
-        let mesh = this.skyboxManager.getMesh(); 
-        // Intersect with bounding box mesh? 
-        if (mesh) {
-          this.raycastManager.intersect(this.cameraControl.camera, mesh, this.shouldAnimate); 
-        }
-      }
+      // Don't do this.
+      // // Wait till the camera animation has stopped before beginning Raycasting. 
+      // if (this.cameraControl.animationStopped) {
+      //   let mesh = this.skyboxManager.getMesh(); 
+      //   // Intersect with bounding box mesh? 
+      //   if (mesh) {
+      //     this.raycastManager.intersect(this.cameraControl.camera, mesh, this.shouldAnimate); 
+      //   }
+      // }
     this.fpsGraph.end();
   }
 

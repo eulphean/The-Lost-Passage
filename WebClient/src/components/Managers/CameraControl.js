@@ -22,8 +22,8 @@ const zoom = 250;
 let cameraCorners = [
     {x: zoom, y: 0, z: 0},
     {x:-zoom, y: 0, z: 0},
-    {x: 0, y: zoom, z: 0},
-    {x:0, y: -zoom, z: 0},
+    {x: 50, y: zoom, z: 0},
+    {x: 50, y: -zoom, z: 0},
     {x: 0, y: 0, z: zoom}, // Initial camera
     {x:0, y: 0, z: -zoom}
 ];
@@ -88,7 +88,6 @@ class CameraControl {
     }
 
     onMouseClick(event) {
-        console.log(event);
         this.calcNewCameraIdx(); 
 
         // Tween to that location. 
