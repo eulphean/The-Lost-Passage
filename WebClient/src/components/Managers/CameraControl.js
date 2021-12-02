@@ -6,10 +6,9 @@
 */
 
 import * as THREE from 'three'
-// import oc from 'three-orbit-controls'
 import * as TWEEN from "@tweenjs/tween.js"
-
-// const OrbitControls = oc(THREE); 
+import '../Utilities/Utility'
+import { getRandomNum } from '../Utilities/Utility';
 
 export let OrbitParams = {
     EnableControls: false,
@@ -18,6 +17,16 @@ export let OrbitParams = {
     RotateSpeed: 0.1, 
     EnableKeys: true
 };
+
+const zoom = 250; 
+let cameraCorners = [
+    {x: zoom, y: 0, z: 0},
+    {x:-zoom, y: 0, z: 0},
+    {x: 0, y: zoom, z: 0},
+    {x:0, y: -zoom, z: 0},
+    {x: 0, y: 0, z: zoom}, // Initial camera
+    {x:0, y: 0, z: -zoom}
+];
 
 class CameraControl {
     constructor() {
@@ -29,22 +38,19 @@ class CameraControl {
         this.camera.frustumCulled = true; 
 
         this.mouse = new THREE.Vector2(0, 0);
-        this.zoom = 250;
-
-        // this.controls = new OrbitControls(this.camera); 
         this.animationStopped = false;
+        this.currentIdx = 4; // Starting position of the camera. 
 
         // Mouse activites
         window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
-        window.addEventListener('wheel', this.onMouseWheel.bind(this), false);
+        //window.addEventListener('wheel', this.onMouseWheel.bind(this), false);
     }
 
     update(scene) {
         // Once the camera animation stopped, return the control back to user
         if (this.animationStopped){
-            this.camera.position.x += (this.mouse.x - this.camera.position.x ) * .025;
-            this.camera.position.y += (this.mouse.y - this.camera.position.y ) * .025;
-            this.camera.position.z = this.zoom;
+            // Now we need to know how to update the positions. 
+            this.cameraUpdates();
         }
 
         this.camera.lookAt(scene.position);
@@ -65,26 +71,97 @@ class CameraControl {
 
     initialTween(onAnimationComplete) {
         let tween = new TWEEN.Tween(this.camera.position)
-        .to({x:0, y:0, z:this.zoom}, 4000)
+        .to(cameraCorners[this.currentIdx], 4000)
         .easing(TWEEN.Easing.Cubic.Out)
         .onComplete(() => {
           // Animation has finished. 
           this.animationStopped = true;
+
           // Now, show the nav panel.
           onAnimationComplete();
+
+          // Hook the event once the animation completes
+          window.addEventListener('click', this.onMouseClick.bind(this), false);
         }); 
 
         tween.start(); 
     }
 
-    // updateControls() {
-    //     this.controls.update();
-    //     this.controls.enablePan = OrbitParams.EnablePan;
-    //     this.controls.autoRotate = OrbitParams.AutoRotate; 
-    //     this.controls.autoRotateSpeed = OrbitParams.RotateSpeed;
-    //     this.controls.enabled = OrbitParams.EnableControls; 
-    //     this.controls.enableKeys = OrbitParams.EnableKeys;
-    // }
+    onMouseClick(event) {
+        console.log(event);
+        this.calcNewCameraIdx(); 
+
+        // Tween to that location. 
+        let tween = new TWEEN.Tween(this.camera.position)
+        .to(cameraCorners[this.currentIdx], 4000)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .onComplete(() => {
+            // Animation has stopped. 
+            this.animationStopped = true; 
+        }); 
+
+        tween.start();
+        this.animationStopped = false;
+    }
+
+    calcNewCameraIdx() {
+        let idx = Math.floor(getRandomNum(0, cameraCorners.length));
+        while (idx === this.currentIdx) {
+            idx = Math.floor(getRandomNum(0, cameraCorners.length)); 
+        }
+
+        this.currentIdx = idx; 
+    }
+
+    cameraUpdates() {
+        switch (this.currentIdx) {
+            case 0: {
+                this.camera.position.x = zoom;
+                this.camera.position.y += (this.mouse.y - this.camera.position.y) * .025;
+                this.camera.position.z += (this.mouse.x - this.camera.position.z) * .025;
+                break;
+            }
+
+            case 1: {
+                this.camera.position.x = -zoom;
+                this.camera.position.y += (this.mouse.y - this.camera.position.y) * .025;
+                this.camera.position.z += (this.mouse.x - this.camera.position.z) * .025;
+                break; 
+            }
+
+            case 2: {
+                this.camera.position.x += (this.mouse.y - this.camera.position.x) * .025;
+                this.camera.position.y = zoom; 
+                this.camera.position.z += (this.mouse.x - this.camera.position.z) * .025;
+                break;
+            }
+
+            case 3: {
+                this.camera.position.x +=  (this.mouse.x - this.camera.position.x) * .025;
+                this.camera.position.y = -zoom; 
+                this.camera.position.z += (this.mouse.y - this.camera.position.z) * .025;
+                break;
+            }
+
+            case 4: {
+                this.camera.position.x += (this.mouse.x - this.camera.position.x) * .025;
+                this.camera.position.y += (this.mouse.y - this.camera.position.y) * .025; 
+                this.camera.position.z = zoom;
+                break;
+            }
+
+            case 5: {
+                this.camera.position.x += (this.mouse.x - this.camera.position.x) * .025;
+                this.camera.position.y += (this.mouse.y - this.camera.position.y) * .025; 
+                this.camera.position.z = -zoom;
+                break;
+            }
+
+            default: {
+                break; 
+            }
+        }
+    }
 
     getCamera() {
         return this.camera;

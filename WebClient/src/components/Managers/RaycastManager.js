@@ -16,15 +16,11 @@ class RaycastManager {
         this.shootPigeon = shootPigeonCallback;
         this.isIntersecting = false;  
 
+        // Hook this to the right click mechanism. 
         // Listen for mouse events for raycaster.  
-        window.addEventListener('click', this.onMouseClick.bind(this), false);
+        // window.addEventListener('click', this.onMouseClick.bind(this), false);
 
         this.clock = new THREE.Clock(); 
-    }
-
-    onMouseMove(event) {
-        this.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-        this.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
     }
 
     intersect(camera, targetMesh, shouldAnimate) {
