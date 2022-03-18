@@ -48,6 +48,7 @@ class Websocket {
   }
 
   readAllPresets(readPresetsCallback) {
+    console.log('Query Socket Presets.');
     this.socket.emit('getPresets'); 
     this.handlePresetsCbk = readPresetsCallback; // Subscribe to receive data when the call completes. 
   }
