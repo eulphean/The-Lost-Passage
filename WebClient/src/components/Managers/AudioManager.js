@@ -16,6 +16,14 @@ import soundscape from '../../assets/skybox/soundscape.mp3'
 
 let p5 = window.p5;  
 
+export let MicParams = {
+    Bass: 0,
+    Mid: 0,
+    Treble: 0,
+    LowMid: 0,
+    HighMid: 0
+}
+
 class Audio {
     constructor(soundObj, env) {
         this.soundObject = soundObj;
@@ -95,8 +103,20 @@ var sketch = (s) => {
     s.draw = () => {
         if (canAnalyze) {
             fft.analyze();
-            let e = fft.getEnergy('bass') + fft.getEnergy('treble');
-            console.log(e);
+            let bass = s.map(fft.getEnergy('bass'), 0, 255, 0, 1); 
+            let mid = s.map(fft.getEnergy('mid'), 0, 255, 0, 1);
+            let treble = s.map(fft.getEnergy('treble'), 0, 255, 0, 1);
+            let lowMid = s.map(fft.getEnergy('lowMid'), 0, 255, 0, 1);
+            let highMid = s.map(fft.getEnergy('highMid'), 0, 255, 0, 1);
+
+            console.log(fft.getCentroid());
+
+            // Bind the fft outputs to these variables.  
+            MicParams.Bass = bass;
+            MicParams.Mid = mid; 
+            MicParams.Treble = treble;
+            MicParams.LowMid = lowMid;
+            MicParams.HighMid = highMid;
         }
     };
 

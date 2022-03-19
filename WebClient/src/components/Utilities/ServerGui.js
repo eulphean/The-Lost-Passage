@@ -19,6 +19,7 @@ import { PigeonParams } from '../Managers/PigeonManager';
 import { OrbitParams } from '../Managers/CameraControl.js'
 import { SkyboxParams } from '../Managers/SkyboxManager';
 import { RendererParams } from '../Managers/RendererManager';
+import { MicParams } from '../Managers/AudioManager';
 
 // Set this to true when all presets have been received by this. 
 export let IsGUIReady = false; 
@@ -54,7 +55,7 @@ class ServerGui {
         this.gui.addMonitor(RendererParams, 'DrawCalls');
 
         // Orbit controls. 
-        let f0 = this.gui.addFolder({ title: 'Orbit Controls', expanded: true });
+        let f0 = this.gui.addFolder({ title: 'Orbit Controls', expanded: false });
         f0.addInput(OrbitParams, 'EnableControls', {label: 'Enable Controls'});
         f0.addInput(OrbitParams, 'EnablePan', {label: 'Enable Panning'});
         f0.addInput(OrbitParams, 'AutoRotate', {label: 'Enable AutoRotate'});
@@ -62,13 +63,13 @@ class ServerGui {
         f0.addInput(OrbitParams, 'EnableKeys', {label: 'Enable Keys'});
 
         // World Parameters.
-        let f1 = this.gui.addFolder({ title: 'Target Params', expanded: true });
+        let f1 = this.gui.addFolder({ title: 'Target Params', expanded: false });
         f1.addInput(TargetParams, 'ShowTarget', {label: 'Show Target'});
         f1.addInput(TargetParams, 'MaxTargetRadius', {label: 'Max Target Radius', min: 50.0, max: 400.0}); 
         f1.addMonitor(TargetParams, 'CurrentTargetRadius', {label: 'Current Target Radius'}); 
 
         // Pattern Parameters.
-        this.patternFolder = this.gui.addFolder({ title: 'Pattern Params', expanded: true });
+        this.patternFolder = this.gui.addFolder({ title: 'Pattern Params', expanded: false });
         this.currentPatternType = PatternTypes.Ellipse; 
         this.buildPatternTypeOptions(); // Default pattern type.
         this.buildPatterns(); 
@@ -84,7 +85,7 @@ class ServerGui {
         this.ellipseParamsFolder.addInput(EllipseParams, 'Speed', { min: 0, max: 2 });
         this.ellipseParamsFolder.addInput(EllipseParams, 'Direction'); 
 
-        this.roseCurveParamsFolder = this.patternFolder.addFolder({ title: 'Rose-Curve Pattern Params', expanded: true });
+        this.roseCurveParamsFolder = this.patternFolder.addFolder({ title: 'Rose-Curve Pattern Params', expanded: false });
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Origin');
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Radius', { min: 1, max: 800 });
         this.roseCurveParamsFolder.addInput(RoseCurveParams, 'Phase', { min: 0, max: 10 });
@@ -97,7 +98,7 @@ class ServerGui {
         // Show the params based on the current pattern selected.
         this.showPatternParams();
 
-        this.pigeonParamsFolder = this.gui.addFolder({ title: 'Pigeon Params', expanded: true});
+        this.pigeonParamsFolder = this.gui.addFolder({ title: 'Pigeon Params', expanded: false});
         this.pigeonParamsFolder.addInput(PigeonParams, 'Size', {label: 'Size', min: 0, max: 1, step: 0.01}); 
         this.pigeonParamsFolder.addInput(PigeonParams, 'Attraction', {label: 'Attraction Force', min: 0, max: 100, step: 1}); 
         this.pigeonParamsFolder.addInput(PigeonParams, 'Seperation', {label: 'Seperation Force', min: 0, max: 100, step: 1}); 
@@ -107,10 +108,17 @@ class ServerGui {
         this.pigeonParamsFolder.addInput(PigeonParams, 'SpeedLerp', {label: 'Speed Lerp', min: 0, max: 1, step: 0.01});
         this.pigeonParamsFolder.addInput(PigeonParams, 'Count', {label: 'Count', min: 0, max: PigeonParams.Count, step: 1}); 
     
-        let f3 = this.gui.addFolder({ title: 'Skybox Params', expanded: true});
+        let f3 = this.gui.addFolder({ title: 'Skybox Params', expanded: false});
         f3.addInput(SkyboxParams, 'ShowSkybox');
         f3.addInput(SkyboxParams, 'ShowBoundingBox');
-        f3.addInput(SkyboxParams, 'BoundingBoxScalar', {min: -50, max: 0}); 
+        f3.addInput(SkyboxParams, 'BoundingBoxScalar', {min: -50, max: 0});
+        
+        let f4 = this.gui.addFolder({ title: 'Microphone Params', expanded: true});
+        f4.addMonitor(MicParams, 'Bass');
+        f4.addMonitor(MicParams, 'Mid');
+        f4.addMonitor(MicParams, 'Treble');
+        f4.addMonitor(MicParams, 'LowMid');
+        f4.addMonitor(MicParams, 'HighMid');
 
         // Buttons
         this.gui.addButton({title: 'Save Preset'}).on('click', this.onSavePreset.bind(this));       
