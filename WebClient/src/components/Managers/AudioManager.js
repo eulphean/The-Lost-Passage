@@ -49,6 +49,9 @@ var sketch = (s) => {
     // Single array that holds all the audio files. 
     let soundObject = '';
     let audioManagerCbk; 
+    let mic = '';
+    let fft = '';
+    let canAnalyze = false; 
 
     s.preload = () => {
         // Soundscape 
@@ -68,8 +71,33 @@ var sketch = (s) => {
         s.noCanvas(); // Don't creat a canvas
     };
 
+    s.initMic = () => {
+        console.log(navigator);
+        navigator.mediaDevices.getUserMedia({audio: true})
+        .then(() => {
+            // Once the user gives the permission, then we setup the microphone.
+            canAnalyze = true;
+            mic = new p5.AudioIn();
+            mic.start();
+            fft = new p5.FFT();
+            fft.setInput(mic);
+            
+            mic.getSources().then(devices => {
+                // Enumerate devices to see what input devices are present. 
+                devices.forEach(d => {
+                    console.log(d.kind + ": " + d.label + " id = " + d.deviceId);
+                });
+            }); 
+        });
+
+    }
+
     s.draw = () => {
-        s.noLoop(); // We don't want to loop either.
+        if (canAnalyze) {
+            fft.analyze();
+            let e = fft.getEnergy('bass') + fft.getEnergy('treble');
+            console.log(e);
+        }
     };
 
     s.trigger = () => {
@@ -92,6 +120,10 @@ class AudioManager {
     audioManagerReady() {
         this.isAudioManagerReady = true;
         console.log('Audio Manager Ready'); 
+    }
+
+    micOn() {
+        this.myP5.initMic();
     }
 
     reset() {

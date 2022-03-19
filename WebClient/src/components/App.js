@@ -143,7 +143,10 @@ class App extends React.Component {
     if (isMobile) {
       // Don't do anything. 
     } else {
-      this.worldRef.current.beginWorld();   
+      this.worldRef.current.beginWorld(); 
+
+      // Turn on the microphone as soon as we click on enter.
+      AudioManager.micOn();  
     }
   }
 

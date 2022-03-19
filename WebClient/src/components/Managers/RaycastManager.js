@@ -7,7 +7,6 @@
 
 import * as THREE from 'three'
 
-const COOLDOWN_PERIOD = 5; // 15 seconds. 
 class RaycastManager {
     constructor(shootPigeonCallback) {
         this.raycaster = new THREE.Raycaster();
