@@ -10,13 +10,23 @@ export default class Target {
     constructor(scene) {
         let geometry = new THREE.SphereGeometry(1, 12, 12);
         let material = new THREE.MeshLambertMaterial(); 
-        material.emissive = new THREE.Color('#000000');
+        material.emissive = new THREE.Color('#FF0000');
         material.wireframe = false;
         material.transparent = true; 
-        material.opacity = 0.2; 
+        material.opacity = 0.5; 
         this.mesh = new THREE.Mesh(geometry, material);
 
         scene.add(this.mesh);
+
+        // geometry = new THREE.SphereGeometry(1, 100, 100);
+        // geometry.position = new THREE.Vector3(0, 0, 0);
+        // geometry.scale (10, 10, 10);
+        // material = new THREE.MeshLambertMaterial(); 
+        // material.emissive = new THREE.Color('#FF0000');
+        // material.wireframe = false;
+        // let newMesh  = new THREE.Mesh(geometry, material);
+
+        // scene.add(newMesh);
     }
 
     update(targetPosition, now) {

@@ -12,6 +12,7 @@
 // We assign it to a variable that we want to use.
 
 import soundscape from '../../assets/skybox/soundscape.mp3'
+import ExhibitionManager from './ExhibitionManager';
 // import gunshot from '../../assets/skybox/gunshot.mp3'
 
 let p5 = window.p5;  
@@ -109,8 +110,6 @@ var sketch = (s) => {
             let lowMid = s.map(fft.getEnergy('lowMid'), 0, 255, 0, 1);
             let highMid = s.map(fft.getEnergy('highMid'), 0, 255, 0, 1);
 
-            console.log(fft.getCentroid());
-
             // Bind the fft outputs to these variables.  
             MicParams.Bass = bass;
             MicParams.Mid = mid; 
@@ -135,6 +134,18 @@ class AudioManager {
         this.myP5.audioCallback(this.audioManagerReady.bind(this));
         this.isPermanentlyMute = false; 
         this.isAudioManagerReady = false; 
+
+        ExhibitionManager.subscribe(this.onExhibitionUpdate.bind(this));
+    }
+
+    onExhibitionUpdate() {
+        let isExhibition = ExhibitionManager.isExhibition; 
+        if (isExhibition) {
+            // Turn off audio
+            // this.release(); 
+            // Turn on Microphone
+            this.micOn();
+        }
     }
 
     audioManagerReady() {

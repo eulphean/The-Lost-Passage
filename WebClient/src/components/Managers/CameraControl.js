@@ -9,6 +9,7 @@ import * as THREE from 'three'
 import * as TWEEN from "@tweenjs/tween.js"
 import '../Utilities/Utility'
 import { getRandomNum } from '../Utilities/Utility';
+import ExhibitionManager from './ExhibitionManager';
 
 export let OrbitParams = {
     EnableControls: false,
@@ -42,8 +43,12 @@ class CameraControl {
         this.currentIdx = 4; // Starting position of the camera. 
 
         // Mouse activites
-        window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
+        this.onMouseMoveBound = this.onMouseMove.bind(this); 
+        window.addEventListener('mousemove', this.onMouseMoveBound, false);
+        this.num = 0; 
         //window.addEventListener('wheel', this.onMouseWheel.bind(this), false);
+        ExhibitionManager.subscribe(this.onExhibitionUpdate.bind(this));
+
     }
 
     update(scene) {
@@ -55,7 +60,26 @@ class CameraControl {
 
         this.camera.lookAt(scene.position);
 
-        TWEEN.update();
+        let isExhibition = ExhibitionManager.isExhibition; 
+        // Start a very simple camera rotation.
+        if (isExhibition) {
+           this.num += 0.001;
+           this.camera.position.z = zoom/4 * Math.cos(this.num);
+           this.camera.position.y = zoom * Math.sin(this.num);
+           this.camera.position.x = zoom * Math.cos(this.num);
+        } else {
+            TWEEN.update();
+        }
+    }
+
+    onExhibitionUpdate() {
+        let isExhibition = ExhibitionManager.isExhibition; 
+        if (isExhibition) {
+            console.log('Event Remove')
+            // Remove mouseMove, click events. 
+            window.removeEventListener('mousemove', this.onMouseMoveBound, false);
+            window.removeEventListener('click', this.onMouseClickBound, false); 
+        }
     }
 
     onMouseMove(event) {
@@ -81,7 +105,8 @@ class CameraControl {
           onAnimationComplete();
 
           // Hook the event once the animation completes
-          window.addEventListener('click', this.onMouseClick.bind(this), false);
+          this.onMouseClickBound = this.onMouseClick.bind(this);
+          window.addEventListener('click', this.onMouseClickBound, false);
         }); 
 
         tween.start(); 

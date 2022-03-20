@@ -17,6 +17,7 @@ import { isMobile } from 'react-device-detect'
 import { elementScrollIntoView } from 'seamless-scroll-polyfill'
 
 import mobilevideo from '../assets/info/mobile_video.mp4'
+import ExhibitionManager from './Managers/ExhibitionManager.js';
 
 const styles = {
   container: {
@@ -68,6 +69,8 @@ class App extends React.Component {
     this.enterPanelRef = React.createRef(); 
 
     this.shouldPlay = false; 
+
+    ExhibitionManager.subscribe(this.onExhibitionUpdated.bind(this));
   }
 
   render() {
@@ -84,6 +87,15 @@ class App extends React.Component {
         {contentPanel}
       </div>
     );
+  }
+
+  onExhibitionUpdated() {
+    let isExhibition = ExhibitionManager.isExhibition; 
+    if (isExhibition) {
+      this.setState({
+        showNavPanel: false
+      });
+    }
   }
 
   componentDidMount() {
@@ -143,10 +155,7 @@ class App extends React.Component {
     if (isMobile) {
       // Don't do anything. 
     } else {
-      this.worldRef.current.beginWorld(); 
-
-      // Turn on the microphone as soon as we click on enter.
-      AudioManager.micOn();  
+      this.worldRef.current.beginWorld();
     }
   }
 
