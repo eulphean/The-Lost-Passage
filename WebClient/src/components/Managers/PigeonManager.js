@@ -13,6 +13,7 @@ import Target from '../Environment/Target'
 import GPUPigeon from '../Environment/GPUPigeon.js';
 import { BIRDS } from '../Environment/GPUPigeon.js'
 import GPURenderer from './GPURenderer.js';
+import { MicParams } from './AudioManager';
 
 // Set this to true when everything has been loaded. 
 export let IsPigeonManagerReady = false; 
@@ -102,11 +103,25 @@ class PigeonManager {
                 this.pigeon.setDrawRange(PigeonParams.Count); 
             }
 
+            // Map mic params to seperation. 
+            let v = this.mapRange(MicParams.HighMid, 0, 0.8, 20, 100);
+            PigeonParams.Seperation = v; 
+
+            v = this.mapRange(MicParams.Treble, 0, 0.8, 15, 60); 
+            PigeonParams.MaxSpeed = v; 
+
+            v = this.mapRange(MicParams.Bass, 0, 0.8, 12, 3); 
+            PigeonParams.Alignment = v; 
+
             // The flock will only recover from shock if they were indeed in shock
             if (this.isFlockInShock){
                 this.recoverFromShock() ;
             }
         }
+    }
+
+    mapRange (number, inMin, inMax, outMin, outMax) {
+        return (number - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
     }
 
     pausePigeons() {
