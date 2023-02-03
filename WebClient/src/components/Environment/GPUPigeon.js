@@ -8,10 +8,10 @@
 
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import model from '../../models/pigeon_back.glb'; 
+import model from '../../models/new_pigeon.glb'; 
 
 // WIDTH - Determines the max birds that can be created. 
-export const WIDTH = 50; 
+export const WIDTH = 100; 
 export const BIRDS = WIDTH * WIDTH; 
 
 class GPUPigeon {
@@ -50,11 +50,11 @@ class GPUPigeon {
             const tHeight = this.nextPowerOf2(this.durationAnimation);
             const tWidth = this.nextPowerOf2(this.vertexPerBird);
             // Every vertex has (x, y, z) coords so mult by 3. 
-            const tData = new Float32Array(3 * tWidth * tHeight); 
+            const tData = new Float32Array(4 * tWidth * tHeight); 
 
             for ( let i = 0; i < tWidth; i ++ ) {
                 for ( let j = 0; j < tHeight; j ++ ) {
-                    const offset = j * tWidth * 3;
+                    const offset = j * tWidth * 4;
         
                     const curMorph = Math.floor(j / this.durationAnimation * morphAttributes.length);
                     const nextMorph = (curMorph + 1) % morphAttributes.length;
@@ -73,27 +73,29 @@ class GPUPigeon {
                         d1 = morphAttributes[nextMorph].array[i * 3];
         
                         if (d0 !== undefined && d1 !== undefined) 
-                            tData[offset + i * 3] = this.lerp(d0, d1, lerpAmount);
+                            tData[offset + i * 4] = this.lerp(d0, d1, lerpAmount);
         
                         d0 = morphAttributes[ curMorph ].array[ i * 3 + 1 ];
                         d1 = morphAttributes[ nextMorph ].array[ i * 3 + 1 ];
         
                         if (d0 !== undefined && d1 !== undefined) 
-                            tData[offset + i * 3 + 1] = this.lerp(d0, d1, lerpAmount);
+                            tData[offset + i * 4 + 1] = this.lerp(d0, d1, lerpAmount);
         
                         d0 = morphAttributes[curMorph].array[i * 3 + 2];
                         d1 = morphAttributes[nextMorph].array[i * 3 + 2];
         
                         if (d0 !== undefined && d1 !== undefined) 
-                            tData[offset + i * 3 + 2] = this.lerp(d0, d1, lerpAmount);
+                            tData[offset + i * 4 + 2] = this.lerp(d0, d1, lerpAmount);
+                        
+                        tData[offset + i * 4 + 3 ] = 1;
                     }
                 }
             }
             
             // Here we define our Data texture based on the tData that we just prepared. 
             // DataTexture is inherited from Texture (this is how a texture is internally stored in Three.js)
-            this.textureAnimation = new THREE.DataTexture(tData, tWidth, tHeight, THREE.RGBFormat, THREE.FloatType);
-            // textureAnimation.needsUpdate = false; // Don't need this since texture is not updating
+            this.textureAnimation = new THREE.DataTexture(tData, tWidth, tHeight, THREE.RGBAFormat, THREE.FloatType);
+            this.textureAnimation.needsUpdate = true; // Don't need this since texture is not updating
 
             // Prepare the BUFFER GEOMETRY. 
             const vertices = [], color = [], reference = [], seeds = [], indices = [];

@@ -16,14 +16,14 @@ class Websocket {
   constructor() {
       this.siteURL = herokuURL + '/app'; 
 
-      this.socket = io(this.siteURL, {
-          reconnection: true,
-          reconnectionDelay: 500,
-          reconnectionAttempts: Infinity
-      });
+      // this.socket = io(this.siteURL, {
+      //     reconnection: true,
+      //     reconnectionDelay: 500,
+      //     reconnectionAttempts: Infinity
+      // });
 
-      this.socket.once('connect', this.subscribe.bind(this));
-      this.handlePresetsCbk = ''; 
+      // this.socket.once('connect', this.subscribe.bind(this));
+      // this.handlePresetsCbk = ''; 
   }
 
   subscribe() {

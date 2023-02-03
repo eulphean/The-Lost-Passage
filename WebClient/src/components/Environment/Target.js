@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 
 export let TargetParams = {
-    ShowTarget: true,
-    MaxTargetRadius: 100.0,
+    ShowTarget: false,
+    MaxTargetRadius: 150.0,
     CurrentTargetRadius: 0
 }
 

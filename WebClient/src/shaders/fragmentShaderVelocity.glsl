@@ -146,19 +146,19 @@ vec3 updateBehavior() {
                 // Within seperation threshold? 
                 // Move apart for comfort.
                 if (neighborThresh < seperationThresh) {
-                    float f = (seperationThresh / neighborThresh - 1.0) * uDelta;
+                    float f = (seperationThresh / neighborThresh - 1.0) * uDelta * uSpeedLerp;
                     newVelocity -= normalize(dir) * (f);
                 } else if (neighborThresh < alignmentThresh) { 
                     // Within alignment threshold, align with neighbor. 
                     float threshDelta = alignmentThresh - seperationThresh; 
                     float adjustedThresh = (neighborThresh - seperationThresh) / threshDelta; 
-                    float f = (0.5 - cos(adjustedThresh * PI_2) * 0.5 + 0.5) * uDelta; 
+                    float f = (0.5 - cos(adjustedThresh * PI_2) * 0.5 + 0.5) * uDelta * uSpeedLerp; 
                     newVelocity += normalize(neighborVel) * f; 
                 } else if (neighborThresh < cohesionThresh) {
                     // Attraction / Cohesion - move closer.
                     float threshDelta = cohesionThresh - alignmentThresh; 
                     float adjustedThresh = (neighborThresh - alignmentThresh) / threshDelta;
-                    float f = (0.5 - (cos(adjustedThresh * PI_2) * -0.5 + 0.5)) * uDelta;
+                    float f = (0.5 - (cos(adjustedThresh * PI_2) * -0.5 + 0.5)) * uDelta * uSpeedLerp;
                     newVelocity += normalize(dir) * f;
                 }
             }
@@ -204,7 +204,7 @@ void main() {
         newVelocity = normalize(newVelocity) * uMaxAgentSpeed;
     }
 
-    newVelocity = mix(newVelocity, selfVelocity, uDelta * 0.001);
+    newVelocity = mix(newVelocity, selfVelocity, uDelta * uSpeedLerp * 0.001);
 
     // Output a velocity that is stored in the texture. 
     gl_FragColor = vec4(newVelocity, 1.0);

@@ -21,14 +21,14 @@ export let IsPigeonManagerReady = false;
 // PARAMS shared between GPURenderer 
 // and PigeonManager. 
 export let PigeonParams = {
-    Attraction: 5.0,
-    Seperation: 20.0,
-    Alignment: 20.0,
-    Cohesion: 20.0,
-    Freedom: 0.75,
-    MaxSpeed: 20.0,
+    Attraction: 15.0,
+    Seperation: 40.0,
+    Alignment: 14.0,
+    Cohesion: 10.0,
+    Freedom: 1.5,
+    MaxSpeed: 5.0,
     SpeedLerp: 0.1,
-    Size: 0.1,
+    Size: 1.1,
     Count: BIRDS
 }
 

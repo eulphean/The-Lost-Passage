@@ -20,6 +20,7 @@ class RendererManager {
         //this.renderer.setClearColor('white', 1);    // Set renderer properties
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setPixelRatio(window.devicePixelRatio);
+        this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
         this.renderer.outputEncoding = THREE.sRGBEncoding; 
     }
 

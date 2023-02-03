@@ -9,7 +9,7 @@
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import Agent, { AgentParams } from '../Environment/Agent.js'
-import model from '../../models/pigeon_back.glb'; 
+import model from '../../models/pigeon2.glb'; 
 import * as Utility from '../Utilities/Utility';
 
 const loader = new GLTFLoader(); 

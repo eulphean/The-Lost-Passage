@@ -11,7 +11,7 @@ import { isSafari } from './Helper';
 // User interface Params
 export let SkyboxParams = {
     ShowSkybox: true,
-    ShowBoundingBox: true,
+    ShowBoundingBox: false,
     BoundingBoxScalar: 0 // Control the size of the bounding box using this scalar. 
 }
 

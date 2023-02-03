@@ -70,7 +70,7 @@ class ServerGui {
 
         // Pattern Parameters.
         this.patternFolder = this.gui.addFolder({ title: 'Pattern Params', expanded: false });
-        this.currentPatternType = PatternTypes.Ellipse; 
+        this.currentPatternType = PatternTypes.RoseCurve; 
         this.buildPatternTypeOptions(); // Default pattern type.
         this.buildPatterns(); 
 
@@ -99,7 +99,7 @@ class ServerGui {
         this.showPatternParams();
 
         this.pigeonParamsFolder = this.gui.addFolder({ title: 'Pigeon Params', expanded: false});
-        this.pigeonParamsFolder.addInput(PigeonParams, 'Size', {label: 'Size', min: 0, max: 1, step: 0.01}); 
+        this.pigeonParamsFolder.addInput(PigeonParams, 'Size', {label: 'Size', min: 0, max: 3, step: 0.01}); 
         this.pigeonParamsFolder.addInput(PigeonParams, 'Attraction', {label: 'Attraction Force', min: 0, max: 100, step: 1}); 
         this.pigeonParamsFolder.addInput(PigeonParams, 'Seperation', {label: 'Seperation Force', min: 0, max: 100, step: 1}); 
         this.pigeonParamsFolder.addInput(PigeonParams, 'Alignment', {label: 'Alignment Force', min: 0, max: 100, step: 1}); 
@@ -121,11 +121,11 @@ class ServerGui {
         f4.addMonitor(MicParams, 'HighMid');
 
         // Buttons
-        this.gui.addButton({title: 'Save Preset'}).on('click', this.onSavePreset.bind(this));       
-        this.gui.addButton({title: 'Delete Preset'}).on('click', this.onDeletePreset.bind(this));
+        // this.gui.addButton({title: 'Save Preset'}).on('click', this.onSavePreset.bind(this));       
+        // this.gui.addButton({title: 'Delete Preset'}).on('click', this.onDeletePreset.bind(this));
 
         // Read presets from the database. 
-        Websocket.readAllPresets(this.onReceivePresets.bind(this)); 
+        // Websocket.readAllPresets(this.onReceivePresets.bind(this)); 
 
         // Hide the gui by default. 
         this.gui.hidden = true;
@@ -211,7 +211,7 @@ class ServerGui {
             }
 
             // Update database. 
-            Websocket.saveGuiPreset(presetName, json); 
+            // Websocket.saveGuiPreset(presetName, json); 
 
             // Rebuild the presets. 
             this.buildPresets(); 

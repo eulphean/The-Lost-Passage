@@ -8,6 +8,7 @@
 import * as THREE from 'three'
 import * as TWEEN from "@tweenjs/tween.js"
 import '../Utilities/Utility'
+import oc from 'three-orbit-controls'
 import { getRandomNum } from '../Utilities/Utility';
 import ExhibitionManager from './ExhibitionManager';
 
@@ -29,6 +30,8 @@ let cameraCorners = [
     {x:0, y: 0, z: -zoom}
 ];
 
+const OrbitControls = oc(THREE);  
+
 class CameraControl {
     constructor() {
         // Camera Setup
@@ -38,6 +41,8 @@ class CameraControl {
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
         this.camera.frustumCulled = true; 
 
+        // this.orbitControls = new OrbitControls(this.camera);
+
         this.mouse = new THREE.Vector2(0, 0);
         this.animationStopped = false;
         this.currentIdx = 4; // Starting position of the camera. 
@@ -46,7 +51,7 @@ class CameraControl {
         this.onMouseMoveBound = this.onMouseMove.bind(this); 
         window.addEventListener('mousemove', this.onMouseMoveBound, false);
         this.num = 0; 
-        //window.addEventListener('wheel', this.onMouseWheel.bind(this), false);
+        window.addEventListener('wheel', this.onMouseWheel.bind(this), false);
         ExhibitionManager.subscribe(this.onExhibitionUpdate.bind(this));
 
     }
@@ -70,6 +75,12 @@ class CameraControl {
         } else {
             TWEEN.update();
         }
+
+        // this.orbitControls.enablePan = OrbitParams.EnablePan;
+        // this.orbitControls.enabled = OrbitParams.EnableControls; 
+        // this.orbitControls.enableKeys = OrbitParams.EnableKeys;
+        // this.orbitControls.enableDamping = true; 
+        // this.orbitControls.rotateSpeed = OrbitParams.RotateSpeed;
     }
 
     onExhibitionUpdate() {
@@ -106,7 +117,7 @@ class CameraControl {
 
           // Hook the event once the animation completes
           this.onMouseClickBound = this.onMouseClick.bind(this);
-          window.addEventListener('click', this.onMouseClickBound, false);
+          //window.addEventListener('click', this.onMouseClickBound, false);
         }); 
 
         tween.start(); 
