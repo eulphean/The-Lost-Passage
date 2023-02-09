@@ -104,7 +104,7 @@ class ServerGui {
         this.pigeonParamsFolder.addInput(PigeonParams, 'Seperation', {label: 'Seperation Force', min: 0, max: 100, step: 1}); 
         this.pigeonParamsFolder.addInput(PigeonParams, 'Alignment', {label: 'Alignment Force', min: 0, max: 100, step: 1}); 
         this.pigeonParamsFolder.addInput(PigeonParams, 'Cohesion', {label: 'Cohesion Force', min: 0, max: 100, step: 1}); 
-        this.pigeonParamsFolder.addInput(PigeonParams, 'MaxSpeed', {label: 'Max Agent Speed', min: 1, max: 200, step: 0.1});
+        this.pigeonParamsFolder.addInput(PigeonParams, 'MaxSpeed', {label: 'Max Agent Speed', min: 0.001, max: 1, step: 0.01});
         this.pigeonParamsFolder.addInput(PigeonParams, 'SpeedLerp', {label: 'Speed Lerp', min: 0, max: 1, step: 0.01});
         this.pigeonParamsFolder.addInput(PigeonParams, 'Count', {label: 'Count', min: 0, max: PigeonParams.Count, step: 1}); 
     

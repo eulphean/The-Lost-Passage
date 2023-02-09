@@ -13,6 +13,7 @@
 
 import soundscape from '../../assets/skybox/soundscape.mp3'
 import ExhibitionManager from './ExhibitionManager';
+import ml5 from 'ml5';
 // import gunshot from '../../assets/skybox/gunshot.mp3'
 
 let p5 = window.p5;  
@@ -61,6 +62,9 @@ var sketch = (s) => {
     let mic = '';
     let fft = '';
     let canAnalyze = false; 
+    let video; 
+    let poseNet; 
+    let myNoses = []; 
 
     s.preload = () => {
         // Soundscape 
@@ -82,41 +86,64 @@ var sketch = (s) => {
 
     s.initMic = () => {
         console.log(navigator);
-        navigator.mediaDevices.getUserMedia({audio: true})
-        .then(() => {
-            // Once the user gives the permission, then we setup the microphone.
-            canAnalyze = true;
-            mic = new p5.AudioIn();
-            mic.start();
-            fft = new p5.FFT();
-            fft.setInput(mic);
+        video = s.createCapture(s.VIDEO);
+        poseNet = ml5.poseNet(video, 'multiple', s.modelReady);
+        poseNet.on('pose', s.gotPoses);
+        // navigator.mediaDevices.getUserMedia({audio: true})
+        // .then(() => {
+        //     // Once the user gives the permission, then we setup the microphone.
+        //     canAnalyze = true;
+        //     mic = new p5.AudioIn();
+        //     mic.start();
+        //     fft = new p5.FFT();
+        //     fft.setInput(mic);
             
-            mic.getSources().then(devices => {
-                // Enumerate devices to see what input devices are present. 
-                devices.forEach(d => {
-                    console.log(d.kind + ": " + d.label + " id = " + d.deviceId);
-                });
-            }); 
-        });
+        //     mic.getSources().then(devices => {
+        //         // Enumerate devices to see what input devices are present. 
+        //         devices.forEach(d => {
+        //             console.log(d.kind + ": " + d.label + " id = " + d.deviceId);
+        //         });
+        //     }); 
+        // });
+    }
 
+    s.modelReady = () => {
+        console.log('Model is Ready');
+    }
+
+    s.gotPoses = (poses) => {
+        if (poses.length > 0) {
+            poses.forEach(p => {
+                myNoses.push(p.pose.nose);
+            })
+        }
     }
 
     s.draw = () => {
-        if (canAnalyze) {
-            fft.analyze();
-            let bass = s.map(fft.getEnergy('bass'), 0, 255, 0, 1); 
-            let mid = s.map(fft.getEnergy('mid'), 0, 255, 0, 1);
-            let treble = s.map(fft.getEnergy('treble'), 0, 255, 0, 1);
-            let lowMid = s.map(fft.getEnergy('lowMid'), 0, 255, 0, 1);
-            let highMid = s.map(fft.getEnergy('highMid'), 0, 255, 0, 1);
-
-            // Bind the fft outputs to these variables.  
-            MicParams.Bass = bass;
-            MicParams.Mid = mid; 
-            MicParams.Treble = treble;
-            MicParams.LowMid = lowMid;
-            MicParams.HighMid = highMid;
+        if (myNoses.length > 0) {
+            myNoses.forEach(n => {
+            //   fill(255, 0, 0);
+            //   ellipse(n.x, n.y, 10); 
+                console.log(n);
+            })
+        
+            myNoses.length = 0;
         }
+        // if (canAnalyze) {
+        //     fft.analyze();
+        //     let bass = s.map(fft.getEnergy('bass'), 0, 255, 0, 1); 
+        //     let mid = s.map(fft.getEnergy('mid'), 0, 255, 0, 1);
+        //     let treble = s.map(fft.getEnergy('treble'), 0, 255, 0, 1);
+        //     let lowMid = s.map(fft.getEnergy('lowMid'), 0, 255, 0, 1);
+        //     let highMid = s.map(fft.getEnergy('highMid'), 0, 255, 0, 1);
+
+        //     // Bind the fft outputs to these variables.  
+        //     MicParams.Bass = bass;
+        //     MicParams.Mid = mid; 
+        //     MicParams.Treble = treble;
+        //     MicParams.LowMid = lowMid;
+        //     MicParams.HighMid = highMid;
+        // }
     };
 
     s.trigger = () => {

@@ -26,7 +26,7 @@ export let PigeonParams = {
     Alignment: 14.0,
     Cohesion: 10.0,
     Freedom: 1.5,
-    MaxSpeed: 5.0,
+    MaxSpeed: 5.,
     SpeedLerp: 0.1,
     Size: 1.1,
     Count: BIRDS
