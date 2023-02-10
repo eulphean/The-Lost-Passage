@@ -190,26 +190,17 @@ void main() {
     // // Cohesion, Seperation, Alignment
     newVelocity = updateBehavior(); 
 
-    // Check if agent is in bounding box. 
-    newVelocity = boundingBoxCheck(newVelocity); 
-
-        // Towards the target
     vec3 dirToTarget = updatedTargetPos - selfPosition; 
     float distToTarget = length(dirToTarget);
-    // if (distToTarget > uTargetRadius) {
-    //     float f = (1.0 - (uTargetRadius / distToTarget)) * uAttractionForce;
-    //     newVelocity += normalize(dirToTarget) * f; 
-    // }
-
-    // If it's inside the radius. 
-    float innerRadius = uTargetRadius;
-    if (distToTarget < innerRadius) {
-        float f = (1.0 - (distToTarget / innerRadius)) * uAttractionForce;
+    if (distToTarget < uTargetRadius) {
+        float f = (1.0 - (distToTarget / uTargetRadius)) * uAttractionForce * rand(vec2(dirToTarget.x, dirToTarget.y));
         newVelocity += normalize(dirToTarget) * f; 
     }
 
+    // Check if agent is in bounding box. 
+    newVelocity = boundingBoxCheck(newVelocity); 
 
-    // // Clamp velocity. 
+    // Clamp velocity. 
     if (length(newVelocity) > uMaxAgentSpeed) {
         newVelocity = normalize(newVelocity) * uMaxAgentSpeed;
     }

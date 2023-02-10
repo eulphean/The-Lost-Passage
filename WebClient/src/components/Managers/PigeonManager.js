@@ -22,14 +22,14 @@ export let IsPigeonManagerReady = false;
 // PARAMS shared between GPURenderer 
 // and PigeonManager. 
 export let PigeonParams = {
-    Attraction: 0.1,
-    Seperation: 0.4,
-    Alignment: 0.5,
-    Cohesion: 0.1,
+    Attraction: 0.9,
+    Seperation: 0.5,
+    Alignment: 0.1,
+    Cohesion: 0.2,
     Freedom: 1.5,
     MaxSpeed: 0.1,
     SpeedLerp: 0.1,
-    Size: 0.11,
+    Size: 0.2,
     Count: BIRDS
 }
 
@@ -77,7 +77,7 @@ class PigeonManager {
         if (IsPigeonManagerReady) {
             this.targetPosition = this.patternManager.update();
             if (AudioManager.foundFace()) {
-                let mappedX = AudioManager.getTargetPos(boundingBox);
+                let mappedX = AudioManager.getTargetPos(boundingBox);                
                 this.targetPosition.crossVectors(cameraPos, cameraUp);
                 this.targetPosition.normalize();
                 this.targetPosition.multiplyScalar(-mappedX);
@@ -88,7 +88,7 @@ class PigeonManager {
                 let delta = this.clock.getDelta();
                 let now = this.clock.oldTime;
 
-                // Move target object to that position.
+                // Move target object to that position and return the circulator position
                 this.target.update(this.targetPosition, now);
 
                 // Computer GPU values. 

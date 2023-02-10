@@ -29,13 +29,13 @@ export let EllipseParams = {
 // Rose-Curve Params
 export let RoseCurveParams = {
     Origin: {x: 0, y: 6, z: 0},
-    Radius: 175,
+    Radius: 150,
     Phase: 0., 
     NumPetals: 5, 
     Amplitude: 300,
     Sinusoidal: true,
     Direction: true,
-    Speed: 0.35
+    Speed: 0.20
 }
 
 class Pattern {
