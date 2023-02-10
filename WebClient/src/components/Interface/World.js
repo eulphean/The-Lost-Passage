@@ -159,7 +159,9 @@ class World extends React.Component {
       // Pass the bounding box to the pigeon manager for creating bounds for agents. 
       if (this.pigeonManager) {
         let boundingBox = this.skyboxManager.getBoundingBox(); 
-        this.pigeonManager.update(boundingBox);
+        let cameraPos = this.cameraControl.camera.position; 
+        let cameraUp = this.cameraControl.camera.up;
+        this.pigeonManager.update(boundingBox, cameraPos, cameraUp);
         
         // Once the flock is no longer in shock, enable the pigeon params again
         if (!this.pigeonManager.isFlockInShock && this.guiRef.current.getPigeonParamFolder().disabled){

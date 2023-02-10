@@ -9,6 +9,7 @@ import * as THREE from 'three'
 
 // import GPUPigeon from '../Environment/GPUPigeon.js'
 import { PatternManager } from './PatternManager';
+import AudioManager from './AudioManager';
 import Target from '../Environment/Target'
 import GPUPigeon from '../Environment/GPUPigeon.js';
 import { BIRDS } from '../Environment/GPUPigeon.js'
@@ -41,6 +42,7 @@ class PigeonManager {
 
         // Create the target object that the pigeons are following. 
         this.target = new Target(scene);
+        this.targetPosition = new THREE.Vector3(0, 0, 0);
 
         // State varables for shooting related behaviours
         this.isFlockInShock = false;
@@ -71,20 +73,34 @@ class PigeonManager {
         this.pigeon = new GPUPigeon(this.initPigeons.bind(this, renderer, scene)); 
     }
 
-    update(boundingBox) {
+    update(boundingBox, cameraPos, cameraUp) {
         if (IsPigeonManagerReady) {
-            let targetPosition = this.patternManager.update();
+            this.targetPosition = this.patternManager.update();
+            if (AudioManager.foundFace()) {
+                // console.log('Face Found: True');
+                let mappedX = AudioManager.getTargetPos(boundingBox);
+                let yPos = this.targetPosition.y; 
+                this.targetPosition.crossVectors(cameraPos, cameraUp);
+                this.targetPosition.normalize();
+                this.targetPosition.multiplyScalar(-mappedX);
+            
+                // this.targetPosition.set(cross.x, cross.y, 0); // For now just keep updating the xPos. We will eventually set things. 
+                // this.targetPosition.setZ(0);
+                // console.log('Mapped Postiion');
+                // console.log(this.targetPosition);
+
+            }
 
             // If we have a valid target position, begin updating.
-            if (targetPosition) {
+            if (this.targetPosition) {
                 let delta = this.clock.getDelta();
                 let now = this.clock.oldTime;
 
                 // Update target. 
-                this.target.update(targetPosition, now);
+                this.target.update(this.targetPosition, now);
 
                 // Computer GPU values. 
-                this.gpuRenderer.update(delta, now, targetPosition, boundingBox); 
+                this.gpuRenderer.update(delta, now, this.targetPosition, boundingBox); 
                 // Bird material's uniform value that is changing every frame. 
                 if (this.pigeonShader) {
                     this.pigeonShader.uniforms["time"].value = now / 1000;

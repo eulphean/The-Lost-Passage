@@ -64,6 +64,9 @@ var sketch = (s) => {
     let video; 
     let poseNet; 
     let myNoses = []; 
+    let foundFace = false; 
+    let checkNotFoundIndex = 0; // An index to keep track of no faces found until we start looking again. 
+    let lastXPos;
 
     s.preload = () => {
         // Soundscape 
@@ -123,13 +126,15 @@ var sketch = (s) => {
 
     s.draw = () => {
         if (myNoses.length > 0) {
-            myNoses.forEach(n => {
-            //   fill(255, 0, 0);
-            //   ellipse(n.x, n.y, 10); 
-                console.log(n);
-            })
-        
+            foundFace = true; 
             myNoses.length = 0;
+            checkNotFoundIndex = 0; 
+        } else {
+            if (checkNotFoundIndex === 50) {
+                foundFace = false; 
+            } else {
+                checkNotFoundIndex++; 
+            }
         }
         // if (canAnalyze) {
         //     fft.analyze();
@@ -147,6 +152,26 @@ var sketch = (s) => {
         //     MicParams.HighMid = highMid;
         // }
     };
+
+    s.foundFace = () => {
+        return foundFace;
+    }
+
+    s.mapX = (boundingBox) => {
+        // Get the nose first,
+        // Map the x coordinate of the nose to the bounding box.
+        if (myNoses.length > 0) {
+            let nose = myNoses[0]; 
+            // Map it between the min and max of the bounding box. 
+            let minX = boundingBox.min.x; 
+            let maxX = boundingBox.max.x; 
+            console.log(nose);
+            lastXPos = s.map(nose.x, 640, 0, minX, maxX); 
+            return lastXPos;
+        }
+
+        return lastXPos; 
+    }
 
     s.trigger = () => {
         soundObject.trigger(); 
@@ -175,6 +200,15 @@ class AudioManager {
             // Turn on Microphone
             this.micOn();
         }
+    }
+
+    foundFace() {
+        return this.myP5.foundFace(); 
+    }
+
+    getTargetPos(boundingBox) {
+        // Get the nose position for the face
+        return this.myP5.mapX(boundingBox); 
     }
 
     audioManagerReady() {

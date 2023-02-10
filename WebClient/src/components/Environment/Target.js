@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 export let TargetParams = {
     ShowTarget: true,
-    MaxTargetRadius: 10.0,
+    MaxTargetRadius: 50.0,
     CurrentTargetRadius: 0
 }
 
@@ -32,9 +32,10 @@ export default class Target {
     update(targetPosition, now) {
         this.setVector(targetPosition);
         this.setVisibility(TargetParams.ShowTarget);
-        let scale = TargetParams.MaxTargetRadius + Math.sin(now * 0.001) * TargetParams.MaxTargetRadius / 3.0; 
+        // let scale = TargetParams.MaxTargetRadius + Math.sin(now * 0.001) * TargetParams.MaxTargetRadius / 3.0; 
+        let scale = TargetParams.MaxTargetRadius;
         this.mesh.scale.set(scale, scale, scale);
-        TargetParams.CurrentTargetRadius = scale; 
+        // TargetParams.CurrentTargetRadius = scale; 
     }
 
     getVector() {

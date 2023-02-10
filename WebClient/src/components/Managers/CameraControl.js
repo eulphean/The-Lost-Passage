@@ -69,7 +69,7 @@ class CameraControl {
         // Start a very simple camera rotation.
         if (isExhibition) {
            this.num += 0.001;
-           this.camera.position.z = zoom/4 * Math.cos(this.num);
+        //    this.camera.position.z = zoom/4 * Math.cos(this.num);
            this.camera.position.y = zoom * Math.sin(this.num);
            this.camera.position.x = zoom * Math.cos(this.num);
         } else {
