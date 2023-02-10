@@ -22,14 +22,14 @@ export let IsPigeonManagerReady = false;
 // PARAMS shared between GPURenderer 
 // and PigeonManager. 
 export let PigeonParams = {
-    Attraction: 15.0,
-    Seperation: 40.0,
-    Alignment: 14.0,
-    Cohesion: 10.0,
+    Attraction: 0.1,
+    Seperation: 0.4,
+    Alignment: 0.5,
+    Cohesion: 0.1,
     Freedom: 1.5,
-    MaxSpeed: 5.,
+    MaxSpeed: 0.1,
     SpeedLerp: 0.1,
-    Size: 1.1,
+    Size: 0.11,
     Count: BIRDS
 }
 
@@ -58,8 +58,8 @@ class PigeonManager {
         // GPURenderer
         this.gpuRenderer = '';
 
-        // Keep track of how many times user interacted.
-        this.shootCount = 0; 
+        // // Keep track of how many times user interacted.
+        // this.shootCount = 0; 
     }
     
     setupTarget(curPatternType) {
@@ -77,18 +77,10 @@ class PigeonManager {
         if (IsPigeonManagerReady) {
             this.targetPosition = this.patternManager.update();
             if (AudioManager.foundFace()) {
-                // console.log('Face Found: True');
                 let mappedX = AudioManager.getTargetPos(boundingBox);
-                let yPos = this.targetPosition.y; 
                 this.targetPosition.crossVectors(cameraPos, cameraUp);
                 this.targetPosition.normalize();
                 this.targetPosition.multiplyScalar(-mappedX);
-            
-                // this.targetPosition.set(cross.x, cross.y, 0); // For now just keep updating the xPos. We will eventually set things. 
-                // this.targetPosition.setZ(0);
-                // console.log('Mapped Postiion');
-                // console.log(this.targetPosition);
-
             }
 
             // If we have a valid target position, begin updating.
@@ -96,7 +88,7 @@ class PigeonManager {
                 let delta = this.clock.getDelta();
                 let now = this.clock.oldTime;
 
-                // Update target. 
+                // Move target object to that position.
                 this.target.update(this.targetPosition, now);
 
                 // Computer GPU values. 
@@ -107,7 +99,7 @@ class PigeonManager {
                     this.pigeonShader.uniforms["delta"].value = delta;
 
                     // Bing pigeon size.
-                    this.pigeonShader.uniforms['size'].value = PigeonParams.Size; 
+                    this.pigeonShader.uniforms['size'].value = PigeonParams.Size * 10; 
 
                     // Extract the data textures for Position and Velocity from GPURenderer and set it to the uniforms
                     // of the bird's material to set the new location of the vertices in the BufferGeometry. 
@@ -119,15 +111,15 @@ class PigeonManager {
                 this.pigeon.setDrawRange(PigeonParams.Count); 
             }
 
-            // Map mic params to seperation. 
-            let v = this.mapRange(MicParams.HighMid, 0, 0.8, 20, 100);
-            PigeonParams.Seperation = v; 
+            // // Map mic params to seperation. 
+            // let v = this.mapRange(MicParams.HighMid, 0, 0.8, 20, 100);
+            // PigeonParams.Seperation = v; 
 
-            v = this.mapRange(MicParams.Treble, 0, 0.8, 15, 60); 
-            PigeonParams.MaxSpeed = v; 
+            // v = this.mapRange(MicParams.Treble, 0, 0.8, 15, 60); 
+            // PigeonParams.MaxSpeed = v; 
 
-            v = this.mapRange(MicParams.Bass, 0, 0.8, 12, 3); 
-            PigeonParams.Alignment = v; 
+            // v = this.mapRange(MicParams.Bass, 0, 0.8, 12, 3); 
+            // PigeonParams.Alignment = v; 
 
             // The flock will only recover from shock if they were indeed in shock
             if (this.isFlockInShock){
@@ -253,28 +245,28 @@ class PigeonManager {
         console.log('Pigeon Manager Ready'); 
     }
 
-    shootPigeon() {
-        console.log('Pigeon Renderer: Shoot Pigeon');
+    // shootPigeon() {
+    //     console.log('Pigeon Renderer: Shoot Pigeon');
         
-        if (!this.isFlockInShock){
-            // Remember where the previous states are
-            this.previousSepValue = PigeonParams.Seperation;
-            this.previousSpeedValue = PigeonParams.MaxSpeed;
-            console.log(`Seperation value when shot : ${this.previousSepValue}`)
-            // Increase separation and maxSpeed abruptly 
-            PigeonParams.Seperation *= 2.5;
-            PigeonParams.MaxSpeed *= 1.8;
+    //     if (!this.isFlockInShock){
+    //         // Remember where the previous states are
+    //         this.previousSepValue = PigeonParams.Seperation;
+    //         this.previousSpeedValue = PigeonParams.MaxSpeed;
+    //         console.log(`Seperation value when shot : ${this.previousSepValue}`)
+    //         // Increase separation and maxSpeed abruptly 
+    //         PigeonParams.Seperation *= 2.5;
+    //         PigeonParams.MaxSpeed *= 1.8;
 
-            // // Reduce the pigeons. 
-            if (PigeonParams.Count > 0) {
-                this.shootCount++; 
-                PigeonParams.Count = PigeonParams.Count - this.shootCount * KillFactor; 
-            }
+    //         // // Reduce the pigeons. 
+    //         if (PigeonParams.Count > 0) {
+    //             this.shootCount++; 
+    //             PigeonParams.Count = PigeonParams.Count - this.shootCount * KillFactor; 
+    //         }
             
-            this.isFlockInShock = true;
-        }
-        return this.isFlockInShock
-    }
+    //         this.isFlockInShock = true;
+    //     }
+    //     return this.isFlockInShock
+    // }
 
     setNewPatternType(newPatternType) {
         this.patternManager.setTargetPattern(newPatternType);

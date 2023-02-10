@@ -58,9 +58,9 @@ class GPURenderer {
         this.velocityUniforms["uDelta"] = { value: 0.0 };
 
         // FLOCK 
-        this.velocityUniforms["uAttractionForce"] = { value: PigeonParams.Attraction }
-        this.velocityUniforms["uSeperationForce"] = { value: PigeonParams.Seperation };
-        this.velocityUniforms["uAlignmentForce"] = { value: PigeonParams.Alignment };
+        this.velocityUniforms["uAttractionForce"] = { value: PigeonParams.Attraction}
+        this.velocityUniforms["uSeperationForce"] = { value: PigeonParams.Seperation};
+        this.velocityUniforms["uAlignmentForce"] = { value: PigeonParams.Alignment};
         this.velocityUniforms["uCohesionForce"] = { value: PigeonParams.Cohesion };
         this.velocityUniforms["uShoot"] = { value: false }; 
 
@@ -69,8 +69,8 @@ class GPURenderer {
         this.velocityUniforms['uTargetRadius'] = { value: TargetParams.CurrentTargetRadius };
 
         // SPEED
-        this.velocityUniforms["uMaxAgentSpeed"] = { value: PigeonParams.MaxSpeed };
-        this.velocityUniforms["uSpeedLerp"] = { value: PigeonParams.SpeedLerp };
+        this.velocityUniforms["uMaxAgentSpeed"] = { value: PigeonParams.MaxSpeed};
+        this.velocityUniforms["uSpeedLerp"] = { value: PigeonParams.SpeedLerp};
 
         // BOUNDING BOX
         this.velocityUniforms["uBoundingBoxMin"] = { value: new THREE.Vector3() };
@@ -112,10 +112,10 @@ class GPURenderer {
         this.velocityUniforms["uTime"].value = now;
 
         // FLOCK 
-        this.velocityUniforms["uAttractionForce"].value = PigeonParams.Attraction;
-        this.velocityUniforms['uSeperationForce'].value = PigeonParams.Seperation; 
-        this.velocityUniforms['uAlignmentForce'].value = PigeonParams.Alignment;
-        this.velocityUniforms['uCohesionForce'].value = PigeonParams.Cohesion;
+        this.velocityUniforms["uAttractionForce"].value = PigeonParams.Attraction * 100;
+        this.velocityUniforms['uSeperationForce'].value = PigeonParams.Seperation * 100; 
+        this.velocityUniforms['uAlignmentForce'].value = PigeonParams.Alignment * 100;
+        this.velocityUniforms['uCohesionForce'].value = PigeonParams.Cohesion * 100;
         this.velocityUniforms['uShoot'].value = this.shoot;
 
         // console.log(PigeonParams.Seperation);
@@ -125,8 +125,8 @@ class GPURenderer {
         this.velocityUniforms['uTargetRadius'].value = TargetParams.CurrentTargetRadius;
 
         // SPEED
-        this.velocityUniforms['uMaxAgentSpeed'].value = PigeonParams.MaxSpeed; 
-        this.velocityUniforms["uSpeedLerp"].value = PigeonParams.SpeedLerp;
+        this.velocityUniforms['uMaxAgentSpeed'].value = PigeonParams.MaxSpeed * 100; 
+        this.velocityUniforms["uSpeedLerp"].value = PigeonParams.SpeedLerp * 10;
 
         // BOUNDING BOX
         this.velocityUniforms["uBoundingBoxMin"].value.set(boundingBox.min.x, boundingBox.min.y, boundingBox.min.z);

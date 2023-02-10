@@ -146,19 +146,19 @@ vec3 updateBehavior() {
                 // Within seperation threshold? 
                 // Move apart for comfort.
                 if (neighborThresh < seperationThresh) {
-                    float f = (seperationThresh / neighborThresh - 1.0) * uDelta * uSpeedLerp;
+                    float f = (seperationThresh / neighborThresh - 1.0) * uDelta;
                     newVelocity -= normalize(dir) * (f);
                 } else if (neighborThresh < alignmentThresh) { 
                     // Within alignment threshold, align with neighbor. 
                     float threshDelta = alignmentThresh - seperationThresh; 
                     float adjustedThresh = (neighborThresh - seperationThresh) / threshDelta; 
-                    float f = (0.5 - cos(adjustedThresh * PI_2) * 0.5 + 0.5) * uDelta * uSpeedLerp; 
+                    float f = (0.5 - cos(adjustedThresh * PI_2) * 0.5 + 0.5) * uDelta; 
                     newVelocity += normalize(neighborVel) * f; 
                 } else if (neighborThresh < cohesionThresh) {
                     // Attraction / Cohesion - move closer.
                     float threshDelta = cohesionThresh - alignmentThresh; 
                     float adjustedThresh = (neighborThresh - alignmentThresh) / threshDelta;
-                    float f = (0.5 - (cos(adjustedThresh * PI_2) * -0.5 + 0.5)) * uDelta * uSpeedLerp;
+                    float f = (0.5 - (cos(adjustedThresh * PI_2) * -0.5 + 0.5)) * uDelta;
                     newVelocity += normalize(dir) * f;
                 }
             }
@@ -185,26 +185,36 @@ void main() {
     // Adjust target position. 
     vec3 updatedTargetPos = updateTargetPosition();
 
-    // Cohesion, Seperation, Alignment
-    vec3 newVelocity = updateBehavior(); 
+    vec3 newVelocity = vec3(0.0,0.0, 0.0);
 
-    // Moving target response. 
-    vec3 dirToTarget = updatedTargetPos - selfPosition; 
-    float distToTarget = length(dirToTarget);
-    if (distToTarget < uTargetRadius) {
-        float f = (1.0 - (distToTarget / uTargetRadius)) *  uAttractionForce;
-        newVelocity += normalize(dirToTarget) * f; 
-    }
+    // // Cohesion, Seperation, Alignment
+    newVelocity = updateBehavior(); 
 
     // Check if agent is in bounding box. 
     newVelocity = boundingBoxCheck(newVelocity); 
 
-    // Clamp velocity. 
+        // Towards the target
+    vec3 dirToTarget = updatedTargetPos - selfPosition; 
+    float distToTarget = length(dirToTarget);
+    // if (distToTarget > uTargetRadius) {
+    //     float f = (1.0 - (uTargetRadius / distToTarget)) * uAttractionForce;
+    //     newVelocity += normalize(dirToTarget) * f; 
+    // }
+
+    // If it's inside the radius. 
+    float innerRadius = uTargetRadius;
+    if (distToTarget < innerRadius) {
+        float f = (1.0 - (distToTarget / innerRadius)) * uAttractionForce;
+        newVelocity += normalize(dirToTarget) * f; 
+    }
+
+
+    // // Clamp velocity. 
     if (length(newVelocity) > uMaxAgentSpeed) {
         newVelocity = normalize(newVelocity) * uMaxAgentSpeed;
     }
 
-    newVelocity = mix(newVelocity, selfVelocity, uDelta * uSpeedLerp * 0.001);
+    newVelocity = mix(newVelocity, selfVelocity, uDelta * uSpeedLerp);
 
     // Output a velocity that is stored in the texture. 
     gl_FragColor = vec4(newVelocity, 1.0);

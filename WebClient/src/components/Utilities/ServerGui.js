@@ -99,13 +99,13 @@ class ServerGui {
         this.showPatternParams();
 
         this.pigeonParamsFolder = this.gui.addFolder({ title: 'Pigeon Params', expanded: false});
-        this.pigeonParamsFolder.addInput(PigeonParams, 'Size', {label: 'Size', min: 0, max: 3, step: 0.01}); 
-        this.pigeonParamsFolder.addInput(PigeonParams, 'Attraction', {label: 'Attraction Force', min: 0, max: 100, step: 1}); 
-        this.pigeonParamsFolder.addInput(PigeonParams, 'Seperation', {label: 'Seperation Force', min: 0, max: 100, step: 1}); 
-        this.pigeonParamsFolder.addInput(PigeonParams, 'Alignment', {label: 'Alignment Force', min: 0, max: 100, step: 1}); 
-        this.pigeonParamsFolder.addInput(PigeonParams, 'Cohesion', {label: 'Cohesion Force', min: 0, max: 100, step: 1}); 
-        this.pigeonParamsFolder.addInput(PigeonParams, 'MaxSpeed', {label: 'Max Agent Speed', min: 0.001, max: 1, step: 0.01});
-        this.pigeonParamsFolder.addInput(PigeonParams, 'SpeedLerp', {label: 'Speed Lerp', min: 0, max: 1, step: 0.01});
+        this.pigeonParamsFolder.addInput(PigeonParams, 'Size', {label: 'Size', min: 0, max: 1, step: 0.1}); 
+        this.pigeonParamsFolder.addInput(PigeonParams, 'Attraction', {label: 'Attraction Force', min: 0, max: 1, step: 0.1}); 
+        this.pigeonParamsFolder.addInput(PigeonParams, 'Seperation', {label: 'Seperation Force', min: 0, max: 1, step: 0.1}); 
+        this.pigeonParamsFolder.addInput(PigeonParams, 'Alignment', {label: 'Alignment Force', min: 0, max: 1, step: 0.1}); 
+        this.pigeonParamsFolder.addInput(PigeonParams, 'Cohesion', {label: 'Cohesion Force', min: 0, max: 1, step: 0.1}); 
+        this.pigeonParamsFolder.addInput(PigeonParams, 'MaxSpeed', {label: 'Max Agent Speed', min: 0.0, max: 1, step: 0.1});
+        this.pigeonParamsFolder.addInput(PigeonParams, 'SpeedLerp', {label: 'Speed Lerp', min: 0, max: 1, step: 0.1});
         this.pigeonParamsFolder.addInput(PigeonParams, 'Count', {label: 'Count', min: 0, max: PigeonParams.Count, step: 1}); 
     
         let f3 = this.gui.addFolder({ title: 'Skybox Params', expanded: false});
