@@ -11,7 +11,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import model from '../../models/new_pigeon.glb'; 
 
 // WIDTH - Determines the max birds that can be created. 
-export const WIDTH = 100; 
+export const WIDTH = 10; 
 export const BIRDS = WIDTH * WIDTH; 
 
 class GPUPigeon {

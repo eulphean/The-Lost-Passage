@@ -432,13 +432,14 @@ class EnterPanel extends React.Component {
         this.hasFinishedLoading();
       }, Mobile_Timeout); 
     } else {
-      setTimeout(() => {
-        if (IsPigeonManagerReady && IsWorldReady && AudioManager.isAudioManagerReady) {
-          this.hasFinishedLoading(); 
-        } else {
-          this.checkIfReady();
-        }
-      }, 250); 
+      this.hasFinishedLoading();
+      // setTimeout(() => {
+      //   if (IsPigeonManagerReady && IsWorldReady && AudioManager.isAudioManagerReady) {
+      //     this.hasFinishedLoading(); 
+      //   } else {
+      //     this.checkIfReady();
+      //   }
+      // }, 250); 
     }
   }
 

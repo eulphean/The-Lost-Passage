@@ -22,6 +22,7 @@ class RendererManager {
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
         this.renderer.outputEncoding = THREE.sRGBEncoding; 
+        this.renderer.resetState();
     }
 
     setAnimationLoop(animate) {

@@ -13,7 +13,6 @@
 
 import soundscape from '../../assets/skybox/soundscape.mp3'
 import ExhibitionManager from './ExhibitionManager';
-import ml5 from 'ml5';
 // import gunshot from '../../assets/skybox/gunshot.mp3'
 
 let p5 = window.p5;  
@@ -87,8 +86,11 @@ var sketch = (s) => {
     s.initMic = () => {
         console.log(navigator);
         video = s.createCapture(s.VIDEO);
-        poseNet = ml5.poseNet(video, 'multiple', s.modelReady);
-        poseNet.on('pose', s.gotPoses);
+        import('ml5').then(ml5 => {
+            poseNet = ml5.poseNet(video, 'multiple', s.modelReady);
+            poseNet.on('pose', s.gotPoses);
+        });
+
         // navigator.mediaDevices.getUserMedia({audio: true})
         // .then(() => {
         //     // Once the user gives the permission, then we setup the microphone.
