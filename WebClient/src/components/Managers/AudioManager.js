@@ -66,7 +66,7 @@ var sketch = (s) => {
     let myNoses = []; 
     let foundFace = false; 
     let checkNotFoundIndex = 0; // An index to keep track of no faces found until we start looking again. 
-    let lastXPos;
+    let lastNosePosition = [0, 0]; 
 
     s.preload = () => {
         // Soundscape 
@@ -86,14 +86,14 @@ var sketch = (s) => {
         s.noCanvas(); // Don't creat a canvas
     };
 
-    s.initMic = () => {
-        console.log(navigator);
+    s.initPoseNet = () => {
         video = s.createCapture(s.VIDEO);
         import('ml5').then(ml5 => {
             poseNet = ml5.poseNet(video, 'multiple', s.modelReady);
             poseNet.on('pose', s.gotPoses);
         });
 
+        // console.log(navigator);
         // navigator.mediaDevices.getUserMedia({audio: true})
         // .then(() => {
         //     // Once the user gives the permission, then we setup the microphone.
@@ -157,20 +157,27 @@ var sketch = (s) => {
         return foundFace;
     }
 
-    s.mapX = (boundingBox) => {
+    s.mapCamPosition = (boundingBox) => {
         // Get the nose first,
         // Map the x coordinate of the nose to the bounding box.
         if (myNoses.length > 0) {
-            let nose = myNoses[0]; 
+            let xPos = 0; 
+            myNoses.forEach(nose => {
+                xPos += nose.x; 
+            });
+            // Calculate average xPosition.
+            xPos = xPos / myNoses.length; 
+
             // Map it between the min and max of the bounding box. 
-            let minX = boundingBox.min.x; 
-            let maxX = boundingBox.max.x; 
-            console.log(nose);
-            lastXPos = s.map(nose.x, 640, 0, minX, maxX); 
-            return lastXPos;
+            let minX = boundingBox.min.x; let maxX = boundingBox.max.x; 
+            xPos = s.map(xPos, 640, 0, minX, maxX);
+
+            // Set this as the default xPosition.
+            lastNosePosition = [xPos, 0];
+            return lastNosePosition;
         }
 
-        return lastXPos; 
+        return lastNosePosition; 
     }
 
     s.trigger = () => {
@@ -198,7 +205,7 @@ class AudioManager {
             // Turn off audio
             // this.release(); 
             // Turn on Microphone
-            this.micOn();
+            this.myP5.initPoseNet();
         }
     }
 
@@ -208,16 +215,12 @@ class AudioManager {
 
     getTargetPos(boundingBox) {
         // Get the nose position for the face
-        return this.myP5.mapX(boundingBox); 
+        return this.myP5.mapCamPosition(boundingBox); 
     }
 
     audioManagerReady() {
         this.isAudioManagerReady = true;
         console.log('Audio Manager Ready'); 
-    }
-
-    micOn() {
-        this.myP5.initMic();
     }
 
     reset() {

@@ -73,14 +73,15 @@ class PigeonManager {
         this.pigeon = new GPUPigeon(this.initPigeons.bind(this, renderer, scene)); 
     }
 
-    update(boundingBox, cameraPos, cameraUp) {
+    update(boundingBox, camera, cameraPos, cameraUp) {
         if (IsPigeonManagerReady) {
             this.targetPosition = this.patternManager.update();
             if (AudioManager.foundFace()) {
-                let mappedX = AudioManager.getTargetPos(boundingBox);                
+                let mappedPosition = AudioManager.getTargetPos(boundingBox); 
                 this.targetPosition.crossVectors(cameraPos, cameraUp);
                 this.targetPosition.normalize();
-                this.targetPosition.multiplyScalar(-mappedX);
+                this.targetPosition.multiplyScalar(-mappedPosition[0]);
+                // this.targetPosition.setY(mappedPosition[1])
             }
 
             // If we have a valid target position, begin updating.

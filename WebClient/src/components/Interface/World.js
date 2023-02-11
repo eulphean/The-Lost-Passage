@@ -161,7 +161,7 @@ class World extends React.Component {
         let boundingBox = this.skyboxManager.getBoundingBox(); 
         let cameraPos = this.cameraControl.camera.position; 
         let cameraUp = this.cameraControl.camera.up;
-        this.pigeonManager.update(boundingBox, cameraPos, cameraUp);
+        this.pigeonManager.update(boundingBox, this.cameraControl.camera, cameraPos, cameraUp);
         
         // Once the flock is no longer in shock, enable the pigeon params again
         if (!this.pigeonManager.isFlockInShock && this.guiRef.current.getPigeonParamFolder().disabled){
