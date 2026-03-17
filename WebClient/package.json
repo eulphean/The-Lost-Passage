@@ -82,7 +82,7 @@
     "workbox-webpack-plugin": "5.1.4"
   },
   "scripts": {
-    "start": "node scripts/start.js --no-cache",
+    "start": "export NODE_OPTIONS=--openssl-legacy-provider && node scripts/start.js --no-cache",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --no-cache",
     "predeploy": "npm run build",
@@ -153,6 +153,10 @@
   "babel": {
     "presets": [
       "react-app"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-optional-chaining",
+      "@babel/plugin-proposal-nullish-coalescing-operator"
     ]
   },
   "eslintConfig": {
